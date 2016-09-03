@@ -1,0 +1,44 @@
+-------
+Genre:
+-------
+The game's genre will be a Role Playing Game.
+
+-------
+its consumer tempting, ear popping, name and a brief back story (or the game's epic challenge):
+-------
+Title: 
+Kanye's Quest for the Ultralight Beam
+
+Backstory: 
+Kanye, the game's main character, is a college student struggling with identity.  Disinterested in his school work and tired of his
+creativity being suppressed, Kanye longed to break free from the constraints society placed on him and pursue life and music on his own terms.
+However, dropping out of school terrified young Kanye.  What if he failed? Or, possibly more terrifying, what if he didn't? Who could he trust?
+Could he ever have real friends? Would the money change him? Would he forget where he came from? (nahhhhh, nah nah nah)
+
+One day, Kanye decides enough is enough, and drops out of college.  Angry, fearful, excited, Kanye embarks on an epic quest to find purpose in
+life -- to find his ultralight beam where life is as wonderful as he had always wanted it to be.
+
+-------
+its goal (how to win the game or advance levels):
+-------
+The game begins with Kanye leaving college.  His first step must be to drop out of college into the Unknown.  This action happens by Kanye
+literally falling off the college grounds down into the unknown. Once in the unknown, he will 
+encounter various enemies such as paparazzi and a (greed) Monster.  If he succeeds in dodging the paparazzi and defeating the monster, he
+will progress to the Club through a portal.  Here, he will have to dodge various haterz (such as Taylor Swift) who are trying to block his path.  
+Once he finds Kim, they are magically transported to the Ultralight Beam, which they ride up on Kanye's motorcycle. Once they reach the source 
+of the Ultralight Beam, Kanye's journey is complete -- he wins the game, as he's finally found his Ultralight Beam. 
+
+-------
+its basic mechanics (how to play the game), and how its levels or modes differ:
+-------
+Throughout the College and the Unknown levels, a player will control Kanye using arrow keys to move him left and right along the scene.  He will be
+able to jump, run, and sling bars to fight enemies. These actions will be controlled by button presses.  Thus, this portion of the game will be controlled
+like a side-scroller.  Enemies will be designed to follow Kanye, and perhaps even sling hate his direction to hurt his health.  If he loses too 
+many health points, then he dies and is sent back to the beginning of the game. Once he makes it past the paparazzi and monster, he will reach 
+a hub that will take him to the next level.
+
+In the club scene, Kanye now may move left, right, up, or down.  He has no way to attack the haters here -- he can only dodge them with careful 
+maneuvering. Enemies here will be moving back and forth across the screen and varying speeds and angles.  Kanye's goal here will be to dodge the enemies.
+Getting hit by them will decrease his health.  If he loses too many health points, he will be sent back to the beginning of the club. Once he makes
+it to Kim, he and Kim are transported to the ultralight beam, and the mission is complete.
+
