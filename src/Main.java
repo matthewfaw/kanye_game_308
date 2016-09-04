@@ -5,6 +5,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+//Music
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 /**
  * This is the main program, it is basically boilerplate to create
@@ -30,6 +33,10 @@ public class Main extends Application {
         myGame = new ExampleGame();
         s.setTitle(myGame.getTitle());
 
+        Media media = new Media(getClass().getClassLoader().getResource("all_falls_down.mp3").toString());
+        MediaPlayer player = new MediaPlayer(media);
+        player.play();
+        
         // attach game to the stage and display it
         Scene scene = myGame.init(SIZE, SIZE);
         s.setScene(scene);
@@ -42,6 +49,7 @@ public class Main extends Application {
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.getKeyFrames().add(frame);
         animation.play();
+        
     }
 
     /**
