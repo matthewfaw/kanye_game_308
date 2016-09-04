@@ -8,3 +8,5 @@
 # Eclipse files
 /bin
 .project
+
+.DS_STORE
