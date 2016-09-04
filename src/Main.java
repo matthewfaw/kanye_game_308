@@ -13,7 +13,7 @@ import javafx.scene.media.MediaPlayer;
  * This is the main program, it is basically boilerplate to create
  * an animated scene.
  * 
- * @author Robert C. Duvall
+ * @author Matthew C. Faw
  */
 public class Main extends Application {
     public static final int SIZE = 400;
