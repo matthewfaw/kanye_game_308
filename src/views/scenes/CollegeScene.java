@@ -6,6 +6,7 @@ import javafx.scene.shape.Rectangle;
 
 import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
+import views.elements.background.BackgroundImage;
 
 public class CollegeScene extends GameScene {
 	private static final String FILE_NAME = "college_description.txt";
@@ -26,6 +27,9 @@ public class CollegeScene extends GameScene {
 		ground.setX(0);
 		ground.setY(300);
 		
+		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight);
+
+		fRoot.getChildren().add(backgroundImage.getRoot());
 		fRoot.getChildren().add(college.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
 	}
