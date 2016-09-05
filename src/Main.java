@@ -9,6 +9,9 @@ import javafx.util.Duration;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
+//controllers
+import controllers.GameController;
+
 /**
  * This is the main program, it is basically boilerplate to create
  * an animated scene.
@@ -21,7 +24,8 @@ public class Main extends Application {
     private static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
     private static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 
-    private ExampleGame myGame;
+//    private ExampleGame myGame;
+    private GameController fGameController;
 
 
     /**
@@ -29,26 +33,40 @@ public class Main extends Application {
      */
     @Override
     public void start (Stage s) {
-        // create your own game here
-        myGame = new ExampleGame();
-        s.setTitle(myGame.getTitle());
-
-        Media media = new Media(getClass().getClassLoader().getResource("all_falls_down.mp3").toString());
-        MediaPlayer player = new MediaPlayer(media);
-        player.play();
-        
-        // attach game to the stage and display it
-        Scene scene = myGame.init(SIZE, SIZE);
-        s.setScene(scene);
-        s.show();
-
-        // sets the game's loop
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-                                      e -> myGame.step(SECOND_DELAY));
-        Timeline animation = new Timeline();
-        animation.setCycleCount(Timeline.INDEFINITE);
-        animation.getKeyFrames().add(frame);
-        animation.play();
+    	
+    	fGameController = new GameController();
+    	s.setTitle(fGameController.getGameName());
+    	
+    	Scene scene = fGameController.init(SIZE, SIZE);
+    	s.setScene(scene);
+    	s.show();
+    	
+    	KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+    								e -> fGameController.step(SECOND_DELAY));
+    	Timeline animation = new Timeline();
+    	animation.setCycleCount(Timeline.INDEFINITE);
+    	animation.getKeyFrames().add(frame);
+    	animation.play();
+//        // create your own game here
+//        myGame = new ExampleGame();
+//        s.setTitle(myGame.getTitle());
+//
+//        Media media = new Media(getClass().getClassLoader().getResource("all_falls_down.mp3").toString());
+//        MediaPlayer player = new MediaPlayer(media);
+//        player.play();
+//        
+//        // attach game to the stage and display it
+//        Scene scene = myGame.init(SIZE, SIZE);
+//        s.setScene(scene);
+//        s.show();
+//
+//        // sets the game's loop
+//        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+//                                      e -> myGame.step(SECOND_DELAY));
+//        Timeline animation = new Timeline();
+//        animation.setCycleCount(Timeline.INDEFINITE);
+//        animation.getKeyFrames().add(frame);
+//        animation.play();
         
     }
 
