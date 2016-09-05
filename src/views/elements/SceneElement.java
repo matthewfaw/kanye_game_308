@@ -7,11 +7,19 @@ import javafx.scene.Group;
 public abstract class SceneElement {
 	protected Group fRoot;
 	
+	public double getX()
+	{
+		return fRoot.getLayoutX();
+	}
 	public void setX(double aPosition)
 	{
 		fRoot.setLayoutX(aPosition);
 	}
 	
+	public double getY()
+	{
+		return fRoot.getLayoutY();
+	}
 	public void setY(double aPosition)
 	{
 		fRoot.setLayoutY(aPosition);

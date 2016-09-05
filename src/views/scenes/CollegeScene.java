@@ -1,9 +1,7 @@
 package views.scenes;
 
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
+import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
 import views.elements.background.BackgroundImage;
@@ -28,10 +26,11 @@ public class CollegeScene extends GameScene {
 		ground.setY(300);
 		
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight);
-
+		
 		fRoot.getChildren().add(backgroundImage.getRoot());
 		fRoot.getChildren().add(college.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
+
 	}
 	
 	public Group getRoot()
