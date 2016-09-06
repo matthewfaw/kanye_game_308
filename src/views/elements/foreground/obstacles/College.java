@@ -6,7 +6,7 @@ import javafx.scene.shape.Rectangle;
 
 import views.elements.SceneElement;
 
-public class College extends SceneElement {
+public class College extends Obstacle {
 	private static final Color COLLEGE_COLOR = Color.DARKBLUE;
 	
 	public College(int aWidth, int aHeight)

@@ -1,20 +1,24 @@
 package views.scenes;
 
+import java.util.ArrayList;
+
 import javafx.scene.Group;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
+import views.elements.foreground.obstacles.Obstacle;
 import views.elements.background.BackgroundImage;
 
 public class CollegeScene extends GameScene {
 	private static final String FILE_NAME = "college_description.txt";
 	
 	private Group fRoot;
+	private ArrayList<Obstacle> fObstacles;
 	
 	public CollegeScene(int aWidth, int aHeight)
 	{
 		fRoot = new Group();
-		
+		fObstacles = new ArrayList<Obstacle>();
 		//this.constructSceneFromFile(FILE_NAME);
 		
 		College college = new College(aWidth/4, aHeight/4);
@@ -27,15 +31,22 @@ public class CollegeScene extends GameScene {
 		
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight);
 		
+		fObstacles.add(college);
+		fObstacles.add(ground);
+		
 		fRoot.getChildren().add(backgroundImage.getRoot());
 		fRoot.getChildren().add(college.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
-
 	}
 	
 	public Group getRoot()
 	{
 		return fRoot;
+	}
+	
+	public ArrayList<Obstacle> getObstacles()
+	{
+		return fObstacles;
 	}
 	
 }

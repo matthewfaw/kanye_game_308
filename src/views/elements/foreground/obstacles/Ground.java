@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import views.elements.SceneElement;
 
-public class Ground extends SceneElement {
+public class Ground extends Obstacle {
 	private static final Color GROUND_COLOR = Color.DARKGREEN;
 	
 	public Ground(int width, int height)

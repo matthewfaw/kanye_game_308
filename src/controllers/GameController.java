@@ -37,6 +37,7 @@ public class GameController {
 		
 		fMainCharacterController = new CharacterController();
 		
+		fMainCharacterController.setSurroundings(collegeScene.getObstacles());
 		Group kanyeRoot = fMainCharacterController.createCharacter(aWidth/8, aHeight/8);
 		
 		root.getChildren().add(collegeRoot);

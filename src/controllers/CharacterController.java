@@ -1,7 +1,10 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import javafx.scene.Group;
 import views.elements.foreground.characters.MainCharacter;
+import views.elements.foreground.obstacles.Obstacle;
 
 /*
  * The purpose of the Character Controller is to:
@@ -15,6 +18,7 @@ public class CharacterController {
 	private static final double JUMP_VELOCITY = 5.0;
 	
 	private MainCharacter fCharacter;
+	private ArrayList<Obstacle> fSurroundingObstacles;
 	private double fVelocityX;
 	private double fVelocityY;
 	private double fTimeInAir;
@@ -22,9 +26,14 @@ public class CharacterController {
 	
 	public CharacterController()
 	{
-		
+		fSurroundingObstacles = new ArrayList<Obstacle>();
 	}
 	
+	public void setSurroundings(ArrayList<Obstacle> aObstacleList)
+	{
+		fSurroundingObstacles = aObstacleList;
+	}
+		
 	public Group createCharacter(int aWidth, int aHeight)
 	{
 		fCharacter = new MainCharacter(aWidth, aHeight);
@@ -34,6 +43,7 @@ public class CharacterController {
 		fVelocityX = 0.0;
 		fVelocityY = 0.0;
 		fTimeInAir = 0.0;
+		fOnGround = true;
 		
 		Group characterRoot = fCharacter.getRoot();
 		
@@ -61,6 +71,29 @@ public class CharacterController {
 			double displacementY = 0.5*aGravity*fTimeInAir*fTimeInAir + JUMP_VELOCITY*fTimeInAir;
 
 			this.moveCharacter(0, -displacementY);
+		} 
+		if (!surroundingsAreClear()) {
+			System.out.println("INTERSECTING SOMETHING");
 		}
+	}
+	
+	private boolean surroundingsAreClear()
+	{
+		for (Obstacle obstacle: fSurroundingObstacles) {
+			if (fCharacter.getRoot().getBoundsInParent().intersects(obstacle.getRoot().getBoundsInParent())) {
+				if (!fOnGround && fTimeInAir > 0.5) {
+					endJump();
+				}
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void endJump()
+	{
+		fTimeInAir = 0.0;
+		fVelocityY = 0.0;
+		fOnGround = true;
 	}
 }
