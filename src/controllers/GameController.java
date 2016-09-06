@@ -18,8 +18,9 @@ public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	private static final int KEY_INPUT_SPEED = 5;
+	private static final double GRAVITY = -10;
 	
-	private CharacterController fCharacterController;
+	private CharacterController fMainCharacterController;
 	private Scene fScene;
 	
 	public String getGameName()
@@ -34,9 +35,9 @@ public class GameController {
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
 		Group collegeRoot = collegeScene.getRoot();
 		
-		fCharacterController = new CharacterController();
+		fMainCharacterController = new CharacterController();
 		
-		Group kanyeRoot = fCharacterController.createMainCharacter(aWidth/8, aHeight/8);
+		Group kanyeRoot = fMainCharacterController.createCharacter(aWidth/8, aHeight/8);
 		
 		root.getChildren().add(collegeRoot);
 		root.getChildren().add(kanyeRoot);
@@ -49,23 +50,24 @@ public class GameController {
 	
 	public void step(double aElapsedTime)
 	{
-		//fCharacterController.moveMainCharacter(1, 0);
+		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
 	}
 	
 	private void handleKeyInput(KeyCode code)
 	{
 		switch (code) {
         case RIGHT:
-    		fCharacterController.moveMainCharacter(KEY_INPUT_SPEED, 0);
+    		fMainCharacterController.moveCharacter(KEY_INPUT_SPEED, 0);
             break;
         case LEFT:
-    		fCharacterController.moveMainCharacter(-KEY_INPUT_SPEED, 0);
+    		fMainCharacterController.moveCharacter(-KEY_INPUT_SPEED, 0);
             break;
         case UP:
-    		fCharacterController.moveMainCharacter(0, -KEY_INPUT_SPEED);
+        	fMainCharacterController.beginJump();
+    		//fMainCharacterController.moveCharacter(0, -KEY_INPUT_SPEED);
             break;
         case DOWN:
-    		fCharacterController.moveMainCharacter(0, KEY_INPUT_SPEED);
+    		fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
             break;
         default:
             // do nothing
