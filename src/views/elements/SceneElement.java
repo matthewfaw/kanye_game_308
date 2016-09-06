@@ -58,12 +58,7 @@ public abstract class SceneElement {
 		double rootLeftX = fRoot.getBoundsInParent().getMinX();
 		double obstacleRightX = obstacle.getBoundsInParent().getMaxX();
 		
-		double rootBottomY = fRoot.getBoundsInParent().getMaxY();
-		double obstacleTopY = obstacle.getBoundsInParent().getMinY();
-		
-		double delta = Math.min(fRoot.getBoundsInParent().getHeight(), obstacle.getBoundsInParent().getHeight());
-		
-		if (Math.abs(rootBottomY - obstacleTopY) > delta) {
+		if (sideIntersectionBoundaryIsAValidHeight(fRoot, obstacle)) {
 			return (rootLeftX >= obstacleRightX);
 		} else {
 			return false;
@@ -75,16 +70,20 @@ public abstract class SceneElement {
 		double rootRightX = fRoot.getBoundsInParent().getMaxX();
 		double obstacleLeftX = obstacle.getBoundsInParent().getMinX();
 		
-		double rootBottomY = fRoot.getBoundsInParent().getMaxY();
-		double obstacleTopY = obstacle.getBoundsInParent().getMinY();
-		
-		double delta = Math.min(fRoot.getBoundsInParent().getHeight(), obstacle.getBoundsInParent().getHeight());
-		
-		if (Math.abs(rootBottomY - obstacleTopY) > delta) {
+		if (sideIntersectionBoundaryIsAValidHeight(fRoot, obstacle)) {
 			return (rootRightX <= obstacleLeftX);
 		} else {
 			return false;
-		}
+		}	
+	}
+	
+	private boolean sideIntersectionBoundaryIsAValidHeight(Group aFirstObject, Group aSecondObject)
+	{
+		double rootBottomY = aFirstObject.getBoundsInParent().getMaxY();
+		double obstacleTopY = aSecondObject.getBoundsInParent().getMinY();
 		
+		double delta = Math.min(aFirstObject.getBoundsInParent().getHeight(), aSecondObject.getBoundsInParent().getHeight());
+		// XXX: Remove magic number
+		return Math.abs(rootBottomY - obstacleTopY) > 0.2 * delta;
 	}
 }
