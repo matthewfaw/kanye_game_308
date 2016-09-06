@@ -3,6 +3,7 @@ package controllers;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
+import javafx.scene.shape.Shape;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Obstacle;
 
@@ -15,7 +16,7 @@ import views.elements.foreground.obstacles.Obstacle;
 public class CharacterController {
 	private static final double DEL_X = 1.0;
 	private static final double DEL_Y = 1.0;
-	private static final double JUMP_VELOCITY = 5.0;
+	private static final double JUMP_VELOCITY = 7.0;
 	private static final double FREEFALL_VELOCITY = 0.0;
 	
 	private MainCharacter fCharacter;
@@ -39,8 +40,9 @@ public class CharacterController {
 	public Group createCharacter(int aWidth, int aHeight)
 	{
 		fCharacter = new MainCharacter(aWidth, aHeight);
-		fCharacter.setX(100);
-		fCharacter.setY(250);
+		fCharacter.setX(200);
+//		fCharacter.setY(250);
+		fCharacter.setY(0);
 		
 		fVelocityX = 0.0;
 		fVelocityY = 0.0;
@@ -54,7 +56,12 @@ public class CharacterController {
 	
 	public void moveCharacter(double aXUnit, double aYUnit)
 	{
-		fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
+		// XXX: fix movement
+		if (aXUnit > 0 && surroundingsAreClearOnRight()) {
+			fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
+		} else if (aXUnit < 0 && surroundingsAreClearOnLeft()) {
+			fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
+		}
 		fCharacter.setY(fCharacter.getY() + aYUnit * DEL_Y);
 	}
 	
@@ -108,6 +115,8 @@ public class CharacterController {
 	private boolean surroundingsAreClearOnRight()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
+			//Shape intersection = Shape.intersect(fCharacter.getRoot(), obstacle.getRoot());
+
 			if (fCharacter.intersects(obstacle.getRoot())) {
 				if (fCharacter.intersectsFromRight(obstacle.getRoot())) {
 					return false;
