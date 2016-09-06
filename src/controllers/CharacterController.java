@@ -16,6 +16,7 @@ public class CharacterController {
 	private static final double DEL_X = 1.0;
 	private static final double DEL_Y = 1.0;
 	private static final double JUMP_VELOCITY = 5.0;
+	private static final double FREEFALL_VELOCITY = 0.0;
 	
 	private MainCharacter fCharacter;
 	private ArrayList<Obstacle> fSurroundingObstacles;
@@ -23,6 +24,7 @@ public class CharacterController {
 	private double fVelocityY;
 	private double fTimeInAir;
 	private boolean fOnGround;
+	private boolean fIsFalling;
 	
 	public CharacterController()
 	{
@@ -56,35 +58,82 @@ public class CharacterController {
 		fCharacter.setY(fCharacter.getY() + aYUnit * DEL_Y);
 	}
 	
+	public void checkForFreefall()
+	{
+		//Check if we're standing on thin air:
+		if (surroundingsAreClearBelow() && fOnGround) {
+			fOnGround = false;
+			fIsFalling = true;
+			System.out.println("Freefall");
+			fVelocityY = FREEFALL_VELOCITY;
+		} else {
+			fIsFalling = (false || fIsFalling);
+		}
+	}
+	
 	public void beginJump()
 	{
 		fOnGround = false;
 		fVelocityY = JUMP_VELOCITY;
 	}
 	
+	// XXX: possibly rename, this function name is hard to distinguish from moveCharacter
 	public void updatePosition(double aElapsedTime, double aGravity)
 	{
-		if (fVelocityY != 0.0) {
+		if (movingInYAxis()) {
 			fTimeInAir += aElapsedTime;
-			fVelocityY = aGravity*fTimeInAir + JUMP_VELOCITY;
+			//fVelocityY = aGravity*fTimeInAir + JUMP_VELOCITY;
 			
-			double displacementY = 0.5*aGravity*fTimeInAir*fTimeInAir + JUMP_VELOCITY*fTimeInAir;
+			double displacementY = 0.5*aGravity*fTimeInAir*fTimeInAir + fVelocityY*fTimeInAir;
 
 			this.moveCharacter(0, -displacementY);
+			//XXX: get rid of or name magic constant
+			if(!surroundingsAreClearBelow() && fTimeInAir > 0.5){
+				endJump();
+			}
 		} 
-		if (!surroundingsAreClear()) {
-			System.out.println("INTERSECTING SOMETHING");
-		}
 	}
 	
-	private boolean surroundingsAreClear()
+	private boolean surroundingsAreClearOnLeft()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
-			if (fCharacter.getRoot().getBoundsInParent().intersects(obstacle.getRoot().getBoundsInParent())) {
-				if (!fOnGround && fTimeInAir > 0.5) {
-					endJump();
+			if (fCharacter.intersects(obstacle.getRoot())) {
+				if (fCharacter.intersectsFromLeft(obstacle.getRoot())) {
+					return false;
 				}
-				return false;
+			}
+		}
+		return true;
+	}
+	private boolean surroundingsAreClearOnRight()
+	{
+		for (Obstacle obstacle: fSurroundingObstacles) {
+			if (fCharacter.intersects(obstacle.getRoot())) {
+				if (fCharacter.intersectsFromRight(obstacle.getRoot())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	private boolean surroundingsAreClearAbove()
+	{
+		for (Obstacle obstacle: fSurroundingObstacles) {
+			if (fCharacter.intersects(obstacle.getRoot())) {
+				if (fCharacter.intersectsFromAbove(obstacle.getRoot())) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	private boolean surroundingsAreClearBelow()
+	{
+		for (Obstacle obstacle: fSurroundingObstacles) {
+			if (fCharacter.intersects(obstacle.getRoot())) {
+				if (fCharacter.intersectsFromBelow(obstacle.getRoot())) {
+					return false;
+				}
 			}
 		}
 		return true;
@@ -95,5 +144,12 @@ public class CharacterController {
 		fTimeInAir = 0.0;
 		fVelocityY = 0.0;
 		fOnGround = true;
+		fIsFalling = false;
 	}
+	
+	private boolean movingInYAxis()
+	{
+		return (fVelocityY != 0.0 || fIsFalling);
+	}
+	
 }

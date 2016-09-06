@@ -51,6 +51,7 @@ public class GameController {
 	
 	public void step(double aElapsedTime)
 	{
+		fMainCharacterController.checkForFreefall();
 		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
 	}
 	
