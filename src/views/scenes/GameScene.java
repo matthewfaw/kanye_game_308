@@ -12,7 +12,8 @@ import views.elements.foreground.obstacles.Tunnel;
 public abstract class GameScene {
 	protected Group fRoot;
 	protected ArrayList<Obstacle> fObstacles;
-	protected Tunnel fTunnel;
+	protected Tunnel fSrcTunnel;
+	protected Tunnel fDstTunnel;
 	
 	void constructSceneFromFile(String aFileName)
 	{
@@ -38,8 +39,13 @@ public abstract class GameScene {
 		return fObstacles;
 	}
 
-	public Tunnel getTunnel()
+	public Tunnel getSrcTunnel()
 	{
-		return fTunnel;
+		return fSrcTunnel;
+	}
+	
+	public Tunnel getDstTunnel()
+	{
+		return fDstTunnel;
 	}
 }

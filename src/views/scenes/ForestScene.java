@@ -18,10 +18,10 @@ public class ForestScene extends GameScene {
 		fObstacles = new ArrayList<Obstacle>();
 		//this.constructSceneFromFile(FILE_NAME);
 		
-		fTunnel = new Tunnel(aWidth/8, aHeight/4);
-		fTunnel.setX(350);
-		fTunnel.setY(200);
-		fTunnel.setSrcRoot(fRoot);
+		fSrcTunnel = new Tunnel(aWidth/8, aHeight/4);
+		fSrcTunnel.setX(0);
+		fSrcTunnel.setY(200);
+		fSrcTunnel.setSrcRoot(fRoot);
 		
 		Ground ground = new Ground(aWidth, aHeight/4);
 		ground.setX(0);
@@ -29,11 +29,11 @@ public class ForestScene extends GameScene {
 		
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		
-		fObstacles.add(fTunnel);
+		fObstacles.add(fSrcTunnel);
 		fObstacles.add(ground);
 		
 		fRoot.getChildren().add(backgroundImage.getRoot());
-		fRoot.getChildren().add(fTunnel.getRoot());
+		fRoot.getChildren().add(fSrcTunnel.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
 	}
 }

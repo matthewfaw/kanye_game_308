@@ -28,10 +28,10 @@ public class CollegeScene extends GameScene {
 		college.setY(200);
 		
 //		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
-		fTunnel = new Tunnel(aWidth/8, aHeight/4);
-		fTunnel.setX(350);
-		fTunnel.setY(200);
-		fTunnel.setSrcRoot(fRoot);
+		fDstTunnel = new Tunnel(aWidth/8, aHeight/4);
+		fDstTunnel.setX(350);
+		fDstTunnel.setY(200);
+		fDstTunnel.setSrcRoot(fRoot);
 		//tunnel.setDstRoot(aRoot);
 		//tunnel.setDstScene();
 		
@@ -42,12 +42,12 @@ public class CollegeScene extends GameScene {
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		
 		fObstacles.add(college);
-		fObstacles.add(fTunnel);
+		fObstacles.add(fDstTunnel);
 		fObstacles.add(ground);
 		
 		fRoot.getChildren().add(backgroundImage.getRoot());
 		fRoot.getChildren().add(college.getRoot());
-		fRoot.getChildren().add(fTunnel.getRoot());
+		fRoot.getChildren().add(fDstTunnel.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
 	}
 	

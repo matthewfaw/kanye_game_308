@@ -40,11 +40,11 @@ public class GameController {
 		ForestScene forestScene = new ForestScene(aWidth, aHeight);
 		Group forestRoot = forestScene.getRoot();
 
-		collegeScene.getTunnel().setDstRoot(forestRoot);
-		collegeScene.getTunnel().setDstScene(forestScene);
+		collegeScene.getDstTunnel().setDstRoot(forestRoot);
+		collegeScene.getDstTunnel().setDstScene(forestScene);
 
-		forestScene.getTunnel().setDstRoot(collegeRoot);
-		forestScene.getTunnel().setDstScene(collegeScene);
+		forestScene.getSrcTunnel().setDstRoot(collegeRoot);
+		forestScene.getSrcTunnel().setDstScene(collegeScene);
 
 		
 		fMainCharacterController = new CharacterController(fGameRoot);
