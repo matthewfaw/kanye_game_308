@@ -7,10 +7,12 @@ import java.util.Scanner;
 
 import javafx.scene.Group;
 import views.elements.foreground.obstacles.Obstacle;
+import views.elements.foreground.obstacles.Tunnel;
 
 public abstract class GameScene {
 	protected Group fRoot;
 	protected ArrayList<Obstacle> fObstacles;
+	protected Tunnel fTunnel;
 	
 	void constructSceneFromFile(String aFileName)
 	{
@@ -34,5 +36,10 @@ public abstract class GameScene {
 	public ArrayList<Obstacle> getObstacles()
 	{
 		return fObstacles;
+	}
+
+	public Tunnel getTunnel()
+	{
+		return fTunnel;
 	}
 }

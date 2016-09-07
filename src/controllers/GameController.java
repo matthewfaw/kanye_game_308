@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 
 import views.elements.foreground.characters.MainCharacter;
 import views.scenes.CollegeScene;
+import views.scenes.ForestScene;
 
 public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
@@ -35,6 +36,16 @@ public class GameController {
 		
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
 		Group collegeRoot = collegeScene.getRoot();
+
+		ForestScene forestScene = new ForestScene(aWidth, aHeight);
+		Group forestRoot = forestScene.getRoot();
+
+		collegeScene.getTunnel().setDstRoot(forestRoot);
+		collegeScene.getTunnel().setDstScene(forestScene);
+
+		forestScene.getTunnel().setDstRoot(collegeRoot);
+		forestScene.getTunnel().setDstScene(collegeScene);
+
 		
 		fMainCharacterController = new CharacterController(fGameRoot);
 		
@@ -42,6 +53,7 @@ public class GameController {
 		Group kanyeRoot = fMainCharacterController.createCharacter(aWidth/8, aHeight/8);
 		
 		fGameRoot.getChildren().add(collegeRoot);
+		//fGameRoot.getChildren().add(forestRoot);
 		fGameRoot.getChildren().add(kanyeRoot);
 		
 		fScene = new Scene(fGameRoot, aWidth, aHeight, BACKGROUND_COLOR);

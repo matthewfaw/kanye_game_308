@@ -30,6 +30,7 @@ public class SceneController {
 	
 	private void addDstSceneToGameRoot(Group aDstRoot)
 	{
+		fGameRoot.getChildren().add(0, aDstRoot);;
 		//fGameRoot.getChildren().add(aDstRoot);
 	}
 }

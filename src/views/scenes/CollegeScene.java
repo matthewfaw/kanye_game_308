@@ -12,6 +12,7 @@ import views.elements.background.BackgroundImage;
 
 public class CollegeScene extends GameScene {
 	private static final String FILE_NAME = "college_description.txt";
+	private static final String BACKGROUND_IMAGE_NAME = "sky.jpg";
 	
 //	private Group fRoot;
 //	private ArrayList<Obstacle> fObstacles;
@@ -26,10 +27,11 @@ public class CollegeScene extends GameScene {
 		college.setX(0);
 		college.setY(200);
 		
-		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
-		tunnel.setX(350);
-		tunnel.setY(200);
-		tunnel.setSrcRoot(fRoot);
+//		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
+		fTunnel = new Tunnel(aWidth/8, aHeight/4);
+		fTunnel.setX(350);
+		fTunnel.setY(200);
+		fTunnel.setSrcRoot(fRoot);
 		//tunnel.setDstRoot(aRoot);
 		//tunnel.setDstScene();
 		
@@ -37,15 +39,15 @@ public class CollegeScene extends GameScene {
 		ground.setX(0);
 		ground.setY(300);
 		
-		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight);
+		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		
 		fObstacles.add(college);
-		fObstacles.add(tunnel);
+		fObstacles.add(fTunnel);
 		fObstacles.add(ground);
 		
 		fRoot.getChildren().add(backgroundImage.getRoot());
 		fRoot.getChildren().add(college.getRoot());
-		fRoot.getChildren().add(tunnel.getRoot());
+		fRoot.getChildren().add(fTunnel.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
 	}
 	

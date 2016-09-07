@@ -6,11 +6,11 @@ import javafx.scene.image.ImageView;
 import views.elements.SceneElement;
 
 public class BackgroundImage extends SceneElement {
-	public BackgroundImage(int aWidth, int aHeight)
+	public BackgroundImage(int aWidth, int aHeight, String aImageName)
 	{
 		fRoot = new Group();
 		
-        Image image = new Image(getClass().getClassLoader().getResourceAsStream("sky.jpg"));
+        Image image = new Image(getClass().getClassLoader().getResourceAsStream(aImageName));
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         imageView.setFitWidth(aWidth);

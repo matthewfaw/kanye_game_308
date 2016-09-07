@@ -29,11 +29,14 @@ public class CharacterController {
 	private boolean fOnGround;
 	private boolean fIsFalling;
 	
+	private double fDefaultX;
+	private double fDefaultY;
+	
 	private SceneController fSceneController;
 		
 	public CharacterController(Group aGameRoot)
 	{
-		fGameRoot = aGameRoot;
+		fGameRoot = aGameRoot;		
 		fSurroundingObstacles = new ArrayList<Obstacle>();
 		fSceneController = new SceneController(aGameRoot);
 	}
@@ -62,13 +65,23 @@ public class CharacterController {
 	{
 		fSceneController.changeScenes(aTunnel.getSrcRoot(), aTunnel.getDstRoot());
 		// XXX: delete this once dest scene has been created
-		fSurroundingObstacles.clear();
-		//fSurroundingObstacles = aTunnel.getDstScene().getObstacles();
+		//fSurroundingObstacles.clear();
+		fSurroundingObstacles = aTunnel.getDstScene().getObstacles();
+		initializeCharacterFields();
 	}
 		
 	public Group createCharacter(int aWidth, int aHeight)
 	{
 		fCharacter = new MainCharacter(aWidth, aHeight);
+		initializeCharacterFields();
+		
+		Group characterRoot = fCharacter.getRoot();
+		
+		return characterRoot;
+	}
+	
+	private void initializeCharacterFields()
+	{
 		fCharacter.setX(200);
 //		fCharacter.setY(250);
 		fCharacter.setY(0);
@@ -77,10 +90,6 @@ public class CharacterController {
 		fVelocityY = 0.0;
 		fTimeInAir = 0.0;
 		fOnGround = true;
-		
-		Group characterRoot = fCharacter.getRoot();
-		
-		return characterRoot;
 	}
 	
 	public void moveCharacter(double aXUnit, double aYUnit)
