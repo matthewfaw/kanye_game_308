@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import views.scenes.GameScene;
 
 /*
  * The purpose of the scene controller is to:
@@ -17,20 +18,20 @@ public class SceneController {
 		fGameRoot = aGameRoot;
 	}
 	
-	public void changeScenes(Group aSrcRoot, Group aDstRoot)
+	public void changeScenes(GameScene aSrcScene, GameScene aDstScene)
 	{
-		removeSrcSceneFromGameRoot(aSrcRoot);
-		addDstSceneToGameRoot(aDstRoot);
+		removeSrcSceneFromGameRoot(aSrcScene);
+		addDstSceneToGameRoot(aDstScene);
 	}
 	
-	private void removeSrcSceneFromGameRoot(Group aSrcRoot)
+	private void removeSrcSceneFromGameRoot(GameScene aSrcScene)
 	{
-		fGameRoot.getChildren().remove(aSrcRoot);
+		fGameRoot.getChildren().remove(aSrcScene.getRoot());
 	}
 	
-	private void addDstSceneToGameRoot(Group aDstRoot)
+	private void addDstSceneToGameRoot(GameScene aDstScene)
 	{
-		fGameRoot.getChildren().add(0, aDstRoot);;
+		fGameRoot.getChildren().add(0, aDstScene.getRoot());
 		//fGameRoot.getChildren().add(aDstRoot);
 	}
 }

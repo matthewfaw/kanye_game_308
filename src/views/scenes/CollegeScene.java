@@ -31,7 +31,7 @@ public class CollegeScene extends GameScene {
 		fDstTunnel = new Tunnel(aWidth/8, aHeight/4);
 		fDstTunnel.setX(350);
 		fDstTunnel.setY(200);
-		fDstTunnel.setSrcRoot(fRoot);
+		fDstTunnel.setSrc(this);
 		//tunnel.setDstRoot(aRoot);
 		//tunnel.setDstScene();
 		

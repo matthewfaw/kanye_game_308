@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 
 import views.elements.foreground.characters.MainCharacter;
 import views.scenes.CollegeScene;
+import views.scenes.DoorExplorationScene;
 import views.scenes.ForestScene;
 
 public class GameController {
@@ -40,12 +41,15 @@ public class GameController {
 		ForestScene forestScene = new ForestScene(aWidth, aHeight);
 		Group forestRoot = forestScene.getRoot();
 
-		collegeScene.getDstTunnel().setDstRoot(forestRoot);
-		collegeScene.getDstTunnel().setDstScene(forestScene);
+		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);
+		Group doorExplorationRoot = doorExplorationScene.getRoot();
+		
+		collegeScene.getDstTunnel().setDst(forestScene);
 
-		forestScene.getSrcTunnel().setDstRoot(collegeRoot);
-		forestScene.getSrcTunnel().setDstScene(collegeScene);
+		forestScene.getSrcTunnel().setDst(collegeScene);
+		forestScene.getDstTunnel().setDst(doorExplorationScene);
 
+		doorExplorationScene.getSrcTunnel().setDst(forestScene);
 		
 		fMainCharacterController = new CharacterController(fGameRoot);
 		

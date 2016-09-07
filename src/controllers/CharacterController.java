@@ -20,6 +20,7 @@ public class CharacterController {
 	private static final double FREEFALL_VELOCITY = 0.0;
 	
 	private Group fGameRoot;
+	//private GameScene fGameScene;
 	
 	private MainCharacter fCharacter;
 	private ArrayList<Obstacle> fSurroundingObstacles;
@@ -63,10 +64,10 @@ public class CharacterController {
 	
 	private void transportCharacterToNewScene(Tunnel aTunnel) 
 	{
-		fSceneController.changeScenes(aTunnel.getSrcRoot(), aTunnel.getDstRoot());
+		fSceneController.changeScenes(aTunnel.getSrc(), aTunnel.getDst());
 		// XXX: delete this once dest scene has been created
 		//fSurroundingObstacles.clear();
-		fSurroundingObstacles = aTunnel.getDstScene().getObstacles();
+		fSurroundingObstacles = aTunnel.getDst().getObstacles();
 		initializeCharacterFields();
 	}
 		

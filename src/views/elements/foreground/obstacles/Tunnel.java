@@ -9,8 +9,7 @@ import views.scenes.GameScene;
 public class Tunnel extends Obstacle {
 	private static final Color TUNNEL_COLOR = Color.BROWN;
 
-	private Group fSrcRoot;
-	private Group fDstRoot;
+	private GameScene fSrcScene;
 	private GameScene fDstScene;
 	
 	public Tunnel(int width, int height)
@@ -25,31 +24,51 @@ public class Tunnel extends Obstacle {
 		fRoot.getChildren().add(tunnel);
 	}
 	
-	public Group getSrcRoot()
+	public GameScene getSrc()
 	{
-		return fSrcRoot;
-	}
-	public void setSrcRoot(Group aRoot)
-	{
-		fSrcRoot = aRoot;
+		return fSrcScene;
 	}
 	
-	public GameScene getDstScene()
+	public void setSrc(GameScene aScene)
+	{
+		fSrcScene = aScene;
+	}
+	
+	public GameScene getDst()
 	{
 		return fDstScene;
 	}
-	public void setDstScene(GameScene aScene)
+	
+	public void setDst(GameScene aScene)
 	{
 		fDstScene = aScene;
 	}
 	
-	public Group getDstRoot()
-	{
-		return fDstRoot;
-	}
-	public void setDstRoot(Group aRoot)
-	{
-		fDstRoot = aRoot;
-	}
+//	public Group getSrcRoot()
+//	{
+//		return fSrcRoot;
+//	}
+//	public void setSrcRoot(Group aRoot)
+//	{
+//		fSrcRoot = aRoot;
+//	}
+//	
+//	public GameScene getDstScene()
+//	{
+//		return fDstScene;
+//	}
+//	public void setDstScene(GameScene aScene)
+//	{
+//		fDstScene = aScene;
+//	}
+	
+//	public Group getDstRoot()
+//	{
+//		return fDstRoot;
+//	}
+//	public void setDstRoot(Group aRoot)
+//	{
+//		fDstRoot = aRoot;
+//	}
 
 }
