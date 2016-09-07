@@ -21,6 +21,7 @@ public class GameController {
 	private static final double GRAVITY = -10;
 	
 	private CharacterController fMainCharacterController;
+	private Group fGameRoot;
 	private Scene fScene;
 	
 	public String getGameName()
@@ -30,20 +31,20 @@ public class GameController {
 	
 	public Scene init(int aWidth, int aHeight)
 	{
-		Group root = new Group();
+		fGameRoot = new Group();
 		
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
 		Group collegeRoot = collegeScene.getRoot();
 		
-		fMainCharacterController = new CharacterController();
+		fMainCharacterController = new CharacterController(fGameRoot);
 		
 		fMainCharacterController.setSurroundings(collegeScene.getObstacles());
 		Group kanyeRoot = fMainCharacterController.createCharacter(aWidth/8, aHeight/8);
 		
-		root.getChildren().add(collegeRoot);
-		root.getChildren().add(kanyeRoot);
+		fGameRoot.getChildren().add(collegeRoot);
+		fGameRoot.getChildren().add(kanyeRoot);
 		
-		fScene = new Scene(root, aWidth, aHeight, BACKGROUND_COLOR);
+		fScene = new Scene(fGameRoot, aWidth, aHeight, BACKGROUND_COLOR);
         fScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
 
 		return fScene;
@@ -53,6 +54,7 @@ public class GameController {
 	{
 		fMainCharacterController.checkForFreefall();
 		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
+		fMainCharacterController.checkForSceneTransition();
 	}
 	
 	private void handleKeyInput(KeyCode code)
@@ -69,7 +71,7 @@ public class GameController {
     		//fMainCharacterController.moveCharacter(0, -KEY_INPUT_SPEED);
             break;
         case DOWN:
-    		fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
+    		//fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
             break;
         default:
             // do nothing

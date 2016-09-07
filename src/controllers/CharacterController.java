@@ -3,9 +3,9 @@ package controllers;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
-import javafx.scene.shape.Shape;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Obstacle;
+import views.elements.foreground.obstacles.Tunnel;
 
 /*
  * The purpose of the Character Controller is to:
@@ -19,6 +19,8 @@ public class CharacterController {
 	private static final double JUMP_VELOCITY = 7.0;
 	private static final double FREEFALL_VELOCITY = 0.0;
 	
+	private Group fGameRoot;
+	
 	private MainCharacter fCharacter;
 	private ArrayList<Obstacle> fSurroundingObstacles;
 	private double fVelocityX;
@@ -27,14 +29,41 @@ public class CharacterController {
 	private boolean fOnGround;
 	private boolean fIsFalling;
 	
-	public CharacterController()
+	private SceneController fSceneController;
+		
+	public CharacterController(Group aGameRoot)
 	{
+		fGameRoot = aGameRoot;
 		fSurroundingObstacles = new ArrayList<Obstacle>();
+		fSceneController = new SceneController(aGameRoot);
 	}
 	
 	public void setSurroundings(ArrayList<Obstacle> aObstacleList)
 	{
 		fSurroundingObstacles = aObstacleList;
+	}
+	
+	public void checkForSceneTransition()
+	{
+		for (Obstacle obstacle: fSurroundingObstacles) {
+			if (obstacle instanceof Tunnel) {
+				if (fCharacter.intersects(obstacle.getRoot())) {
+					Tunnel tunnel = (Tunnel) obstacle;
+					
+					transportCharacterToNewScene(tunnel);
+					return;
+				}
+				//GameScene dstScene = tunnel.getDstScene();
+			}
+		}
+	}
+	
+	private void transportCharacterToNewScene(Tunnel aTunnel) 
+	{
+		fSceneController.changeScenes(aTunnel.getSrcRoot(), aTunnel.getDstRoot());
+		// XXX: delete this once dest scene has been created
+		fSurroundingObstacles.clear();
+		//fSurroundingObstacles = aTunnel.getDstScene().getObstacles();
 	}
 		
 	public Group createCharacter(int aWidth, int aHeight)
