@@ -36,13 +36,10 @@ public class GameController {
 		fGameRoot = new Group();
 		
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
-		Group collegeRoot = collegeScene.getRoot();
 
 		ForestScene forestScene = new ForestScene(aWidth, aHeight);
-		Group forestRoot = forestScene.getRoot();
 
 		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);
-		Group doorExplorationRoot = doorExplorationScene.getRoot();
 		
 		collegeScene.getDstTunnel().setDst(forestScene);
 
@@ -51,13 +48,12 @@ public class GameController {
 
 		doorExplorationScene.getSrcTunnel().setDst(forestScene);
 		
-		fMainCharacterController = new CharacterController(fGameRoot);
+		fMainCharacterController = new CharacterController(fGameRoot, collegeScene);
 		
 		fMainCharacterController.setSurroundings(collegeScene.getObstacles());
 		Group kanyeRoot = fMainCharacterController.createCharacter(aWidth/8, aHeight/8);
 		
-		fGameRoot.getChildren().add(collegeRoot);
-		//fGameRoot.getChildren().add(forestRoot);
+		fGameRoot.getChildren().add(collegeScene.getRoot());
 		fGameRoot.getChildren().add(kanyeRoot);
 		
 		fScene = new Scene(fGameRoot, aWidth, aHeight, BACKGROUND_COLOR);
@@ -83,11 +79,17 @@ public class GameController {
     		fMainCharacterController.moveCharacter(-KEY_INPUT_SPEED, 0);
             break;
         case UP:
-        	fMainCharacterController.beginJump();
-    		//fMainCharacterController.moveCharacter(0, -KEY_INPUT_SPEED);
+        	// XXX remove if statements
+        	if (fMainCharacterController.isInAJumpingScene()) {
+        		fMainCharacterController.beginJump();
+        	} else {
+        		fMainCharacterController.moveCharacter(0, -KEY_INPUT_SPEED);
+        	}            	
             break;
         case DOWN:
-    		//fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
+    		if (!fMainCharacterController.isInAJumpingScene()) {
+            	fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
+    		}
             break;
         default:
             // do nothing

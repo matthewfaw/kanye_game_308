@@ -6,6 +6,8 @@ import javafx.scene.Group;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
+import views.scenes.DoorExplorationScene;
+import views.scenes.GameScene;
 
 /*
  * The purpose of the Character Controller is to:
@@ -20,7 +22,7 @@ public class CharacterController {
 	private static final double FREEFALL_VELOCITY = 0.0;
 	
 	private Group fGameRoot;
-	//private GameScene fGameScene;
+	private GameScene fCurrentScene;
 	
 	private MainCharacter fCharacter;
 	private ArrayList<Obstacle> fSurroundingObstacles;
@@ -29,22 +31,36 @@ public class CharacterController {
 	private double fTimeInAir;
 	private boolean fOnGround;
 	private boolean fIsFalling;
+	private boolean fPhysicsIsEnabled;
 	
 	private double fDefaultX;
 	private double fDefaultY;
 	
 	private SceneController fSceneController;
 		
-	public CharacterController(Group aGameRoot)
+	public CharacterController(Group aRoot, GameScene aCurrentScene)
 	{
-		fGameRoot = aGameRoot;		
+		fGameRoot = aRoot;
+		setCurrentScene(aCurrentScene);
+		
 		fSurroundingObstacles = new ArrayList<Obstacle>();
-		fSceneController = new SceneController(aGameRoot);
+		fSceneController = new SceneController(aRoot);
+	}
+	
+	private void setCurrentScene(GameScene aScene)
+	{
+		fCurrentScene = aScene;
+		fPhysicsIsEnabled = !(fCurrentScene instanceof DoorExplorationScene);
 	}
 	
 	public void setSurroundings(ArrayList<Obstacle> aObstacleList)
 	{
 		fSurroundingObstacles = aObstacleList;
+	}
+	
+	public boolean isInAJumpingScene()
+	{
+		return fPhysicsIsEnabled;
 	}
 	
 	public void checkForSceneTransition()
@@ -67,8 +83,15 @@ public class CharacterController {
 		fSceneController.changeScenes(aTunnel.getSrc(), aTunnel.getDst());
 		// XXX: delete this once dest scene has been created
 		//fSurroundingObstacles.clear();
+		setCurrentScene(aTunnel.getDst());
+		
 		fSurroundingObstacles = aTunnel.getDst().getObstacles();
 		initializeCharacterFields();
+	}
+	
+	public GameScene getCurrentScene()
+	{
+		return fCurrentScene;
 	}
 		
 	public Group createCharacter(int aWidth, int aHeight)
@@ -107,7 +130,7 @@ public class CharacterController {
 	public void checkForFreefall()
 	{
 		//Check if we're standing on thin air:
-		if (surroundingsAreClearBelow() && fOnGround) {
+		if (surroundingsAreClearBelow() && fOnGround && fPhysicsIsEnabled) {
 			fOnGround = false;
 			fIsFalling = true;
 			System.out.println("Freefall");
