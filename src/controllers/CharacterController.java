@@ -119,12 +119,14 @@ public class CharacterController {
 	public void moveCharacter(double aXUnit, double aYUnit)
 	{
 		// XXX: fix movement
-		if (aXUnit > 0 && surroundingsAreClearOnRight()) {
-			fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
-		} else if (aXUnit < 0 && surroundingsAreClearOnLeft()) {
+		if ( (aXUnit > 0 && surroundingsAreClearOnRight()) ||
+				(aXUnit < 0 && surroundingsAreClearOnLeft()) ) {
 			fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
 		}
-		fCharacter.setY(fCharacter.getY() + aYUnit * DEL_Y);
+		if ( (aYUnit > 0 && surroundingsAreClearBelow()) ||
+				(aYUnit < 0)) {
+			fCharacter.setY(fCharacter.getY() + aYUnit * DEL_Y);
+		}
 	}
 	
 	public void checkForFreefall()
