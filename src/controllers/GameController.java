@@ -12,9 +12,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 
 import views.elements.foreground.characters.MainCharacter;
+import views.elements.foreground.obstacles.Tunnel;
 import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
 import views.scenes.ForestScene;
+import views.scenes.GameScene;
 
 public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
@@ -22,6 +24,7 @@ public class GameController {
 	private static final int KEY_INPUT_SPEED = 5;
 	private static final double GRAVITY = -10;
 	
+	private SceneController fSceneController;
 	private CharacterController fMainCharacterController;
 	private Group fGameRoot;
 	private Scene fScene;
@@ -35,25 +38,15 @@ public class GameController {
 	{
 		fGameRoot = new Group();
 		
-		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
-
-		ForestScene forestScene = new ForestScene(aWidth, aHeight);
-
-		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);
+		fSceneController = new SceneController(fGameRoot);
 		
-		collegeScene.getDstTunnel().setDst(forestScene);
-
-		forestScene.getSrcTunnel().setDst(collegeScene);
-		forestScene.getDstTunnel().setDst(doorExplorationScene);
-
-		doorExplorationScene.getSrcTunnel().setDst(forestScene);
+		GameScene initialScene = fSceneController.createScenes(aWidth, aHeight);
 		
-		fMainCharacterController = new CharacterController(fGameRoot, collegeScene);
-		
-		fMainCharacterController.setSurroundings(collegeScene.getObstacles());
+		fMainCharacterController = new CharacterController(fGameRoot);
+		fMainCharacterController.setSurroundings(initialScene);
 		Group kanyeRoot = fMainCharacterController.createCharacter(aWidth/8, aHeight/8);
 		
-		fGameRoot.getChildren().add(collegeScene.getRoot());
+		fGameRoot.getChildren().add(initialScene.getRoot());
 		fGameRoot.getChildren().add(kanyeRoot);
 		
 		fScene = new Scene(fGameRoot, aWidth, aHeight, BACKGROUND_COLOR);
@@ -66,7 +59,12 @@ public class GameController {
 	{
 		fMainCharacterController.checkForFreefall();
 		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
-		fMainCharacterController.checkForSceneTransition();
+		
+		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
+		if (tunnelToTransitionThrough != null) {
+			fSceneController.transportToNewScene(tunnelToTransitionThrough);
+			fMainCharacterController.setSurroundings(tunnelToTransitionThrough.getDst());
+		}
 	}
 	
 	private void handleKeyInput(KeyCode code)

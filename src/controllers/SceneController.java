@@ -2,6 +2,11 @@ package controllers;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import views.elements.foreground.characters.Enemy;
+import views.elements.foreground.obstacles.Tunnel;
+import views.scenes.CollegeScene;
+import views.scenes.DoorExplorationScene;
+import views.scenes.ForestScene;
 import views.scenes.GameScene;
 
 /*
@@ -18,10 +23,10 @@ public class SceneController {
 		fGameRoot = aGameRoot;
 	}
 	
-	public void changeScenes(GameScene aSrcScene, GameScene aDstScene)
+	public void transportToNewScene(Tunnel aTunnel)
 	{
-		removeSrcSceneFromGameRoot(aSrcScene);
-		addDstSceneToGameRoot(aDstScene);
+		removeSrcSceneFromGameRoot(aTunnel.getSrc());
+		addDstSceneToGameRoot(aTunnel.getDst());
 	}
 	
 	private void removeSrcSceneFromGameRoot(GameScene aSrcScene)
@@ -32,6 +37,22 @@ public class SceneController {
 	private void addDstSceneToGameRoot(GameScene aDstScene)
 	{
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
-		//fGameRoot.getChildren().add(aDstRoot);
+	}
+	
+	//XXX: perhaps make this more customizable?
+	// Create all scenes of the game, and return the first one
+	public GameScene createScenes(int aWidth, int aHeight)
+	{
+		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
+		ForestScene forestScene = new ForestScene(aWidth, aHeight);
+		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);
+
+		collegeScene.getDstTunnel().setDst(forestScene);
+		forestScene.getSrcTunnel().setDst(collegeScene);
+		forestScene.getDstTunnel().setDst(doorExplorationScene);
+		doorExplorationScene.getSrcTunnel().setDst(forestScene);
+
+		GameScene initialScene = collegeScene;
+		return initialScene;
 	}
 }

@@ -31,64 +31,45 @@ public class CharacterController {
 	private double fTimeInAir;
 	private boolean fOnGround;
 	private boolean fIsFalling;
-	private boolean fPhysicsIsEnabled;
+	private boolean fGravityIsEnabled;
 	
 	private double fDefaultX;
 	private double fDefaultY;
-	
-	private SceneController fSceneController;
-		
-	public CharacterController(Group aRoot, GameScene aCurrentScene)
+			
+	public CharacterController(Group aRoot)
 	{
 		fGameRoot = aRoot;
-		setCurrentScene(aCurrentScene);
 		
 		fSurroundingObstacles = new ArrayList<Obstacle>();
-		fSceneController = new SceneController(aRoot);
 	}
-	
-	private void setCurrentScene(GameScene aScene)
+		
+	public void setSurroundings(GameScene aScene)
 	{
-		fCurrentScene = aScene;
-		fPhysicsIsEnabled = !(fCurrentScene instanceof DoorExplorationScene);
-	}
-	
-	public void setSurroundings(ArrayList<Obstacle> aObstacleList)
-	{
-		fSurroundingObstacles = aObstacleList;
+		fSurroundingObstacles = aScene.getObstacles();
+		fGravityIsEnabled = !(aScene instanceof DoorExplorationScene);
+		
+		if (fCharacter != null) {
+			initializeCharacterFields();
+		}
 	}
 	
 	public boolean isInAJumpingScene()
 	{
-		return fPhysicsIsEnabled;
+		return fGravityIsEnabled;
 	}
 	
-	public void checkForSceneTransition()
+	public Tunnel checkForSceneTransition()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
-			if (obstacle instanceof Tunnel) {
-				if (fCharacter.intersects(obstacle.getRoot())) {
-					Tunnel tunnel = (Tunnel) obstacle;
-					
-					transportCharacterToNewScene(tunnel);
-					return;
-				}
-				//GameScene dstScene = tunnel.getDstScene();
+			if (obstacle instanceof Tunnel && fCharacter.intersects(obstacle.getRoot())) {
+				Tunnel tunnel = (Tunnel) obstacle;
+
+				return tunnel;
 			}
 		}
+		return null;
 	}
-	
-	private void transportCharacterToNewScene(Tunnel aTunnel) 
-	{
-		fSceneController.changeScenes(aTunnel.getSrc(), aTunnel.getDst());
-		// XXX: delete this once dest scene has been created
-		//fSurroundingObstacles.clear();
-		setCurrentScene(aTunnel.getDst());
 		
-		fSurroundingObstacles = aTunnel.getDst().getObstacles();
-		initializeCharacterFields();
-	}
-	
 	public GameScene getCurrentScene()
 	{
 		return fCurrentScene;
@@ -107,7 +88,6 @@ public class CharacterController {
 	private void initializeCharacterFields()
 	{
 		fCharacter.setX(200);
-//		fCharacter.setY(250);
 		fCharacter.setY(0);
 		
 		fVelocityX = 0.0;
@@ -132,7 +112,7 @@ public class CharacterController {
 	public void checkForFreefall()
 	{
 		//Check if we're standing on thin air:
-		if (surroundingsAreClearBelow() && fOnGround && fPhysicsIsEnabled) {
+		if (surroundingsAreClearBelow() && fOnGround && fGravityIsEnabled) {
 			fOnGround = false;
 			fIsFalling = true;
 			System.out.println("Freefall");

@@ -6,7 +6,7 @@ import javafx.scene.image.ImageView;
 
 import views.elements.SceneElement;
 
-public class MainCharacter extends SceneElement{
+public class MainCharacter extends Character {
 	public MainCharacter(int aWidth, int aHeight)
 	{
 		fRoot = new Group();
