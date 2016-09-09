@@ -1,5 +1,7 @@
 package controllers;
 
+import java.util.ArrayList;
+
 import javafx.scene.Group;
 import javafx.scene.Node;
 import views.elements.foreground.characters.Enemy;
@@ -17,26 +19,47 @@ import views.scenes.GameScene;
 
 public class SceneController {
 	private Group fGameRoot;
+	private int fSceneWidth;
+	private int fSceneHeight;
 	
-	public SceneController(Group aGameRoot)
+	public SceneController()
 	{
-		fGameRoot = aGameRoot;
+		//fGameRoot = aGameRoot;
+//		fSceneWidth = (int) aGameRoot.getLayoutBounds().getWidth();
+//		fSceneHeight = (int) aGameRoot.getLayoutBounds().getHeight();
+	}
+	
+	public void createGameRoot(int aWidth, int aHeight)
+	{
+		fGameRoot = new Group();
+		fSceneWidth = aWidth;
+		fSceneHeight = aHeight;
+	}
+	
+	public Group getGameRoot()
+	{
+		return fGameRoot;
 	}
 	
 	public void transportToNewScene(Tunnel aTunnel)
 	{
-		removeSrcSceneFromGameRoot(aTunnel.getSrc());
-		addDstSceneToGameRoot(aTunnel.getDst());
+		removeSceneFromGameRoot(aTunnel.getSrc());
+		addToGameRoot(aTunnel.getDst());
 	}
 	
-	private void removeSrcSceneFromGameRoot(GameScene aSrcScene)
+	private void removeSceneFromGameRoot(GameScene aSrcScene)
 	{
 		fGameRoot.getChildren().remove(aSrcScene.getRoot());
 	}
 	
-	private void addDstSceneToGameRoot(GameScene aDstScene)
+	public void addToGameRoot(GameScene aDstScene)
 	{
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
+	}
+	
+	public void addToGameRoot(Group aDstRoot)
+	{
+		fGameRoot.getChildren().add(aDstRoot);
 	}
 	
 	//XXX: perhaps make this more customizable?
@@ -55,4 +78,12 @@ public class SceneController {
 		GameScene initialScene = collegeScene;
 		return initialScene;
 	}
+	
+//	public void addEnemiesToScene()
+//	{
+//		CharacterController enemyController = new CharacterController(fGameRoot);
+//		Group enemyRoot = enemyController.createEnemy(50,50);
+//		fGameRoot.getChildren().add(enemyRoot);
+//		
+//	}
 }

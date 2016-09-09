@@ -3,7 +3,8 @@ package controllers;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
-import views.elements.foreground.characters.MainCharacter;
+import views.elements.foreground.characters.*;
+import views.elements.foreground.characters.Character;
 import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 import views.scenes.DoorExplorationScene;
@@ -21,10 +22,9 @@ public class CharacterController {
 	private static final double JUMP_VELOCITY = 7.0;
 	private static final double FREEFALL_VELOCITY = 0.0;
 	
-	private Group fGameRoot;
 	private GameScene fCurrentScene;
 	
-	private MainCharacter fCharacter;
+	private Character fCharacter;
 	private ArrayList<Obstacle> fSurroundingObstacles;
 	private double fVelocityX;
 	private double fVelocityY;
@@ -36,10 +36,8 @@ public class CharacterController {
 	private double fDefaultX;
 	private double fDefaultY;
 			
-	public CharacterController(Group aRoot)
+	public CharacterController()
 	{
-		fGameRoot = aRoot;
-		
 		fSurroundingObstacles = new ArrayList<Obstacle>();
 	}
 		
@@ -75,7 +73,7 @@ public class CharacterController {
 		return fCurrentScene;
 	}
 		
-	public Group createCharacter(int aWidth, int aHeight)
+	public Group createMainCharacter(int aWidth, int aHeight)
 	{
 		fCharacter = new MainCharacter(aWidth, aHeight);
 		initializeCharacterFields();
@@ -83,6 +81,14 @@ public class CharacterController {
 		Group characterRoot = fCharacter.getRoot();
 		
 		return characterRoot;
+	}
+	
+	public Group createEnemy(int aWidth, int aHeight)
+	{
+		fCharacter = new Enemy(aWidth, aHeight);
+		fCharacter.setX(50);
+		fCharacter.setY(250);
+		return fCharacter.getRoot();
 	}
 	
 	private void initializeCharacterFields()
