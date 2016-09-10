@@ -28,8 +28,8 @@ public class GameController {
 	private static final double GRAVITY = -10;
 	
 	private SceneController fSceneController;
-	private CharacterController fMainCharacterController;
-	private ArrayList<CharacterController> fEnemyControllers;
+	private MainCharacterController fMainCharacterController;
+	private ArrayList<EnemyController> fEnemyControllers;
 	private Scene fScene;
 	
 	public String getGameName()
@@ -44,11 +44,11 @@ public class GameController {
 		
 		GameScene initialScene = fSceneController.createScenes(aWidth, aHeight);
 		
-		fMainCharacterController = new CharacterController();
+		fMainCharacterController = new MainCharacterController();
 		fMainCharacterController.setSurroundings(initialScene);
 		Character kanye = fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
 		
-		fEnemyControllers = new ArrayList<CharacterController>();
+		fEnemyControllers = new ArrayList<EnemyController>();
 
 		fSceneController.addToGameRoot(initialScene);
 		fSceneController.addToGameRoot(kanye);
@@ -63,19 +63,19 @@ public class GameController {
 	{
 		fMainCharacterController.checkForFreefall();
 		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
-//		for (CharacterController enemyController: fEnemyControllers) {
-//			enemyController.updatePosition(aElapsedTime, GRAVITY);
-//		}
-		
+		for (EnemyController enemyController: fEnemyControllers) {
+			enemyController.moveCharacter();
+		}
+
 		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
 		if (tunnelToTransitionThrough != null) {
 			fSceneController.transportToNewScene(tunnelToTransitionThrough);
 			fEnemyControllers.clear();
 
 			if (tunnelToTransitionThrough.getDst() instanceof ForestScene) {
-				CharacterController enemyController = new CharacterController();
+				EnemyController enemyController = new EnemyController();
 				enemyController.setSurroundings(tunnelToTransitionThrough.getDst());
-				Character enemy = enemyController.createEnemy(50, 50);
+				Enemy enemy = enemyController.createEnemy(50, 50);
 				fEnemyControllers.add(enemyController);
 				
 				fSceneController.addToGameRoot(enemy);
@@ -94,9 +94,6 @@ public class GameController {
 		switch (code) {
         case RIGHT:
     		fMainCharacterController.moveCharacter(KEY_INPUT_SPEED, 0);
-    		for (CharacterController enemyController: fEnemyControllers) {
-    			enemyController.moveCharacter(KEY_INPUT_SPEED, 0);
-    		}
             break;
         case LEFT:
     		fMainCharacterController.moveCharacter(-KEY_INPUT_SPEED, 0);

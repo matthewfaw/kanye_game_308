@@ -16,7 +16,7 @@ import views.scenes.GameScene;
  * 2. Update the player info
  */
 
-public class CharacterController {
+public abstract class CharacterController {
 	private static final double DEL_X = 1.0;
 	private static final double DEL_Y = 1.0;
 	private static final double JUMP_VELOCITY = 7.0;
@@ -24,23 +24,20 @@ public class CharacterController {
 	
 	private GameScene fCurrentScene;
 	
-	private Character fCharacter;
-	private ArrayList<Obstacle> fSurroundingObstacles;
-	private ArrayList<Enemy> fSurroundingEnemies;
-//	private double fVelocityX;
-	private double fVelocityY;
-	private double fTimeInAir;
-	private boolean fOnGround;
+	protected Character fCharacter;
+	protected ArrayList<Obstacle> fSurroundingObstacles;
+//	private ArrayList<Enemy> fSurroundingEnemies;
+	protected double fVelocityX;
+	protected double fVelocityY;
+	protected double fTimeInAir;
+	protected boolean fOnGround;
 	private boolean fIsFalling;
 	private boolean fGravityIsEnabled;
 	
-//	private double fDefaultX;
-//	private double fDefaultY;
-			
 	public CharacterController()
 	{
 		fSurroundingObstacles = new ArrayList<Obstacle>();
-		fSurroundingEnemies = new ArrayList<Enemy>();
+//		fSurroundingEnemies = new ArrayList<Enemy>();
 	}
 		
 	public void setSurroundings(GameScene aScene)
@@ -53,59 +50,17 @@ public class CharacterController {
 		}
 	}
 	
-	public void setCurrentEnemies(ArrayList<Enemy> aEnemies)
-	{
-		fSurroundingEnemies = aEnemies;
-	}
-		
 	public boolean isInAJumpingScene()
 	{
 		return fGravityIsEnabled;
 	}
 	
-	public Tunnel checkForSceneTransition()
-	{
-		for (Obstacle obstacle: fSurroundingObstacles) {
-			if (obstacle instanceof Tunnel && fCharacter.intersects(obstacle.getRoot())) {
-				Tunnel tunnel = (Tunnel) obstacle;
-
-				return tunnel;
-			}
-		}
-		return null;
-	}
-		
 	public GameScene getCurrentScene()
 	{
 		return fCurrentScene;
 	}
-		
-	public Character createMainCharacter(int aWidth, int aHeight)
-	{
-		fCharacter = new MainCharacter(aWidth, aHeight);
-		initializeCharacterFields();
-		
-		return fCharacter;
-	}
 	
-	public Character createEnemy(int aWidth, int aHeight)
-	{
-		fCharacter = new Enemy(aWidth, aHeight);
-		fCharacter.setX(50);
-		fCharacter.setY(250);
-		return fCharacter;
-	}
-	
-	private void initializeCharacterFields()
-	{
-		fCharacter.setX(200);
-		fCharacter.setY(0);
-		
-//		fVelocityX = 0.0;
-		fVelocityY = 0.0;
-		fTimeInAir = 0.0;
-		fOnGround = true;
-	}
+	protected abstract void initializeCharacterFields();
 	
 	public void moveCharacter(double aXUnit, double aYUnit)
 	{
@@ -156,7 +111,7 @@ public class CharacterController {
 		} 
 	}
 	
-	private boolean surroundingsAreClearOnLeft()
+	protected boolean surroundingsAreClearOnLeft()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
 			if (fCharacter.intersects(obstacle.getRoot())) {
@@ -174,7 +129,7 @@ public class CharacterController {
 //		}
 		return true;
 	}
-	private boolean surroundingsAreClearOnRight()
+	protected boolean surroundingsAreClearOnRight()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
 			//Shape intersection = Shape.intersect(fCharacter.getRoot(), obstacle.getRoot());
@@ -194,7 +149,7 @@ public class CharacterController {
 //		}
 		return true;
 	}
-	private boolean surroundingsAreClearAbove()
+	protected boolean surroundingsAreClearAbove()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
 			if (fCharacter.intersects(obstacle.getRoot())) {
@@ -212,7 +167,7 @@ public class CharacterController {
 //		}
 		return true;
 	}
-	private boolean surroundingsAreClearBelow()
+	protected boolean surroundingsAreClearBelow()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
 			if (fCharacter.intersects(obstacle.getRoot())) {
