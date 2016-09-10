@@ -13,7 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import models.PlayerStats;
-import utils.EnemyNames;
+import utils.PictureNames;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -57,9 +57,7 @@ public class GameController {
 
 		fPlayerStats = new PlayerStats();
 		updateHealth(FULL_HEALTH);
-//		fPlayerStats.setHealth(FULL_HEALTH);
-//		
-//		fSceneController.updateHealthBar(fPlayerStats.getHealth());
+
 		fSceneController.addToGameRoot(initialScene);
 		fSceneController.addToGameRoot(kanye);
 		
@@ -87,33 +85,28 @@ public class GameController {
 			fEnemyControllers.clear();
 			fMainCharacterController.clearEnemies();
 
-			//XXX: Clean up this code!!
 			if (tunnelToTransitionThrough.getDst() instanceof ForestScene) {
-				EnemyController enemyController = new EnemyController();
-				enemyController.setSurroundings(tunnelToTransitionThrough.getDst());
-				Enemy enemy = enemyController.createEnemy(50, 50, EnemyNames.Camera);
-				fEnemyControllers.add(enemyController);
-				
-				fSceneController.addToGameRoot(enemy);
-				
-				ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-				enemies.add(enemy);
-				fMainCharacterController.setCurrentEnemies(enemies);
+				addEnemyToGame(tunnelToTransitionThrough.getDst(), PictureNames.Camera);
 			} else if (tunnelToTransitionThrough.getDst() instanceof DoorExplorationScene) {
-				EnemyController enemyController = new EnemyController();
-				enemyController.setSurroundings(tunnelToTransitionThrough.getDst());
-				Enemy enemy = enemyController.createEnemy(50, 50, EnemyNames.Taylor);
-				fEnemyControllers.add(enemyController);
-				
-				fSceneController.addToGameRoot(enemy);
-				
-				ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-				enemies.add(enemy);
-				fMainCharacterController.setCurrentEnemies(enemies);
+				addEnemyToGame(tunnelToTransitionThrough.getDst(), PictureNames.Taylor);
 			}
 			
 			fMainCharacterController.setSurroundings(tunnelToTransitionThrough.getDst());
 		}
+	}
+	
+	private void addEnemyToGame(GameScene aScene, String aEnemyFileName)
+	{
+		EnemyController enemyController = new EnemyController();
+		enemyController.setSurroundings(aScene);
+		Enemy enemy = enemyController.createEnemy(50, 50, aEnemyFileName);
+		fEnemyControllers.add(enemyController);
+
+		fSceneController.addToGameRoot(enemy);
+
+		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+		enemies.add(enemy);
+		fMainCharacterController.setCurrentEnemies(enemies);
 	}
 	
 	private void updateHealth(double aValue)
@@ -146,6 +139,6 @@ public class GameController {
             break;
         default:
             // do nothing
-    }
+		}
 	}
 }

@@ -3,25 +3,16 @@ package views.elements.foreground.obstacles;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
+import utils.PictureNames;
 import views.scenes.GameScene;
 
 public class Tunnel extends Obstacle {
-	private static final Color TUNNEL_COLOR = Color.BROWN;
-
 	private GameScene fSrcScene;
 	private GameScene fDstScene;
 	
-	public Tunnel(int width, int height)
+	public Tunnel(int aWidth, int aHeight)
 	{
-		fRoot = new Group();
-		
-		Rectangle tunnel = new Rectangle();
-		tunnel.setWidth(width);
-		tunnel.setHeight(height);
-		tunnel.setFill(TUNNEL_COLOR);
-		
-		fRoot.getChildren().add(tunnel);
+		super(aWidth, aHeight, PictureNames.Tunnel);
 	}
 	
 	public GameScene getSrc()

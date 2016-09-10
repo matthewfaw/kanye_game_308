@@ -29,7 +29,7 @@ public class MainCharacterController extends CharacterController {
 	protected void initializeCharacterFields()
 	{
 		fCharacter.setX(200);
-		fCharacter.setY(0);
+		fCharacter.setY(50);
 		
 //		fVelocityX = 0.0;
 		fVelocityY = 0.0;

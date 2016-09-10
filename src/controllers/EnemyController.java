@@ -10,9 +10,9 @@ public class EnemyController extends CharacterController {
 		super();
 	}
 
-	public Enemy createEnemy(int aWidth, int aHeight, EnemyNames aEnemyName)
+	public Enemy createEnemy(int aWidth, int aHeight, String aEnemyFileName)
 	{
-		fCharacter = new Enemy(aWidth, aHeight, aEnemyName);
+		fCharacter = new Enemy(aWidth, aHeight, aEnemyFileName);
 		initializeCharacterFields();
 		return ((Enemy) fCharacter);
 	}

@@ -9,6 +9,11 @@ public abstract class SceneElement {
 	
 	protected Group fRoot;
 	
+	public SceneElement()
+	{
+		fRoot = new Group();
+	}
+	
 	public double getX()
 	{
 		return fRoot.getLayoutX();

@@ -3,6 +3,7 @@ package views.scenes;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
+import utils.PictureNames;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
@@ -12,7 +13,7 @@ import views.elements.background.BackgroundImage;
 
 public class CollegeScene extends GameScene {
 	private static final String FILE_NAME = "college_description.txt";
-	private static final String BACKGROUND_IMAGE_NAME = "sky.jpg";
+	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Sky;
 	
 //	private Group fRoot;
 //	private ArrayList<Obstacle> fObstacles;

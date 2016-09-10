@@ -3,6 +3,7 @@ package views.scenes;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
+import utils.PictureNames;
 import views.elements.background.BackgroundImage;
 import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
@@ -10,7 +11,7 @@ import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 
 public class ForestScene extends GameScene {
-	private static final String BACKGROUND_IMAGE_NAME = "trees.jpg";
+	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Trees;
 	
 	public ForestScene(int aWidth, int aHeight)
 	{
