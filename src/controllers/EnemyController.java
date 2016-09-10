@@ -1,6 +1,7 @@
 package controllers;
 
 import views.elements.foreground.characters.Enemy;
+import utils.EnemyNames;
 
 public class EnemyController extends CharacterController {
 	
@@ -9,9 +10,9 @@ public class EnemyController extends CharacterController {
 		super();
 	}
 
-	public Enemy createEnemy(int aWidth, int aHeight)
+	public Enemy createEnemy(int aWidth, int aHeight, EnemyNames aEnemyName)
 	{
-		fCharacter = new Enemy(aWidth, aHeight);
+		fCharacter = new Enemy(aWidth, aHeight, aEnemyName);
 		initializeCharacterFields();
 		return ((Enemy) fCharacter);
 	}

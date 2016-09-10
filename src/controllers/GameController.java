@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import models.PlayerStats;
+import utils.EnemyNames;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -84,11 +85,24 @@ public class GameController {
 		if (tunnelToTransitionThrough != null) {
 			fSceneController.transportToNewScene(tunnelToTransitionThrough);
 			fEnemyControllers.clear();
+			fMainCharacterController.clearEnemies();
 
+			//XXX: Clean up this code!!
 			if (tunnelToTransitionThrough.getDst() instanceof ForestScene) {
 				EnemyController enemyController = new EnemyController();
 				enemyController.setSurroundings(tunnelToTransitionThrough.getDst());
-				Enemy enemy = enemyController.createEnemy(50, 50);
+				Enemy enemy = enemyController.createEnemy(50, 50, EnemyNames.Camera);
+				fEnemyControllers.add(enemyController);
+				
+				fSceneController.addToGameRoot(enemy);
+				
+				ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+				enemies.add(enemy);
+				fMainCharacterController.setCurrentEnemies(enemies);
+			} else if (tunnelToTransitionThrough.getDst() instanceof DoorExplorationScene) {
+				EnemyController enemyController = new EnemyController();
+				enemyController.setSurroundings(tunnelToTransitionThrough.getDst());
+				Enemy enemy = enemyController.createEnemy(50, 50, EnemyNames.Taylor);
 				fEnemyControllers.add(enemyController);
 				
 				fSceneController.addToGameRoot(enemy);

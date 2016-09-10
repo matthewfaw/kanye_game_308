@@ -41,6 +41,11 @@ public class MainCharacterController extends CharacterController {
 	{
 		fSurroundingEnemies = aEnemies;
 	}
+	
+	public void clearEnemies()
+	{
+		fSurroundingEnemies.clear();
+	}
 		
 	public Tunnel checkForSceneTransition()
 	{
