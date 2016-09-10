@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.MainCharacter;
+import views.elements.foreground.data_displays.HealthBar;
 import views.elements.foreground.obstacles.Tunnel;
 import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
@@ -20,6 +21,7 @@ import views.scenes.GameScene;
 
 public class SceneController {
 	private Group fGameRoot;
+	private HealthBar fHealthBar;
 	private GameScene fCurrentScene;
 	private MainCharacter fMainCharacter;
 	private int fSceneWidth;
@@ -46,6 +48,11 @@ public class SceneController {
 		return fCurrentScene;
 	}
 	
+	public void updateHealthBar(double aValue)
+	{
+		fHealthBar.setHealthBarPercentage(aValue);
+	}
+	
 	public void transportToNewScene(Tunnel aTunnel)
 	{
 		clearGameRoot();
@@ -62,6 +69,7 @@ public class SceneController {
 	public void addToGameRoot(GameScene aDstScene)
 	{
 		fCurrentScene = aDstScene;
+		fGameRoot.getChildren().add(0, fHealthBar.getRoot());
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
 	}
 	
@@ -77,6 +85,8 @@ public class SceneController {
 	// Create all scenes of the game, and return the first one
 	public GameScene createScenes(int aWidth, int aHeight)
 	{
+		fHealthBar = new HealthBar(aWidth, aHeight/10);
+		
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
 		ForestScene forestScene = new ForestScene(aWidth, aHeight);
 		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);

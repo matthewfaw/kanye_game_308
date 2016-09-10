@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import models.PlayerStats;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -26,11 +27,14 @@ public class GameController {
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	private static final int KEY_INPUT_SPEED = 5;
 	private static final double GRAVITY = -10;
+	private static final double FULL_HEALTH = 100.0;
+	private static final double HEALTH_DEDUCTION = -1.0;
 	
 	private SceneController fSceneController;
 	private MainCharacterController fMainCharacterController;
 	private ArrayList<EnemyController> fEnemyControllers;
 	private Scene fScene;
+	private PlayerStats fPlayerStats;
 	
 	public String getGameName()
 	{
@@ -50,6 +54,11 @@ public class GameController {
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
 
+		fPlayerStats = new PlayerStats();
+		updateHealth(FULL_HEALTH);
+//		fPlayerStats.setHealth(FULL_HEALTH);
+//		
+//		fSceneController.updateHealthBar(fPlayerStats.getHealth());
 		fSceneController.addToGameRoot(initialScene);
 		fSceneController.addToGameRoot(kanye);
 		
@@ -66,6 +75,10 @@ public class GameController {
 		for (EnemyController enemyController: fEnemyControllers) {
 			enemyController.moveCharacter();
 		}
+		
+		if (fMainCharacterController.isTouchingAnEnemy()) {
+			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
+		}
 
 		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
 		if (tunnelToTransitionThrough != null) {
@@ -80,13 +93,19 @@ public class GameController {
 				
 				fSceneController.addToGameRoot(enemy);
 				
-//				ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-//				enemies.add(enemy);
-//				fMainCharacterController.setCurrentEnemies(enemies);
+				ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+				enemies.add(enemy);
+				fMainCharacterController.setCurrentEnemies(enemies);
 			}
 			
 			fMainCharacterController.setSurroundings(tunnelToTransitionThrough.getDst());
 		}
+	}
+	
+	private void updateHealth(double aValue)
+	{
+		fPlayerStats.setHealth(aValue);
+		fSceneController.updateHealthBar(aValue);
 	}
 	
 	private void handleKeyInput(KeyCode code)

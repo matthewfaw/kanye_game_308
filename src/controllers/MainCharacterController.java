@@ -54,5 +54,14 @@ public class MainCharacterController extends CharacterController {
 		return null;
 	}
 	
+	public boolean isTouchingAnEnemy()
+	{
+		for (Enemy enemy: fSurroundingEnemies) {
+			if (fCharacter.intersects(enemy.getRoot())) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }
