@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
+import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Tunnel;
@@ -45,12 +46,12 @@ public class GameController {
 		
 		fMainCharacterController = new CharacterController();
 		fMainCharacterController.setSurroundings(initialScene);
-		Group kanyeRoot = fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
+		Character kanye = fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
 		
 		fEnemyControllers = new ArrayList<CharacterController>();
 
 		fSceneController.addToGameRoot(initialScene);
-		fSceneController.addToGameRoot(kanyeRoot);
+		fSceneController.addToGameRoot(kanye);
 		
 		fScene = new Scene(fSceneController.getGameRoot(), aWidth, aHeight, BACKGROUND_COLOR);
         fScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -62,6 +63,9 @@ public class GameController {
 	{
 		fMainCharacterController.checkForFreefall();
 		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
+//		for (CharacterController enemyController: fEnemyControllers) {
+//			enemyController.updatePosition(aElapsedTime, GRAVITY);
+//		}
 		
 		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
 		if (tunnelToTransitionThrough != null) {
@@ -70,12 +74,15 @@ public class GameController {
 
 			if (tunnelToTransitionThrough.getDst() instanceof ForestScene) {
 				CharacterController enemyController = new CharacterController();
-				Group enemyRoot = enemyController.createEnemy(50, 50);
-				tunnelToTransitionThrough.getDst().getRoot().getChildren().add(enemyRoot);
+				enemyController.setSurroundings(tunnelToTransitionThrough.getDst());
+				Character enemy = enemyController.createEnemy(50, 50);
+				fEnemyControllers.add(enemyController);
 				
-				//ArrayList<Enemy> enemiesInCurrentScene = fSceneController.addEnemiesToScene();
-				//fSceneController.addEnemiesToScene();
-				//fMainCharacterController.setCurrentEnemies(enemiesInCurrentScene);
+				fSceneController.addToGameRoot(enemy);
+				
+//				ArrayList<Enemy> enemies = new ArrayList<Enemy>();
+//				enemies.add(enemy);
+//				fMainCharacterController.setCurrentEnemies(enemies);
 			}
 			
 			fMainCharacterController.setSurroundings(tunnelToTransitionThrough.getDst());
@@ -87,6 +94,9 @@ public class GameController {
 		switch (code) {
         case RIGHT:
     		fMainCharacterController.moveCharacter(KEY_INPUT_SPEED, 0);
+    		for (CharacterController enemyController: fEnemyControllers) {
+    			enemyController.moveCharacter(KEY_INPUT_SPEED, 0);
+    		}
             break;
         case LEFT:
     		fMainCharacterController.moveCharacter(-KEY_INPUT_SPEED, 0);

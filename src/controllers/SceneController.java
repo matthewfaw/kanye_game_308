@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
-import views.elements.foreground.characters.Enemy;
+import views.elements.foreground.characters.Character;
+import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Tunnel;
 import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
@@ -19,14 +20,13 @@ import views.scenes.GameScene;
 
 public class SceneController {
 	private Group fGameRoot;
+	private GameScene fCurrentScene;
+	private MainCharacter fMainCharacter;
 	private int fSceneWidth;
 	private int fSceneHeight;
 	
 	public SceneController()
 	{
-		//fGameRoot = aGameRoot;
-//		fSceneWidth = (int) aGameRoot.getLayoutBounds().getWidth();
-//		fSceneHeight = (int) aGameRoot.getLayoutBounds().getHeight();
 	}
 	
 	public void createGameRoot(int aWidth, int aHeight)
@@ -41,25 +41,36 @@ public class SceneController {
 		return fGameRoot;
 	}
 	
-	public void transportToNewScene(Tunnel aTunnel)
+	public GameScene getCurrentScene()
 	{
-		removeSceneFromGameRoot(aTunnel.getSrc());
-		addToGameRoot(aTunnel.getDst());
+		return fCurrentScene;
 	}
 	
-	private void removeSceneFromGameRoot(GameScene aSrcScene)
+	public void transportToNewScene(Tunnel aTunnel)
 	{
-		fGameRoot.getChildren().remove(aSrcScene.getRoot());
+		clearGameRoot();
+		addToGameRoot(aTunnel.getDst());
+		//XXX: seems pretty weird to pass a field as an input arg...
+		addToGameRoot(fMainCharacter);
+	}
+	
+	private void clearGameRoot()
+	{
+		fGameRoot.getChildren().clear();
 	}
 	
 	public void addToGameRoot(GameScene aDstScene)
 	{
+		fCurrentScene = aDstScene;
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
 	}
 	
-	public void addToGameRoot(Group aDstRoot)
+	public void addToGameRoot(Character aCharacter)
 	{
-		fGameRoot.getChildren().add(aDstRoot);
+		if (aCharacter instanceof MainCharacter) {
+			fMainCharacter = (MainCharacter) aCharacter;
+		}
+		fGameRoot.getChildren().add(aCharacter.getRoot());
 	}
 	
 	//XXX: perhaps make this more customizable?
@@ -81,9 +92,9 @@ public class SceneController {
 	
 //	public void addEnemiesToScene()
 //	{
-//		CharacterController enemyController = new CharacterController(fGameRoot);
-//		Group enemyRoot = enemyController.createEnemy(50,50);
-//		fGameRoot.getChildren().add(enemyRoot);
+////		CharacterController enemyController = new CharacterController(fGameRoot);
+////		Group enemyRoot = enemyController.createEnemy(50,50);
+////		fGameRoot.getChildren().add(enemyRoot);
 //		
 //	}
 }

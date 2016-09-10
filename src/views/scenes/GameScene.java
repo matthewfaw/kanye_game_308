@@ -7,12 +7,14 @@ import java.util.Scanner;
 
 import javafx.scene.Group;
 import views.elements.SceneElement;
+import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 
 public abstract class GameScene {
 	protected Group fRoot;
 	protected ArrayList<Obstacle> fObstacles;
+	protected ArrayList<Enemy> fEnemies;
 	protected Tunnel fSrcTunnel;
 	protected Tunnel fDstTunnel;
 	
@@ -40,6 +42,11 @@ public abstract class GameScene {
 		return fObstacles;
 	}
 
+	public ArrayList<Enemy> getEnemies()
+	{
+		return fEnemies;
+	}
+	
 	public Tunnel getSrcTunnel()
 	{
 		return fSrcTunnel;

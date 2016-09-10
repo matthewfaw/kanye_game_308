@@ -26,19 +26,21 @@ public class CharacterController {
 	
 	private Character fCharacter;
 	private ArrayList<Obstacle> fSurroundingObstacles;
-	private double fVelocityX;
+	private ArrayList<Enemy> fSurroundingEnemies;
+//	private double fVelocityX;
 	private double fVelocityY;
 	private double fTimeInAir;
 	private boolean fOnGround;
 	private boolean fIsFalling;
 	private boolean fGravityIsEnabled;
 	
-	private double fDefaultX;
-	private double fDefaultY;
+//	private double fDefaultX;
+//	private double fDefaultY;
 			
 	public CharacterController()
 	{
 		fSurroundingObstacles = new ArrayList<Obstacle>();
+		fSurroundingEnemies = new ArrayList<Enemy>();
 	}
 		
 	public void setSurroundings(GameScene aScene)
@@ -51,6 +53,11 @@ public class CharacterController {
 		}
 	}
 	
+	public void setCurrentEnemies(ArrayList<Enemy> aEnemies)
+	{
+		fSurroundingEnemies = aEnemies;
+	}
+		
 	public boolean isInAJumpingScene()
 	{
 		return fGravityIsEnabled;
@@ -73,22 +80,20 @@ public class CharacterController {
 		return fCurrentScene;
 	}
 		
-	public Group createMainCharacter(int aWidth, int aHeight)
+	public Character createMainCharacter(int aWidth, int aHeight)
 	{
 		fCharacter = new MainCharacter(aWidth, aHeight);
 		initializeCharacterFields();
 		
-		Group characterRoot = fCharacter.getRoot();
-		
-		return characterRoot;
+		return fCharacter;
 	}
 	
-	public Group createEnemy(int aWidth, int aHeight)
+	public Character createEnemy(int aWidth, int aHeight)
 	{
 		fCharacter = new Enemy(aWidth, aHeight);
 		fCharacter.setX(50);
 		fCharacter.setY(250);
-		return fCharacter.getRoot();
+		return fCharacter;
 	}
 	
 	private void initializeCharacterFields()
@@ -96,7 +101,7 @@ public class CharacterController {
 		fCharacter.setX(200);
 		fCharacter.setY(0);
 		
-		fVelocityX = 0.0;
+//		fVelocityX = 0.0;
 		fVelocityY = 0.0;
 		fTimeInAir = 0.0;
 		fOnGround = true;
@@ -160,6 +165,13 @@ public class CharacterController {
 				}
 			}
 		}
+//		for (Enemy enemy: fSurroundingEnemies) {
+//			if (fCharacter.intersects(enemy.getRoot())) {
+//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
+//					return false;
+//				}
+//			}
+//		}
 		return true;
 	}
 	private boolean surroundingsAreClearOnRight()
@@ -173,6 +185,13 @@ public class CharacterController {
 				}
 			}
 		}
+//		for (Enemy enemy: fSurroundingEnemies) {
+//			if (fCharacter.intersects(enemy.getRoot())) {
+//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
+//					return false;
+//				}
+//			}
+//		}
 		return true;
 	}
 	private boolean surroundingsAreClearAbove()
@@ -184,6 +203,13 @@ public class CharacterController {
 				}
 			}
 		}
+//		for (Enemy enemy: fSurroundingEnemies) {
+//			if (fCharacter.intersects(enemy.getRoot())) {
+//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
+//					return false;
+//				}
+//			}
+//		}
 		return true;
 	}
 	private boolean surroundingsAreClearBelow()
@@ -195,6 +221,13 @@ public class CharacterController {
 				}
 			}
 		}
+//		for (Enemy enemy: fSurroundingEnemies) {
+//			if (fCharacter.intersects(enemy.getRoot())) {
+//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
+//					return false;
+//				}
+//			}
+//		}
 		return true;
 	}
 	
