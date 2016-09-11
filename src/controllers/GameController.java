@@ -114,8 +114,13 @@ public class GameController {
 	
 	private void updateHealth()
 	{
-		if (fMainCharacterController.isTouchingAnActiveEnemy()) {
+		if (fMainCharacterController.isBeingHurtByAnActiveEnemy()) {
 			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
+		}
+		
+		Enemy killedEnemy = fMainCharacterController.killedAnActiveEnemy();
+		if (killedEnemy != null) {
+			fEnemyControllers.get(killedEnemy.getId()).disableEnemy();
 		}
 	}
 	
@@ -158,7 +163,7 @@ public class GameController {
 		
 		EnemyController enemyController = new EnemyController();
 		enemyController.setSurroundings(aScene);
-		enemyController.createEnemy(50, 50, aEnemyFileName, startingVelocity, startingPosition);
+		enemyController.createEnemy(50, 50, aEnemyFileName, startingVelocity, startingPosition, fEnemyControllers.size());
 		fEnemyControllers.add(enemyController);
 
 		fSceneController.addToGameRoot(enemyController.getEnemy());
@@ -215,12 +220,12 @@ public class GameController {
         	break;
         case D:
         	for (EnemyController enemyController: fEnemyControllers) {
-        		enemyController.disableMovement();
+        		enemyController.disableEnemy();
         	}
         	break;
         case R:
         	for (EnemyController enemyController: fEnemyControllers) {
-        		enemyController.reenableMovement();
+        		enemyController.reenableEnemy();
         	}
         	break;
         default:

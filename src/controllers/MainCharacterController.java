@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 
+import utils.PictureNames;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -69,10 +70,23 @@ public class MainCharacterController extends CharacterController {
 		return null;
 	}
 	
-	public boolean isTouchingAnActiveEnemy()
+	public Enemy killedAnActiveEnemy()
 	{
 		for (Enemy enemy: fSurroundingEnemies) {
-			if (fCharacter.intersects(enemy.getRoot()) && enemy.isActive()) {
+			if (fCharacter.intersectsFromBelow(enemy.getRoot()) && enemy.isActive()) {
+				if (!enemy.getPictureName().equals(PictureNames.Taylor)) {
+					return enemy;
+				}
+			}
+		}
+		return null;
+	}
+
+	public boolean isBeingHurtByAnActiveEnemy()
+	{
+		for (Enemy enemy: fSurroundingEnemies) {
+			if ((fCharacter.intersectsFromLeft(enemy.getRoot()) || fCharacter.intersectsFromRight(enemy.getRoot())) 
+					&& enemy.isActive()) {
 				return true;
 			}
 		}

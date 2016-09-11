@@ -9,11 +9,13 @@ import utils.PictureNames;
 
 public class Enemy extends Character {
 	private boolean fIsActive;
+	private int fId;
 	
-	public Enemy(int aWidth, int aHeight, String aEnemyFileName)
+	public Enemy(int aWidth, int aHeight, String aEnemyFileName, int aId)
 	{
 		super(aWidth, aHeight, aEnemyFileName);
 		fIsActive = true;
+		fId = aId;
 	}
 	
 	public boolean isActive()
@@ -24,5 +26,10 @@ public class Enemy extends Character {
 	public void setActivity(boolean aIsActive)
 	{
 		fIsActive = aIsActive;
+	}
+	
+	public int getId()
+	{
+		return fId;
 	}
 }

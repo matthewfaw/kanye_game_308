@@ -17,9 +17,9 @@ public class EnemyController extends CharacterController {
 		super();
 	}
 
-	public void createEnemy(int aWidth, int aHeight, String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition)
+	public void createEnemy(int aWidth, int aHeight, String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition, int aId)
 	{
-		fCharacter = new Enemy(aWidth, aHeight, aEnemyFileName);
+		fCharacter = new Enemy(aWidth, aHeight, aEnemyFileName, aId);
 		initializeCharacterFields(aStartingVelocity, aStartingPosition);
 //		return ((Enemy) fCharacter);
 	}
@@ -62,7 +62,7 @@ public class EnemyController extends CharacterController {
 		moveCharacter(fVelocityX, fVelocityY);
 	}
 	
-	public void disableMovement()
+	public void disableEnemy()
 	{
 		if (fVelocityX != 0.0 || fVelocityY != 0.0) {
 			fOldVelocityX = fVelocityX;
@@ -74,7 +74,7 @@ public class EnemyController extends CharacterController {
 		((Enemy) fCharacter).setActivity(NOT_ACTIVE);
 	}
 
-	public void reenableMovement()
+	public void reenableEnemy()
 	{
 		fVelocityX = fOldVelocityX;
 		fVelocityY = fOldVelocityY;
