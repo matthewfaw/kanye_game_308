@@ -8,8 +8,21 @@ import utils.EnemyNames;
 import utils.PictureNames;
 
 public class Enemy extends Character {
+	private boolean fIsActive;
+	
 	public Enemy(int aWidth, int aHeight, String aEnemyFileName)
 	{
 		super(aWidth, aHeight, aEnemyFileName);
+		fIsActive = true;
+	}
+	
+	public boolean isActive()
+	{
+		return fIsActive;
+	}
+	
+	public void setActivity(boolean aIsActive)
+	{
+		fIsActive = aIsActive;
 	}
 }

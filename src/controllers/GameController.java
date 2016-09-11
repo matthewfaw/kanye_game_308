@@ -97,7 +97,7 @@ public class GameController {
 	
 	private void updateHealth()
 	{
-		if (fMainCharacterController.isTouchingAnEnemy()) {
+		if (fMainCharacterController.isTouchingAnActiveEnemy()) {
 			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
 		}
 	}
@@ -171,6 +171,17 @@ public class GameController {
             break;
         case T:
         	changeScene();
+        	break;
+        case D:
+        	for (EnemyController enemyController: fEnemyControllers) {
+        		enemyController.disableMovement();
+        	}
+        	break;
+        case R:
+        	for (EnemyController enemyController: fEnemyControllers) {
+        		enemyController.reenableMovement();
+        	}
+        	break;
         default:
             // do nothing
 		}
