@@ -3,7 +3,7 @@ package controllers;
 import views.elements.foreground.characters.Enemy;
 import utils.EnemyNames;
 import utils.PictureNames;
-import utils.Position;
+import utils.Vector;
 
 public class EnemyController extends CharacterController {
 	private static final boolean ACTIVE = true;
@@ -17,10 +17,10 @@ public class EnemyController extends CharacterController {
 		super();
 	}
 
-	public void createEnemy(int aWidth, int aHeight, String aEnemyFileName, double aStartingYVelocity, Position aStartingPosition)
+	public void createEnemy(int aWidth, int aHeight, String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition)
 	{
 		fCharacter = new Enemy(aWidth, aHeight, aEnemyFileName);
-		initializeCharacterFields(aStartingYVelocity, aStartingPosition);
+		initializeCharacterFields(aStartingVelocity, aStartingPosition);
 //		return ((Enemy) fCharacter);
 	}
 	
@@ -31,17 +31,17 @@ public class EnemyController extends CharacterController {
 
 	protected void initializeCharacterFields()
 	{
-		initializeCharacterFields(0.0, new Position(50, 250));
+		initializeCharacterFields(new Vector(1.0, 0.0), new Vector(50, 250));
 	}
 
-	private void initializeCharacterFields(double aStartingYVelocity, Position aStartingPosition)
+	private void initializeCharacterFields(Vector aStartingVelocity, Vector aStartingPosition)
 	{
 		fCharacter.setX(aStartingPosition.getX());
 		fCharacter.setY(aStartingPosition.getY());
 		((Enemy) fCharacter).setActivity(ACTIVE);
 		
-		fVelocityX = 1.0;
-		fVelocityY = aStartingYVelocity;
+		fVelocityX = aStartingVelocity.getX();
+		fVelocityY = aStartingVelocity.getY();
 //		if (fCharacter.getPictureName().equals(PictureNames.Taylor)) {
 //			fVelocityY = -1.0;
 //		} else {

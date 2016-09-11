@@ -15,7 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import models.PlayerStats;
 import utils.PictureNames;
-import utils.Position;
+import utils.Vector;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -144,20 +144,21 @@ public class GameController {
 	
 	private void addEnemyToGame(GameScene aScene, String aEnemyFileName)
 	{
-		double startingYVelocity = Math.pow(-1, getRandomNumber());
+		double startingYVelocity;
 		double startingYPosition;
 		if (aEnemyFileName.equals(PictureNames.Camera)) {
 			startingYPosition = BOTTOM_OF_SCREEN;
 			startingYVelocity = NOT_MOVING;
 		} else {
 			startingYPosition = getRandomNumber(MIDDLE_OF_SCREEN, BOTTOM_OF_SCREEN);
-			startingYVelocity = Math.pow(-1, getRandomNumber());
+			startingYVelocity = getRandomDirection();
 		}
-		Position startingPosition = new Position(getRandomNumber(LEFT_OF_SCREEN,RIGHT_OF_SCREEN), startingYPosition);
+		Vector startingPosition = new Vector(getRandomNumber(LEFT_OF_SCREEN,RIGHT_OF_SCREEN), startingYPosition);
+		Vector startingVelocity = new Vector(getRandomDirection(), startingYVelocity);
 		
 		EnemyController enemyController = new EnemyController();
 		enemyController.setSurroundings(aScene);
-		enemyController.createEnemy(50, 50, aEnemyFileName, startingYVelocity, startingPosition);
+		enemyController.createEnemy(50, 50, aEnemyFileName, startingVelocity, startingPosition);
 		fEnemyControllers.add(enemyController);
 
 		fSceneController.addToGameRoot(enemyController.getEnemy());
@@ -182,9 +183,9 @@ public class GameController {
 	{
 		return fRandomNumberGenerator.nextInt(aUpperBound - aLowerBound + 1) + aLowerBound;
 	}
-	private double getRandomNumber()
+	private double getRandomDirection()
 	{
-		return fRandomNumberGenerator.nextInt();
+		return Math.pow(-1, fRandomNumberGenerator.nextInt());
 	}
 	
 	private void handleKeyInput(KeyCode code)
