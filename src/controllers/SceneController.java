@@ -53,10 +53,10 @@ public class SceneController {
 		fHealthBar.setHealthBarPercentage(aValue);
 	}
 	
-	public void transportToNewScene(Tunnel aTunnel)
+	public void transportToNewScene(GameScene aNewScene)
 	{
 		clearGameRoot();
-		addToGameRoot(aTunnel.getDst());
+		addToGameRoot(aNewScene);
 		//XXX: seems pretty weird to pass a field as an input arg...
 		addToGameRoot(fMainCharacter);
 	}
@@ -83,7 +83,7 @@ public class SceneController {
 	
 	//XXX: perhaps make this more customizable?
 	// Create all scenes of the game, and return the first one
-	public GameScene createScenes(int aWidth, int aHeight)
+	public ArrayList<GameScene> createScenes(int aWidth, int aHeight)
 	{
 		fHealthBar = new HealthBar(aWidth, aHeight/10);
 		
@@ -96,8 +96,13 @@ public class SceneController {
 		forestScene.getDstTunnel().setDst(doorExplorationScene);
 		doorExplorationScene.getSrcTunnel().setDst(forestScene);
 
-		GameScene initialScene = collegeScene;
-		return initialScene;
+		ArrayList<GameScene> gameScenes = new ArrayList<GameScene>();
+		gameScenes.add(collegeScene);
+		gameScenes.add(forestScene);
+		gameScenes.add(doorExplorationScene);
+		return gameScenes;
+//		GameScene initialScene = collegeScene;
+//		return initialScene;
 	}
 	
 //	public void addEnemiesToScene()

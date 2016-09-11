@@ -30,12 +30,18 @@ public class GameController {
 	private static final double GRAVITY = -10;
 	private static final double FULL_HEALTH = 100.0;
 	private static final double HEALTH_DEDUCTION = -1.0;
+
+	private static final int COLLEGE_SCENE_INDEX = 0;
+	private static final int FOREST_SCENE_INDEX = 1;
+	private static final int DOOR_SCENE_INDEX = 2;
 	
 	private SceneController fSceneController;
+	private ArrayList<GameScene> fGameScenes;
 	private MainCharacterController fMainCharacterController;
 	private ArrayList<EnemyController> fEnemyControllers;
 	private Scene fScene;
 	private PlayerStats fPlayerStats;
+	private int fCurrentSceneIndex;
 	
 	public String getGameName()
 	{
@@ -47,10 +53,12 @@ public class GameController {
 		fSceneController = new SceneController();
 		fSceneController.createGameRoot(aWidth, aHeight);
 		
-		GameScene initialScene = fSceneController.createScenes(aWidth, aHeight);
+//		GameScene initialScene = fSceneController.createScenes(aWidth, aHeight);
+		fGameScenes = fSceneController.createScenes(aWidth, aHeight);
 		
 		fMainCharacterController = new MainCharacterController();
-		fMainCharacterController.setSurroundings(initialScene);
+		fMainCharacterController.setSurroundings(fGameScenes.get(COLLEGE_SCENE_INDEX));
+		fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
 		Character kanye = fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
@@ -58,7 +66,7 @@ public class GameController {
 		fPlayerStats = new PlayerStats();
 		updateHealth(FULL_HEALTH);
 
-		fSceneController.addToGameRoot(initialScene);
+		fSceneController.addToGameRoot(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fSceneController.addToGameRoot(kanye);
 		
 		fScene = new Scene(fSceneController.getGameRoot(), aWidth, aHeight, BACKGROUND_COLOR);
@@ -69,30 +77,48 @@ public class GameController {
 	
 	public void step(double aElapsedTime)
 	{
+		moveCharacters(aElapsedTime);
+		updateHealth();
+
+		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
+		if (tunnelToTransitionThrough != null) {
+			handleSceneTransition(tunnelToTransitionThrough.getDst());
+		}
+	}
+	
+	private void moveCharacters(double aElapsedTime)
+	{
 		fMainCharacterController.checkForFreefall();
 		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
 		for (EnemyController enemyController: fEnemyControllers) {
 			enemyController.moveCharacter();
 		}
-		
+	}
+	
+	private void updateHealth()
+	{
 		if (fMainCharacterController.isTouchingAnEnemy()) {
 			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
 		}
+	}
+	
+	private void handleSceneTransition(GameScene aDstScene)
+	{
+		fSceneController.transportToNewScene(aDstScene);
+		fEnemyControllers.clear();
+		fMainCharacterController.clearEnemies();
 
-		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
-		if (tunnelToTransitionThrough != null) {
-			fSceneController.transportToNewScene(tunnelToTransitionThrough);
-			fEnemyControllers.clear();
-			fMainCharacterController.clearEnemies();
-
-			if (tunnelToTransitionThrough.getDst() instanceof ForestScene) {
-				addEnemyToGame(tunnelToTransitionThrough.getDst(), PictureNames.Camera);
-			} else if (tunnelToTransitionThrough.getDst() instanceof DoorExplorationScene) {
-				addEnemyToGame(tunnelToTransitionThrough.getDst(), PictureNames.Taylor);
-			}
-			
-			fMainCharacterController.setSurroundings(tunnelToTransitionThrough.getDst());
+		if (aDstScene instanceof CollegeScene) {
+			fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
+		} else if (aDstScene instanceof ForestScene) {
+			addEnemyToGame(aDstScene, PictureNames.Camera);
+			fCurrentSceneIndex = FOREST_SCENE_INDEX;
+		} else if (aDstScene instanceof DoorExplorationScene) {
+			addEnemyToGame(aDstScene, PictureNames.Taylor);
+			fCurrentSceneIndex = DOOR_SCENE_INDEX;
 		}
+
+		fMainCharacterController.setSurroundings(aDstScene);
 	}
 	
 	private void addEnemyToGame(GameScene aScene, String aEnemyFileName)
@@ -113,6 +139,12 @@ public class GameController {
 	{
 		fPlayerStats.setHealth(aValue);
 		fSceneController.updateHealthBar(aValue);
+	}
+	
+	private void changeScene()
+	{
+		int nextSceneIndex = (fCurrentSceneIndex + 1) % fGameScenes.size();
+		handleSceneTransition(fGameScenes.get(nextSceneIndex));
 	}
 	
 	private void handleKeyInput(KeyCode code)
@@ -137,6 +169,8 @@ public class GameController {
             	fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
     		}
             break;
+        case T:
+        	changeScene();
         default:
             // do nothing
 		}
