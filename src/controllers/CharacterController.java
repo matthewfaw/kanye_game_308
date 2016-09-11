@@ -70,7 +70,7 @@ public abstract class CharacterController {
 			fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
 		}
 		if ( (aYUnit > 0 && surroundingsAreClearBelow()) ||
-				(aYUnit < 0)) {
+				(aYUnit < 0 && surroundingsAreClearAbove())) {
 			fCharacter.setY(fCharacter.getY() + aYUnit * DEL_Y);
 		}
 	}

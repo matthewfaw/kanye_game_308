@@ -44,12 +44,14 @@ public abstract class SceneElement {
 		return fRoot.getBoundsInParent().intersects(obstacle.getBoundsInParent());
 	}
 	
+	//XXX: Clean this method up
 	public boolean intersectsFromBelow(Group obstacle)
 	{
 		double rootBottomY = fRoot.getBoundsInParent().getMaxY();
 		double obstacleTopY = obstacle.getBoundsInParent().getMinY();
 		
-		boolean rootTouchingObstacleInY = (rootBottomY >= obstacleTopY);
+		boolean rootTouchingObstacleInY = (rootBottomY >= obstacleTopY && 
+											fRoot.getBoundsInParent().getMinY() < obstacle.getBoundsInParent().getMinY());
 
 		double minLeftXCoord = Math.min(fRoot.getBoundsInParent().getMinX(), obstacle.getBoundsInParent().getMinX());
 		double maxRightXCoord = Math.max(fRoot.getBoundsInParent().getMaxX(), obstacle.getBoundsInParent().getMaxX());
@@ -59,12 +61,14 @@ public abstract class SceneElement {
 		
 		return rootTouchingObstacleInX && rootTouchingObstacleInY;
 	}
+
 	public boolean intersectsFromAbove(Group obstacle)
 	{
 		double rootTopY = fRoot.getBoundsInParent().getMinY();
 		double obstacleBottomY = obstacle.getBoundsInParent().getMaxY();
 		
-		return (rootTopY <= obstacleBottomY);
+		return (rootTopY <= obstacleBottomY &&
+				fRoot.getBoundsInParent().getMaxY() > obstacle.getBoundsInParent().getMaxY());
 	}
 	public boolean intersectsFromLeft(Group obstacle)
 	{
