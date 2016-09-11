@@ -84,7 +84,7 @@ public abstract class CharacterController {
 			System.out.println("Freefall");
 			fVelocityY = FREEFALL_VELOCITY;
 		} else {
-			fIsFalling = (false || fIsFalling);
+			fIsFalling = (false || (fIsFalling && fGravityIsEnabled));
 		}
 	}
 	

@@ -104,6 +104,7 @@ public class GameController {
 	
 	private void handleSceneTransition(GameScene aDstScene)
 	{
+		fMainCharacterController.setSurroundings(aDstScene);
 		fSceneController.transportToNewScene(aDstScene);
 		fEnemyControllers.clear();
 		fMainCharacterController.clearEnemies();
@@ -118,7 +119,6 @@ public class GameController {
 			fCurrentSceneIndex = DOOR_SCENE_INDEX;
 		}
 
-		fMainCharacterController.setSurroundings(aDstScene);
 	}
 	
 	private void addEnemyToGame(GameScene aScene, String aEnemyFileName)

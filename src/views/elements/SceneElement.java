@@ -62,6 +62,7 @@ public abstract class SceneElement {
 		return rootTouchingObstacleInX && rootTouchingObstacleInY;
 	}
 
+	//XXX: Clean this method up
 	public boolean intersectsFromAbove(Group obstacle)
 	{
 		double rootTopY = fRoot.getBoundsInParent().getMinY();
