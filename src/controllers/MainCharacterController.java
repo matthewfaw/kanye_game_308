@@ -3,6 +3,8 @@ package controllers;
 import java.util.ArrayList;
 
 import utils.PictureNames;
+import utils.Vector;
+import views.elements.foreground.attack.Fireball;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -12,11 +14,13 @@ import views.elements.foreground.obstacles.Tunnel;
 public class MainCharacterController extends CharacterController {
 	
 	private ArrayList<Enemy> fSurroundingEnemies;
+	private ArrayList<Fireball> fFireballs;
 
 	public MainCharacterController()
 	{
 		super();
 		fSurroundingEnemies = new ArrayList<Enemy>();
+		fFireballs = new ArrayList<Fireball>();
 	}
 
 	public void createMainCharacter(int aWidth, int aHeight)
@@ -70,11 +74,35 @@ public class MainCharacterController extends CharacterController {
 		return null;
 	}
 	
+	public Fireball spitFire(Vector aDirection)
+	{
+		Fireball fireball = new Fireball(20,20, aDirection);
+		fireball.setX(fCharacter.getX());
+		fireball.setY(fCharacter.getY());
+		fFireballs.add(fireball);
+		
+		return fireball;
+	}
+
+	public void moveFireballs()
+	{
+		// XXX: fix movement
+		for (Fireball fireball: fFireballs) {
+			fireball.setX(fireball.getX() + fireball.getXDirection() * DEL_X);
+			fireball.setY(fireball.getY() + fireball.getYDirection() * DEL_Y);
+		}
+	}
+	
 	public Enemy killedAnActiveEnemy()
 	{
 		for (Enemy enemy: fSurroundingEnemies) {
 			if (fCharacter.intersectsFromBelow(enemy.getRoot()) && enemy.isActive()) {
 				if (!enemy.getPictureName().equals(PictureNames.Taylor)) {
+					return enemy;
+				}
+			}
+			for (Fireball fireball: fFireballs) {
+				if (fireball.intersects(enemy.getRoot()) && enemy.isActive()) {
 					return enemy;
 				}
 			}
@@ -85,9 +113,11 @@ public class MainCharacterController extends CharacterController {
 	public boolean isBeingHurtByAnActiveEnemy()
 	{
 		for (Enemy enemy: fSurroundingEnemies) {
-			if ((fCharacter.intersectsFromLeft(enemy.getRoot()) || fCharacter.intersectsFromRight(enemy.getRoot())) 
-					&& enemy.isActive()) {
-				return true;
+			if (fCharacter.intersects(enemy.getRoot()) && enemy.isActive()) {
+//				if ((fCharacter.intersectsFromLeft(enemy.getRoot()) || fCharacter.intersectsFromRight(enemy.getRoot())) 
+//						&& enemy.isActive()) {
+					return true;
+//				}
 			}
 		}
 		return false;

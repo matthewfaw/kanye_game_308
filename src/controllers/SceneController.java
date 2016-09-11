@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import views.elements.foreground.attack.Fireball;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.data_displays.HealthBar;
@@ -79,6 +80,11 @@ public class SceneController {
 			fMainCharacter = (MainCharacter) aCharacter;
 		}
 		fGameRoot.getChildren().add(aCharacter.getRoot());
+	}
+
+	public void addToGameRoot(Fireball aFireball)
+	{
+		fGameRoot.getChildren().add(aFireball.getRoot());
 	}
 	
 	//XXX: perhaps make this more customizable?

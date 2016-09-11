@@ -17,8 +17,8 @@ import views.scenes.GameScene;
  */
 
 public abstract class CharacterController {
-	private static final double DEL_X = 1.0;
-	private static final double DEL_Y = 1.0;
+	protected static final double DEL_X = 1.0;
+	protected static final double DEL_Y = 1.0;
 	private static final double JUMP_VELOCITY = 7.0;
 	private static final double FREEFALL_VELOCITY = 0.0;
 	

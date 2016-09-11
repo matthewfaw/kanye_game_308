@@ -14,8 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import models.PlayerStats;
+import utils.Direction;
 import utils.PictureNames;
 import utils.Vector;
+import views.elements.foreground.attack.Fireball;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -33,8 +35,8 @@ public class GameController {
 	private static final double FULL_HEALTH = 100.0;
 	private static final double HEALTH_DEDUCTION = -1.0;
 	
-	private static final double MOVING_UP = -1.0;
-	private static final double MOVING_DOWN = 1.0;
+	private static final double MOVING_LEFT = -1.0;
+	private static final double MOVING_RIGHT = 1.0;
 	private static final double NOT_MOVING = 0.0;
 	
 	private static final int BOTTOM_OF_SCREEN = 250;
@@ -95,7 +97,9 @@ public class GameController {
 	public void step(double aElapsedTime)
 	{
 		moveCharacters(aElapsedTime);
+		moveFireballs(aElapsedTime);
 		updateHealth();
+		checkForEnemyDeath();
 
 		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
 		if (tunnelToTransitionThrough != null) {
@@ -112,12 +116,20 @@ public class GameController {
 		}
 	}
 	
+	private void moveFireballs(double aElapsedTime)
+	{
+		fMainCharacterController.moveFireballs();
+	}
+	
 	private void updateHealth()
 	{
 		if (fMainCharacterController.isBeingHurtByAnActiveEnemy()) {
 			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
 		}
-		
+	}
+	
+	private void checkForEnemyDeath()
+	{
 		Enemy killedEnemy = fMainCharacterController.killedAnActiveEnemy();
 		if (killedEnemy != null) {
 			fEnemyControllers.get(killedEnemy.getId()).disableEnemy();
@@ -193,6 +205,12 @@ public class GameController {
 		return Math.pow(-1, fRandomNumberGenerator.nextInt());
 	}
 	
+	private void spawnFireball(Vector aDirection)
+	{
+		Fireball fireball = fMainCharacterController.spitFire(aDirection);
+		fSceneController.addToGameRoot(fireball);
+	}
+	
 	private void handleKeyInput(KeyCode code)
 	{
 		switch (code) {
@@ -215,18 +233,30 @@ public class GameController {
             	fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
     		}
             break;
-        case T:
-        	changeScene();
-        	break;
         case D:
         	for (EnemyController enemyController: fEnemyControllers) {
         		enemyController.disableEnemy();
         	}
         	break;
+        case H:
+        	spawnFireball(Direction.LEFT);
+        	break;
+        case J:
+        	spawnFireball(Direction.DOWN);
+        	break;
+        case K:
+        	spawnFireball(Direction.UP);
+        	break;
+        case L:
+        	spawnFireball(Direction.RIGHT);
+        	break;
         case R:
         	for (EnemyController enemyController: fEnemyControllers) {
         		enemyController.reenableEnemy();
         	}
+        	break;
+        case T:
+        	changeScene();
         	break;
         default:
             // do nothing
