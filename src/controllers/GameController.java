@@ -7,6 +7,7 @@ package controllers;
  */
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import models.PlayerStats;
 import utils.PictureNames;
+import utils.Position;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
@@ -30,10 +32,22 @@ public class GameController {
 	private static final double GRAVITY = -10;
 	private static final double FULL_HEALTH = 100.0;
 	private static final double HEALTH_DEDUCTION = -1.0;
+	
+	private static final double MOVING_UP = -1.0;
+	private static final double MOVING_DOWN = 1.0;
+	private static final double NOT_MOVING = 0.0;
+	
+	private static final int BOTTOM_OF_SCREEN = 250;
+	private static final int MIDDLE_OF_SCREEN = 150;
+	private static final int LEFT_OF_SCREEN = 50;
+	private static final int RIGHT_OF_SCREEN = 250;
 
 	private static final int COLLEGE_SCENE_INDEX = 0;
 	private static final int FOREST_SCENE_INDEX = 1;
 	private static final int DOOR_SCENE_INDEX = 2;
+	
+	private static final int NUM_CAMERAS = 3;
+	private static final int NUM_TAYLORS = 4;
 	
 	private SceneController fSceneController;
 	private ArrayList<GameScene> fGameScenes;
@@ -42,6 +56,7 @@ public class GameController {
 	private Scene fScene;
 	private PlayerStats fPlayerStats;
 	private int fCurrentSceneIndex;
+	private Random fRandomNumberGenerator;
 	
 	public String getGameName()
 	{
@@ -50,6 +65,8 @@ public class GameController {
 	
 	public Scene init(int aWidth, int aHeight)
 	{
+		fRandomNumberGenerator = new Random();
+		
 		fSceneController = new SceneController();
 		fSceneController.createGameRoot(aWidth, aHeight);
 		
@@ -59,7 +76,7 @@ public class GameController {
 		fMainCharacterController = new MainCharacterController();
 		fMainCharacterController.setSurroundings(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
-		Character kanye = fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
+		fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
 
@@ -67,7 +84,7 @@ public class GameController {
 		updateHealth(FULL_HEALTH);
 
 		fSceneController.addToGameRoot(fGameScenes.get(COLLEGE_SCENE_INDEX));
-		fSceneController.addToGameRoot(kanye);
+		fSceneController.addToGameRoot(fMainCharacterController.getMainCharacter());
 		
 		fScene = new Scene(fSceneController.getGameRoot(), aWidth, aHeight, BACKGROUND_COLOR);
         fScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
@@ -104,18 +121,22 @@ public class GameController {
 	
 	private void handleSceneTransition(GameScene aDstScene)
 	{
+		fMainCharacterController.clearEnemies();
 		fMainCharacterController.setSurroundings(aDstScene);
 		fSceneController.transportToNewScene(aDstScene);
 		fEnemyControllers.clear();
-		fMainCharacterController.clearEnemies();
 
 		if (aDstScene instanceof CollegeScene) {
 			fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
 		} else if (aDstScene instanceof ForestScene) {
-			addEnemyToGame(aDstScene, PictureNames.Camera);
+			for (int i=0; i<NUM_CAMERAS; ++i) {
+				addEnemyToGame(aDstScene, PictureNames.Camera);
+			}
 			fCurrentSceneIndex = FOREST_SCENE_INDEX;
 		} else if (aDstScene instanceof DoorExplorationScene) {
-			addEnemyToGame(aDstScene, PictureNames.Taylor);
+			for (int i=0; i<NUM_TAYLORS; ++i) {
+				addEnemyToGame(aDstScene, PictureNames.Taylor);
+			}
 			fCurrentSceneIndex = DOOR_SCENE_INDEX;
 		}
 
@@ -123,16 +144,25 @@ public class GameController {
 	
 	private void addEnemyToGame(GameScene aScene, String aEnemyFileName)
 	{
+		double startingYVelocity = Math.pow(-1, getRandomNumber());
+		double startingYPosition;
+		if (aEnemyFileName.equals(PictureNames.Camera)) {
+			startingYPosition = BOTTOM_OF_SCREEN;
+			startingYVelocity = NOT_MOVING;
+		} else {
+			startingYPosition = getRandomNumber(MIDDLE_OF_SCREEN, BOTTOM_OF_SCREEN);
+			startingYVelocity = Math.pow(-1, getRandomNumber());
+		}
+		Position startingPosition = new Position(getRandomNumber(LEFT_OF_SCREEN,RIGHT_OF_SCREEN), startingYPosition);
+		
 		EnemyController enemyController = new EnemyController();
 		enemyController.setSurroundings(aScene);
-		Enemy enemy = enemyController.createEnemy(50, 50, aEnemyFileName);
+		enemyController.createEnemy(50, 50, aEnemyFileName, startingYVelocity, startingPosition);
 		fEnemyControllers.add(enemyController);
 
-		fSceneController.addToGameRoot(enemy);
+		fSceneController.addToGameRoot(enemyController.getEnemy());
 
-		ArrayList<Enemy> enemies = new ArrayList<Enemy>();
-		enemies.add(enemy);
-		fMainCharacterController.setCurrentEnemies(enemies);
+		fMainCharacterController.addEnemy(enemyController.getEnemy());
 	}
 	
 	private void updateHealth(double aValue)
@@ -145,6 +175,16 @@ public class GameController {
 	{
 		int nextSceneIndex = (fCurrentSceneIndex + 1) % fGameScenes.size();
 		handleSceneTransition(fGameScenes.get(nextSceneIndex));
+	}
+	
+	// Returns a pseudorandom number between lower and upper, inclusive
+	private double getRandomNumber(int aLowerBound, int aUpperBound)
+	{
+		return fRandomNumberGenerator.nextInt(aUpperBound - aLowerBound + 1) + aLowerBound;
+	}
+	private double getRandomNumber()
+	{
+		return fRandomNumberGenerator.nextInt();
 	}
 	
 	private void handleKeyInput(KeyCode code)

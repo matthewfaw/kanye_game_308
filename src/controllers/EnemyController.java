@@ -3,6 +3,7 @@ package controllers;
 import views.elements.foreground.characters.Enemy;
 import utils.EnemyNames;
 import utils.PictureNames;
+import utils.Position;
 
 public class EnemyController extends CharacterController {
 	private static final boolean ACTIVE = true;
@@ -16,25 +17,36 @@ public class EnemyController extends CharacterController {
 		super();
 	}
 
-	public Enemy createEnemy(int aWidth, int aHeight, String aEnemyFileName)
+	public void createEnemy(int aWidth, int aHeight, String aEnemyFileName, double aStartingYVelocity, Position aStartingPosition)
 	{
 		fCharacter = new Enemy(aWidth, aHeight, aEnemyFileName);
-		initializeCharacterFields();
-		return ((Enemy) fCharacter);
+		initializeCharacterFields(aStartingYVelocity, aStartingPosition);
+//		return ((Enemy) fCharacter);
+	}
+	
+	public Enemy getEnemy()
+	{
+		return (Enemy)fCharacter;
 	}
 
 	protected void initializeCharacterFields()
 	{
-		fCharacter.setX(50);
-		fCharacter.setY(250);
+		initializeCharacterFields(0.0, new Position(50, 250));
+	}
+
+	private void initializeCharacterFields(double aStartingYVelocity, Position aStartingPosition)
+	{
+		fCharacter.setX(aStartingPosition.getX());
+		fCharacter.setY(aStartingPosition.getY());
 		((Enemy) fCharacter).setActivity(ACTIVE);
 		
 		fVelocityX = 1.0;
-		if (fCharacter.getPictureName().equals(PictureNames.Taylor)) {
-			fVelocityY = -1.0;
-		} else {
-			fVelocityY = 0.0;
-		}
+		fVelocityY = aStartingYVelocity;
+//		if (fCharacter.getPictureName().equals(PictureNames.Taylor)) {
+//			fVelocityY = -1.0;
+//		} else {
+//			fVelocityY = 0.0;
+//		}
 		fTimeInAir = 0.0;
 //		fOnGround = true;
 	}

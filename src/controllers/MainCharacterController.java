@@ -18,12 +18,17 @@ public class MainCharacterController extends CharacterController {
 		fSurroundingEnemies = new ArrayList<Enemy>();
 	}
 
-	public MainCharacter createMainCharacter(int aWidth, int aHeight)
+	public void createMainCharacter(int aWidth, int aHeight)
 	{
 		fCharacter = new MainCharacter(aWidth, aHeight);
 		initializeCharacterFields();
 		
-		return ((MainCharacter) fCharacter);
+//		return ((MainCharacter) fCharacter);
+	}
+	
+	public MainCharacter getMainCharacter()
+	{
+		return (MainCharacter)fCharacter;
 	}
 	
 	protected void initializeCharacterFields()
@@ -37,11 +42,16 @@ public class MainCharacterController extends CharacterController {
 		fOnGround = true;
 	}
 	
-	public void setCurrentEnemies(ArrayList<Enemy> aEnemies)
-	{
-		fSurroundingEnemies = aEnemies;
-	}
+//	public void setCurrentEnemies(ArrayList<Enemy> aEnemies)
+//	{
+//		fSurroundingEnemies = aEnemies;
+//	}
 	
+	public void addEnemy(Enemy aNewEnemy)
+	{
+		fSurroundingEnemies.add(aNewEnemy);
+	}
+
 	public void clearEnemies()
 	{
 		fSurroundingEnemies.clear();
