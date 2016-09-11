@@ -49,7 +49,15 @@ public abstract class SceneElement {
 		double rootBottomY = fRoot.getBoundsInParent().getMaxY();
 		double obstacleTopY = obstacle.getBoundsInParent().getMinY();
 		
-		return (rootBottomY >= obstacleTopY);
+		boolean rootTouchingObstacleInY = (rootBottomY >= obstacleTopY);
+
+		double minLeftXCoord = Math.min(fRoot.getBoundsInParent().getMinX(), obstacle.getBoundsInParent().getMinX());
+		double maxRightXCoord = Math.max(fRoot.getBoundsInParent().getMaxX(), obstacle.getBoundsInParent().getMaxX());
+
+		boolean rootTouchingObstacleInX = (maxRightXCoord - minLeftXCoord 
+											<= fRoot.getBoundsInParent().getWidth() + obstacle.getBoundsInParent().getWidth() - 5);
+		
+		return rootTouchingObstacleInX && rootTouchingObstacleInY;
 	}
 	public boolean intersectsFromAbove(Group obstacle)
 	{
