@@ -18,20 +18,27 @@ public abstract class GameScene {
 	protected Tunnel fSrcTunnel;
 	protected Tunnel fDstTunnel;
 	
-	void constructSceneFromFile(String aFileName)
+	public GameScene()
 	{
-		File file = new File(aFileName);
-		try {
-			Scanner fileScanner = new Scanner(file);
-			
-			// Parse the file
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println("File not found!!");
-			e.printStackTrace();
-		} 
+		fRoot = new Group();
+		fObstacles = new ArrayList<Obstacle>();
+		fEnemies = new ArrayList<Enemy>();
 	}
 	
+//	public void constructSceneFromFile(String aFileName)
+//	{
+//		File file = new File(aFileName);
+//		try {
+//			Scanner fileScanner = new Scanner(file);
+//			
+//			// Parse the file
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			System.out.println("File not found!!");
+//			e.printStackTrace();
+//		} 
+//	}
+//	
 	public Group getRoot()
 	{
 		return fRoot;

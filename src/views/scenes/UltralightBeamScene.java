@@ -12,8 +12,7 @@ public class UltralightBeamScene extends GameScene {
 
 	public UltralightBeamScene(int aWidth, int aHeight)
 	{
-		fRoot = new Group();
-		fObstacles = new ArrayList<Obstacle>();
+		super();
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		
 		fRoot.getChildren().add(backgroundImage.getRoot());

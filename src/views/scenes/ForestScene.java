@@ -15,8 +15,7 @@ public class ForestScene extends GameScene {
 	
 	public ForestScene(int aWidth, int aHeight)
 	{
-		fRoot = new Group();
-		fObstacles = new ArrayList<Obstacle>();
+		super();
 		//this.constructSceneFromFile(FILE_NAME);
 		
 		fSrcTunnel = new Tunnel(aWidth/8, aHeight/4);

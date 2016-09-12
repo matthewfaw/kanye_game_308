@@ -15,13 +15,9 @@ public class CollegeScene extends GameScene {
 	private static final String FILE_NAME = "college_description.txt";
 	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Sky;
 	
-//	private Group fRoot;
-//	private ArrayList<Obstacle> fObstacles;
-	
 	public CollegeScene(int aWidth, int aHeight)
 	{
-		fRoot = new Group();
-		fObstacles = new ArrayList<Obstacle>();
+		super();
 		//this.constructSceneFromFile(FILE_NAME);
 		
 		College college = new College(aWidth/4, aHeight/4);

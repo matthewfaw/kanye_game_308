@@ -17,8 +17,7 @@ public class DoorExplorationScene extends GameScene {
 	
 	public DoorExplorationScene(int aHeight, int aWidth)
 	{
-		fRoot = new Group();
-		fObstacles = new ArrayList<Obstacle>();
+		super();
 		//this.constructSceneFromFile(FILE_NAME);
 		
 //		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
