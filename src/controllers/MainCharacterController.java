@@ -127,7 +127,7 @@ public class MainCharacterController extends CharacterController {
 				}
 			}
 			for (Fireball fireball: fFireballs) {
-				if (fireball.intersects(enemy.getRoot()) && enemy.isActive()) {
+				if (fireball.intersects(enemy.getRoot())) {
 					return enemy;
 				}
 			}

@@ -9,12 +9,17 @@ package controllers;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import models.PlayerStats;
 import utils.Direction;
+import utils.GameResults;
+import utils.GameSettings;
 import utils.PictureNames;
 import utils.Vector;
 import views.elements.foreground.attack.Fireball;
@@ -31,11 +36,17 @@ import views.scenes.UltralightBeamScene;
 
 public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
+	private static final String GAME_INFO = "Game Info:\n"
+											+ "Use arrow keys to move Kanye\n"
+											+ "Collect coins to pass through the tunnel in the forest\n"
+											+ "Jump on top of the cameras to make them disappear\n"
+											+ "Avoid Taylors at all costs!\n"
+											+ "";
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	private static final int KEY_INPUT_SPEED = 5;
 	private static final double GRAVITY = -10;
 	private static final double FULL_HEALTH = 100.0;
-	private static final double HEALTH_DEDUCTION = -1.0;
+//	private static final double HEALTH_DEDUCTION = -1.0;
 	
 	private static final double MOVING_LEFT = -1.0;
 	private static final double MOVING_RIGHT = 1.0;
@@ -52,11 +63,15 @@ public class GameController {
 	private static final int DOOR_SCENE_INDEX = 2;
 	private static final int ULTRALIGHT_BEAM_SCENE_INDEX = 3;
 	
-	private static final int NUM_CAMERAS = 3;
-	private static final int NUM_TAYLORS = 4;
+//	private static final int NUM_CAMERAS = 3;
+//	private static final int NUM_TAYLORS = 4;
 	private static final int NUM_GOLD_COINS = 10;
 	private static final int MINIMUM_GOLD_COUNT = NUM_GOLD_COINS*3/4;
-	
+
+	private double fHealthDeduction;
+	private int fNumCameras;
+	private int fNumTaylors;
+
 	private SceneController fSceneController;
 	private ArrayList<GameScene> fGameScenes;
 	private MainCharacterController fMainCharacterController;
@@ -65,6 +80,7 @@ public class GameController {
 	private PlayerStats fPlayerStats;
 	private int fCurrentSceneIndex;
 	private Random fRandomNumberGenerator;
+	private boolean fGameHasStarted;
 	
 	public String getGameName()
 	{
@@ -74,17 +90,53 @@ public class GameController {
 	public Scene init(int aWidth, int aHeight)
 	{
 		fRandomNumberGenerator = new Random();
+		fGameHasStarted = false;
 		
 		fSceneController = new SceneController();
 		fSceneController.createGameRoot(aWidth, aHeight);
 		
-//		GameScene initialScene = fSceneController.createScenes(aWidth, aHeight);
-		fGameScenes = fSceneController.createScenes(aWidth, aHeight);
+		fGameScenes = fSceneController.createScenes(aWidth, aHeight, GAME_NAME, GAME_INFO);
+		
+		fSceneController.addToGameRoot(fSceneController.getStartScreen());
+		fScene = new Scene(fSceneController.getGameRoot(), aWidth, aHeight, BACKGROUND_COLOR);
+        fScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
+        
+        setButtonAction(fSceneController.getStartScreen().getEasyButton(), GameSettings.Easy);
+        setButtonAction(fSceneController.getStartScreen().getHardButton(), GameSettings.Hard);
+
+		return fScene;
+	}
+	
+	private void setButtonAction(Button aButton, GameSettings aGameSetting)
+	{
+        aButton.setOnAction(new EventHandler<ActionEvent>() {
+        	@Override 
+        	public void handle(ActionEvent e)
+        	{
+        		fSceneController.getStartScreen().getRoot().getChildren().clear();
+        		startGame(aGameSetting);
+        	}
+        });
+		
+	}
+	
+	private void startGame(GameSettings aGameSetting)
+	{
+		fGameHasStarted = true;
+		
+		switch(aGameSetting) {
+		case Easy:
+			setDifficultyFields(-0.5, 3, 4);
+			break;
+		case Hard:
+			setDifficultyFields(-1, 5, 6);
+			break;
+		}
 		
 		fMainCharacterController = new MainCharacterController();
 		fMainCharacterController.setSurroundings(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
-		fMainCharacterController.createMainCharacter(aWidth/8, aHeight/8);
+		fMainCharacterController.createMainCharacter(fSceneController.getWidth()/8, fSceneController.getHeight()/8);
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
 
@@ -93,26 +145,47 @@ public class GameController {
 
 		fSceneController.addToGameRoot(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fSceneController.addToGameRoot(fMainCharacterController.getMainCharacter());
-		
-		fScene = new Scene(fSceneController.getGameRoot(), aWidth, aHeight, BACKGROUND_COLOR);
-        fScene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
-
-		return fScene;
 	}
+	
+	private void endGame(GameResults aGameResult)
+	{
+		fSceneController.getGameRoot().getChildren().clear();
+		switch (aGameResult) {
+		case Win:
+			fSceneController.addToGameRoot(fSceneController.getWinningScreen());
+		case Lose:
+			fSceneController.addToGameRoot(fSceneController.getLosingScreen());
+		}
+	}
+	
+	private void setDifficultyFields(double aHealthDeduction, int aNumCameras, int aNumTaylors)
+	{
+		fHealthDeduction = aHealthDeduction;
+		fNumCameras = aNumCameras;
+		fNumTaylors = aNumTaylors;
+	}
+
+	private boolean gameHasStarted()
+	{
+		return fGameHasStarted;
+	}
+	
 	
 	public void step(double aElapsedTime)
 	{
-		moveCharacters(aElapsedTime);
-		moveFireballs(aElapsedTime);
-		updateHealth();
-		updateGoldCount();
-		checkForEnemyDeath();
+		if (gameHasStarted()) {
+			moveCharacters(aElapsedTime);
+			moveFireballs(aElapsedTime);
+			updateHealth();
+			updateGoldCount();
+			checkForEnemyDeath();
 
-		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
-		//XXX: uncomment when gold spawning is working
-		if (tunnelToTransitionThrough != null /*&& tunnelToTransitionThrough.isActive()*/) {
-			if (fPlayerStats.getGoldCount() > MINIMUM_GOLD_COUNT || !(fSceneController.getCurrentScene() instanceof ForestScene)) {
-				handleSceneTransition(tunnelToTransitionThrough.getDst());
+			Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
+			//XXX: uncomment when gold spawning is working
+			if (tunnelToTransitionThrough != null /*&& tunnelToTransitionThrough.isActive()*/) {
+				if (fPlayerStats.getGoldCount() > MINIMUM_GOLD_COUNT || !(fSceneController.getCurrentScene() instanceof ForestScene)) {
+					handleSceneTransition(tunnelToTransitionThrough.getDst());
+				}
 			}
 		}
 	}
@@ -134,7 +207,7 @@ public class GameController {
 	private void updateHealth()
 	{
 		if (fMainCharacterController.isBeingHurtByAnActiveEnemy()) {
-			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
+			updateHealth(fPlayerStats.getHealth() + fHealthDeduction);
 		}
 	}
 	private void updateGoldCount()
@@ -168,7 +241,7 @@ public class GameController {
 		if (aDstScene instanceof CollegeScene) {
 			fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
 		} else if (aDstScene instanceof ForestScene) {
-			for (int i=0; i<NUM_CAMERAS; ++i) {
+			for (int i=0; i<fNumCameras; ++i) {
 				addEnemyToGame(aDstScene, PictureNames.Camera);
 			}
 			for (int i=0; i<NUM_GOLD_COINS; ++i) {
@@ -176,7 +249,7 @@ public class GameController {
 			}
 			fCurrentSceneIndex = FOREST_SCENE_INDEX;
 		} else if (aDstScene instanceof DoorExplorationScene) {
-			for (int i=0; i<NUM_TAYLORS; ++i) {
+			for (int i=0; i<fNumTaylors; ++i) {
 				addEnemyToGame(aDstScene, PictureNames.Taylor);
 			}
 			fCurrentSceneIndex = DOOR_SCENE_INDEX;
@@ -224,6 +297,9 @@ public class GameController {
 	{
 		fPlayerStats.setHealth(aValue);
 		fSceneController.updateHealthBar(aValue);
+		if (fPlayerStats.getHealth() <= 0) {
+			endGame(GameResults.Lose);
+		}
 	}
 	
 	private void changeScene()
@@ -252,53 +328,55 @@ public class GameController {
 	
 	private void handleKeyInput(KeyCode code)
 	{
-		switch (code) {
-        case RIGHT:
-    		fMainCharacterController.moveCharacter(KEY_INPUT_SPEED, 0);
-            break;
-        case LEFT:
-    		fMainCharacterController.moveCharacter(-KEY_INPUT_SPEED, 0);
-            break;
-        case UP:
-        	// XXX remove if statements
-        	if (fMainCharacterController.isInAJumpingScene()) {
-        		fMainCharacterController.beginJump();
-        	} else {
-        		fMainCharacterController.moveCharacter(0, -KEY_INPUT_SPEED);
-        	}            	
-            break;
-        case DOWN:
-    		if (!fMainCharacterController.isInAJumpingScene()) {
-            	fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
-    		}
-            break;
-        case D:
-        	for (EnemyController enemyController: fEnemyControllers) {
-        		enemyController.disableEnemy();
-        	}
-        	break;
-        case H:
-        	spawnFireball(Direction.LEFT);
-        	break;
-        case J:
-        	spawnFireball(Direction.DOWN);
-        	break;
-        case K:
-        	spawnFireball(Direction.UP);
-        	break;
-        case L:
-        	spawnFireball(Direction.RIGHT);
-        	break;
-        case R:
-        	for (EnemyController enemyController: fEnemyControllers) {
-        		enemyController.reenableEnemy();
-        	}
-        	break;
-        case T:
-        	changeScene();
-        	break;
-        default:
-            // do nothing
-		}
+		if (fGameHasStarted) {
+			switch (code) {
+			case RIGHT:
+				fMainCharacterController.moveCharacter(KEY_INPUT_SPEED, 0);
+				break;
+			case LEFT:
+				fMainCharacterController.moveCharacter(-KEY_INPUT_SPEED, 0);
+				break;
+			case UP:
+				// XXX remove if statements
+				if (fMainCharacterController.isInAJumpingScene()) {
+					fMainCharacterController.beginJump();
+				} else {
+					fMainCharacterController.moveCharacter(0, -KEY_INPUT_SPEED);
+				}            	
+				break;
+			case DOWN:
+				if (!fMainCharacterController.isInAJumpingScene()) {
+					fMainCharacterController.moveCharacter(0, KEY_INPUT_SPEED);
+				}
+				break;
+			case D:
+				for (EnemyController enemyController: fEnemyControllers) {
+					enemyController.disableEnemy();
+				}
+				break;
+			case H:
+				spawnFireball(Direction.LEFT);
+				break;
+			case J:
+				spawnFireball(Direction.DOWN);
+				break;
+			case K:
+				spawnFireball(Direction.UP);
+				break;
+			case L:
+				spawnFireball(Direction.RIGHT);
+				break;
+			case R:
+				for (EnemyController enemyController: fEnemyControllers) {
+					enemyController.reenableEnemy();
+				}
+				break;
+			case T:
+				changeScene();
+				break;
+			default:
+				// do nothing
+			}
+		} 
 	}
 }

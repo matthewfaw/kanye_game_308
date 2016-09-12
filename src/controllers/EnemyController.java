@@ -1,7 +1,6 @@
 package controllers;
 
 import views.elements.foreground.characters.Enemy;
-import utils.EnemyNames;
 import utils.PictureNames;
 import utils.Vector;
 

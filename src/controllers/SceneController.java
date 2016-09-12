@@ -12,8 +12,11 @@ import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.rewards.Gold;
 import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
+import views.scenes.EndScreen;
 import views.scenes.ForestScene;
 import views.scenes.GameScene;
+import views.scenes.NonGameScreen;
+import views.scenes.StartScreen;
 import views.scenes.UltralightBeamScene;
 
 /*
@@ -25,6 +28,8 @@ import views.scenes.UltralightBeamScene;
 public class SceneController {
 	private Group fGameRoot;
 	private HealthBar fHealthBar;
+	private StartScreen fStartScreen;
+	private EndScreen fEndScreen;
 	private GameScene fCurrentScene;
 	private MainCharacter fMainCharacter;
 	private int fSceneWidth;
@@ -41,6 +46,16 @@ public class SceneController {
 		fSceneHeight = aHeight;
 	}
 	
+	public int getWidth()
+	{
+		return fSceneWidth;
+	}
+	
+	public int getHeight()
+	{
+		return fSceneHeight;
+	}
+	
 	public Group getGameRoot()
 	{
 		return fGameRoot;
@@ -49,6 +64,11 @@ public class SceneController {
 	public GameScene getCurrentScene()
 	{
 		return fCurrentScene;
+	}
+	
+	public StartScreen getStartScreen()
+	{
+		return fStartScreen;
 	}
 	
 	public void updateHealthBar(double aValue)
@@ -79,11 +99,18 @@ public class SceneController {
 		fGameRoot.getChildren().clear();
 	}
 	
+	//NOTE: I'm overloading this method and repeating some code to restrict this
+	// method's usage to only certain classes
 	public void addToGameRoot(GameScene aDstScene)
 	{
 		fCurrentScene = aDstScene;
 		fGameRoot.getChildren().add(0, fHealthBar.getRoot());
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
+	}
+	
+	public void addToGameRoot(NonGameScreen aStartScreen)
+	{
+		fGameRoot.getChildren().add(aStartScreen.getRoot());
 	}
 	
 	public void addToGameRoot(Character aCharacter)
@@ -103,12 +130,25 @@ public class SceneController {
 		fGameRoot.getChildren().add(aGold.getRoot());
 	}
 	
+	public EndScreen getWinningScreen()
+	{
+		fEndScreen.setTitle("You won!");
+		return fEndScreen;
+	}
+	public EndScreen getLosingScreen()
+	{
+		fEndScreen.setTitle("You lost :(");
+		return fEndScreen;
+	}
+	
 	//XXX: perhaps make this more customizable?
 	// Create all scenes of the game, and return the first one
-	public ArrayList<GameScene> createScenes(int aWidth, int aHeight)
+	public ArrayList<GameScene> createScenes(int aWidth, int aHeight, String aGameName, String aGameInfo)
 	{
 		fHealthBar = new HealthBar(aWidth, aHeight/10);
-		
+		fStartScreen = new StartScreen(aWidth, aHeight, aGameName, aGameInfo);
+		fEndScreen = new EndScreen(aWidth, aHeight);
+
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
 		ForestScene forestScene = new ForestScene(aWidth, aHeight);
 		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);
