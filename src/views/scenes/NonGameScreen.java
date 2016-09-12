@@ -15,6 +15,12 @@ public abstract class NonGameScreen extends ViewElement {
 	protected Rectangle fBackground;
 	protected Text fTitleText;
 	
+	/**
+	 * Initializes a screen used for splash screens and ending screens
+	 * @param aWidth
+	 * @param aHeight
+	 * @param aTitle
+	 */
 	public NonGameScreen(int aWidth, int aHeight, String aTitle)
 	{
 		super();
@@ -32,6 +38,12 @@ public abstract class NonGameScreen extends ViewElement {
 		fRoot.getChildren().add(fTitleText);
 	}
 
+	/**
+	 * Adds text to that screen
+	 * @param aTextString
+	 * @param aFontValue
+	 * @return
+	 */
 	protected Text createText(String aTextString, Font aFontValue)
 	{
 		Text text = new Text();

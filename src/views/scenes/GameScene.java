@@ -19,6 +19,9 @@ public abstract class GameScene {
 	protected Tunnel fSrcTunnel;
 	protected Tunnel fDstTunnel;
 	
+	/**
+	 * Initializes a GameScene
+	 */
 	public GameScene()
 	{
 		fRoot = new Group();
@@ -26,26 +29,46 @@ public abstract class GameScene {
 		fEnemies = new ArrayList<Enemy>();
 	}
 	
+	/**
+	 * 
+	 * @return the root associated with the scene
+	 */
 	public Group getRoot()
 	{
 		return fRoot;
 	}
 	
+	/**
+	 * 
+	 * @return the list of obstacles in the scene
+	 */
 	public ArrayList<Obstacle> getObstacles()
 	{
 		return fObstacles;
 	}
 
+	/**
+	 * 
+	 * @return the list of enemies in the scene
+	 */
 	public ArrayList<Enemy> getEnemies()
 	{
 		return fEnemies;
 	}
 	
+	/**
+	 * 
+	 * @return the source tunnel
+	 */
 	public Tunnel getSrcTunnel()
 	{
 		return fSrcTunnel;
 	}
 	
+	/**
+	 * 
+	 * @return the dst tunnel
+	 */
 	public Tunnel getDstTunnel()
 	{
 		return fDstTunnel;

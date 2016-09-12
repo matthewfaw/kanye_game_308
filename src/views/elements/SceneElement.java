@@ -9,17 +9,32 @@ public abstract class SceneElement extends ViewElement {
 	private static final int DETECTION_BUFFER = 5;
 	private static final double MINIMUM_SIDE_LENGTH_MULTIPLIER = 0.2;
 	
+	/**
+	 * Initiaize scene element by calling its constructor
+	 */
 	public SceneElement()
 	{
 		super();
 	}
 	
+	/**
+	 * Check if scene element intersects with an obstacle
+	 * @param obstacle
+	 * @return true if there's an intersection, false if there isn't
+	 */
 	public boolean intersects(Group obstacle)
 	{
 		return fRoot.getBoundsInParent().intersects(obstacle.getBoundsInParent());
 	}
 	
 	//XXX: Clean this method up
+	/**
+	 * Checks if scene element has an object directly below it
+	 * This method is somewhat ugly because the positions aren't "exact", meaning
+	 * two elements never collide exactly
+	 * @param obstacle
+	 * @return true if there is an obstacle 
+	 */
 	public boolean intersectsFromBelow(Group obstacle)
 	{
 		double rootBottomY = fRoot.getBoundsInParent().getMaxY();
@@ -38,6 +53,11 @@ public abstract class SceneElement extends ViewElement {
 	}
 
 	//XXX: Clean this method up
+	/**
+	 * Checks if scene element has an object directly aboce it
+	 * @param obstacle
+	 * @return true if there is an obstacle , false otherwise
+	 */
 	public boolean intersectsFromAbove(Group obstacle)
 	{
 		double rootTopY = fRoot.getBoundsInParent().getMinY();
@@ -46,6 +66,12 @@ public abstract class SceneElement extends ViewElement {
 		return (rootTopY <= obstacleBottomY &&
 				fRoot.getBoundsInParent().getMaxY() > obstacle.getBoundsInParent().getMaxY());
 	}
+	
+	/**
+	 * Checks if scene element has an object directly to the left of it
+	 * @param obstacle
+	 * @return true if there is such an element
+	 */
 	public boolean intersectsFromLeft(Group obstacle)
 	{
 		double rootLeftX = fRoot.getBoundsInParent().getMinX();
@@ -58,6 +84,11 @@ public abstract class SceneElement extends ViewElement {
 		}
 		
 	}
+	/**
+	 * Checks if scene element has an object directly to the right of it
+	 * @param obstacle
+	 * @return true if there is such an element
+	 */
 	public boolean intersectsFromRight(Group obstacle)
 	{
 		double rootRightX = fRoot.getBoundsInParent().getMaxX();

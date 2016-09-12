@@ -6,6 +6,12 @@ import javafx.scene.image.ImageView;
 import views.elements.SceneElement;
 
 public class BackgroundImage extends SceneElement {
+	/**
+	 * Creates a BackgroundImage that serves as the backdrop of our scenes
+	 * @param aWidth
+	 * @param aHeight
+	 * @param aImageName
+	 */
 	public BackgroundImage(int aWidth, int aHeight, String aImageName)
 	{
 		fRoot = new Group();

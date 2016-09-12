@@ -15,6 +15,11 @@ public class DoorExplorationScene extends GameScene {
 	private static final int DEFAULT_WALL_WIDTH = 50;
 	private static final int SMALL_WALL_WIDTH = 40;
 	
+	/**
+	 * Creates a scene which contains every scene element pertaining to the scene with taylor swift enemies
+	 * @param aHeight
+	 * @param aWidth
+	 */
 	public DoorExplorationScene(int aHeight, int aWidth)
 	{
 		super();

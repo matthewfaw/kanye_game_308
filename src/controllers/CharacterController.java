@@ -31,11 +31,18 @@ public abstract class CharacterController {
 	private boolean fIsFalling;
 	private boolean fGravityIsEnabled;
 	
+	/**
+	 * Initialize necessary fields
+	 */
 	public CharacterController()
 	{
 		fSurroundingObstacles = new ArrayList<Obstacle>();
 	}
 		
+	/**
+	 * a method used to fill out all of the character's fields related to the surrounding scene
+	 * @param aScene
+	 */
 	public void setSurroundings(GameScene aScene)
 	{
 		fSurroundingObstacles = aScene.getObstacles();
@@ -46,11 +53,19 @@ public abstract class CharacterController {
 		}
 	}
 	
+	/**
+	 * A method used by the controller to determine if a character is in a scene where gravity is enabled
+	 * @return true if gravity is enabled, false otherwise
+	 */
 	public boolean isInAJumpingScene()
 	{
 		return fGravityIsEnabled;
 	}
 	
+	/**
+	 * Gets the scene that the character controlled by this object is in
+	 * @return the current scene
+	 */
 	public GameScene getCurrentScene()
 	{
 		return fCurrentScene;
@@ -58,6 +73,11 @@ public abstract class CharacterController {
 	
 	protected abstract void initializeCharacterFields();
 	
+	/**
+	 * Adjusts the character's x and y coordinates according to parameters, if the requested move is valid
+	 * @param aXUnit
+	 * @param aYUnit
+	 */
 	public void moveCharacter(double aXUnit, double aYUnit)
 	{
 		if ( (aXUnit > 0 && surroundingsAreClearOnRight()) ||
@@ -70,6 +90,9 @@ public abstract class CharacterController {
 		}
 	}
 	
+	/**
+	 * A method used to check if the character should begin falling, if they stepped off an obstacle
+	 */
 	public void checkForFreefall()
 	{
 		//Check if we're standing on thin air:
@@ -82,6 +105,9 @@ public abstract class CharacterController {
 		}
 	}
 	
+	/**
+	 * Sets fields necessary to initiate the character's jump
+	 */
 	public void beginJump()
 	{
 		fOnGround = false;
@@ -89,7 +115,12 @@ public abstract class CharacterController {
 	}
 	
 	// XXX: possibly rename, this function name is hard to distinguish from moveCharacter
-	public void updatePosition(double aElapsedTime, double aGravity)
+	/**
+	 * A method used to update the character's jumping trajectory
+	 * @param aElapsedTime
+	 * @param aGravity
+	 */
+	public void updateJumpingTrajectory(double aElapsedTime, double aGravity)
 	{
 		if (movingInYAxis()) {
 			fTimeInAir += aElapsedTime;

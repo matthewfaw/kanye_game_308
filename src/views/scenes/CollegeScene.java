@@ -11,6 +11,11 @@ public class CollegeScene extends GameScene {
 	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Sky;
 	private static final Vector DEFAULT_TUNNEL_POSITION = new Vector(300,400);
 	
+	/**
+	 * Creates a CollegeScene that encapulates everyting within the college scene of the game
+	 * @param aWidth
+	 * @param aHeight
+	 */
 	public CollegeScene(int aWidth, int aHeight)
 	{
 		super();

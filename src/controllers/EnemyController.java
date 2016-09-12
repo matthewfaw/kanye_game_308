@@ -12,17 +12,31 @@ public class EnemyController extends CharacterController {
 	private double fOldVelocityX;
 	private double fOldVelocityY;
 	
+	/**
+	 * Simply calls the parent constructor to initialize necessary fields
+	 */
 	public EnemyController()
 	{
 		super();
 	}
 
+	/**
+	 * Creates a new Enemy object in the scene based on the parameters
+	 * @param aEnemyFileName
+	 * @param aStartingVelocity
+	 * @param aStartingPosition
+	 * @param aId
+	 */
 	public void createEnemy(String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition, int aId)
 	{
 		fCharacter = new Enemy(aEnemyFileName, aId);
 		initializeCharacterFields(aStartingVelocity, aStartingPosition);
 	}
 	
+	/**
+	 * returns the Enemy object associated with this controller
+	 * @return
+	 */
 	public Enemy getEnemy()
 	{
 		return (Enemy)fCharacter;
@@ -44,6 +58,9 @@ public class EnemyController extends CharacterController {
 		fTimeInAir = 0.0;
 	}
 	
+	/**
+	 * A method used to simplify character movement.  Will cause the character to reflect when it hits an obstacle
+	 */
 	public void moveCharacter()
 	{
 		if (!surroundingsAreClearOnRight() || !surroundingsAreClearOnLeft()) {
@@ -55,6 +72,10 @@ public class EnemyController extends CharacterController {
 		moveCharacter(fVelocityX, fVelocityY);
 	}
 	
+	/**
+	 * A method which makes the enemy stop in it's tracks. It can no longer hurt the main character until it has been
+	 * reenabled
+	 */
 	public void disableEnemy()
 	{
 		if (fVelocityX != 0.0 || fVelocityY != 0.0) {
@@ -67,6 +88,9 @@ public class EnemyController extends CharacterController {
 		((Enemy) fCharacter).setActivity(NOT_ACTIVE);
 	}
 
+	/**
+	 * A method to undo the disableEnemy command
+	 */
 	public void reenableEnemy()
 	{
 		fVelocityX = fOldVelocityX;

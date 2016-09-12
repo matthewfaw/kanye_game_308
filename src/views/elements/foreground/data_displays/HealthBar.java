@@ -15,6 +15,11 @@ public class HealthBar extends SceneElement {
 	private int fGoldCount;
 	private Text fText;
 	
+	/**
+	 * creates a new health bar
+	 * @param aWidth
+	 * @param aHeight
+	 */
 	public HealthBar(int aWidth, int aHeight)
 	{
 		super();
@@ -39,12 +44,20 @@ public class HealthBar extends SceneElement {
 		fRoot.getChildren().add(fText);
 	}
 	
+	/**
+	 * sets up the health percentage displayed on the screen
+	 * @param aPercentHealth
+	 */
 	public void setHealthBarPercentage(double aPercentHealth)
 	{
 		fPercentHealth = aPercentHealth;
 		setText();
 	}
 	
+	/**
+	 * sets up the gold count displayed on the screen
+	 * @param aPercentHealth
+	 */
 	public void setGoldCount(int aGoldCount)
 	{
 		fGoldCount = aGoldCount;

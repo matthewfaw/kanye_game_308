@@ -18,6 +18,9 @@ public class MainCharacterController extends CharacterController {
 	private ArrayList<Fireball> fFireballs;
 	private ArrayList<Gold> fSurroundingGold;
 
+	/**
+	 * Initializes the character controller's necessary fields
+	 */
 	public MainCharacterController()
 	{
 		super();
@@ -26,6 +29,9 @@ public class MainCharacterController extends CharacterController {
 		fSurroundingGold = new ArrayList<Gold>();
 	}
 
+	/**
+	 * creates the character associated with the controller
+	 */
 	public void createMainCharacter()
 	{
 		fCharacter = new MainCharacter();
@@ -34,11 +40,18 @@ public class MainCharacterController extends CharacterController {
 //		return ((MainCharacter) fCharacter);
 	}
 	
+	/**
+	 * retrieves the associated character
+	 * @return the character controlled by the controller
+	 */
 	public MainCharacter getMainCharacter()
 	{
 		return (MainCharacter)fCharacter;
 	}
 	
+	/**
+	 * sets up the character's associated info
+	 */
 	protected void initializeCharacterFields()
 	{
 		fCharacter.setX(DEFAULT_POSITION.getX());
@@ -50,16 +63,28 @@ public class MainCharacterController extends CharacterController {
 		fOnGround = true;
 	}
 	
+	/**
+	 * Adds an enemy to be associated with the character
+	 * @param aNewEnemy
+	 */
 	public void addEnemy(Enemy aNewEnemy)
 	{
 		fSurroundingEnemies.add(aNewEnemy);
 	}
 	
+	/**
+	 * Adds gold to be associated with the character
+	 * @param aNewGoldPiece
+	 */
 	public void addGold(Gold aNewGoldPiece)
 	{
 		fSurroundingGold.add(aNewGoldPiece);
 	}
 	
+	/**
+	 * Checks if the character is currently touching gold
+	 * @return returns true if the character is touching gold
+	 */
 	public Gold isTouchingGold()
 	{
 		for (Gold gold: fSurroundingGold) {
@@ -70,11 +95,18 @@ public class MainCharacterController extends CharacterController {
 		return null;
 	}
 	
+	/**
+	 * remove gold from the array--useful for after the gold has been picked up by the character
+	 * @param aGold
+	 */
 	public void removeGold(Gold aGold)
 	{
 		fSurroundingGold.remove(aGold);
 	}
 
+	/**
+	 * Clears all of the fields that relate to the character's current surroundings
+	 */
 	public void emptyBelongings()
 	{
 		fSurroundingEnemies.clear();
@@ -82,6 +114,10 @@ public class MainCharacterController extends CharacterController {
 		fSurroundingGold.clear();
 	}
 		
+	/**
+	 * Checks if the character is incedent on an active tunnel
+	 * @return the tunnel, if the character is touching one; otherwise, returns null
+	 */
 	public Tunnel checkForSceneTransition()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
@@ -94,6 +130,11 @@ public class MainCharacterController extends CharacterController {
 		return null;
 	}
 	
+	/**
+	 * Creates fire to be launched by Kanye
+	 * @param aDirection
+	 * @return the Fireball object, so that the game controller can manage it
+	 */
 	public Fireball spitFire(Vector aDirection)
 	{
 		Fireball fireball = new Fireball(aDirection);
@@ -104,6 +145,9 @@ public class MainCharacterController extends CharacterController {
 		return fireball;
 	}
 
+	/**
+	 * Move the fireballs in the scene
+	 */
 	public void moveFireballs()
 	{
 		// XXX: fix movement
@@ -113,6 +157,10 @@ public class MainCharacterController extends CharacterController {
 		}
 	}
 	
+	/**
+	 * checks if the character killed an active enemy
+	 * @return the killed enemy, if there were one, otherwise null
+	 */
 	public Enemy killedAnActiveEnemy()
 	{
 		for (Enemy enemy: fSurroundingEnemies) {
@@ -130,6 +178,10 @@ public class MainCharacterController extends CharacterController {
 		return null;
 	}
 
+	/**
+	 * Checks if an enemy is touching the main character
+	 * @return
+	 */
 	public boolean isBeingHurtByAnActiveEnemy()
 	{
 		for (Enemy enemy: fSurroundingEnemies) {

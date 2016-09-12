@@ -8,6 +8,11 @@ import views.elements.foreground.obstacles.Tunnel;
 public class ForestScene extends GameScene {
 	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Trees;
 	
+	/**
+	 * Creates a ForestScene object
+	 * @param aWidth
+	 * @param aHeight
+	 */
 	public ForestScene(int aWidth, int aHeight)
 	{
 		super();

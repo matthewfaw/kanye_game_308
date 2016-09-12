@@ -11,6 +11,13 @@ public class StartScreen extends NonGameScreen {
 	private Button fEasyButton;
 	private Button fHardButton;
 
+	/**
+	 * Creates a splash screen for the game
+	 * @param aWidth
+	 * @param aHeight
+	 * @param aTitle
+	 * @param aGameExplanation
+	 */
 	public StartScreen(int aWidth, int aHeight, String aTitle, String aGameExplanation)
 	{
 		super(aWidth, aHeight, aTitle);
@@ -46,10 +53,18 @@ public class StartScreen extends NonGameScreen {
 	return aNode.getBoundsInParent().getMaxY() + SPACING;
 	}
 	
+	/**
+	 * 
+	 * @return the button associated with the easy game option
+	 */
 	public Button getEasyButton()
 	{
 		return fEasyButton;
 	}
+	/**
+	 * 
+	 * @return the button associated with the hard game option
+	 */
 	public Button getHardButton()
 	{
 		return fHardButton;

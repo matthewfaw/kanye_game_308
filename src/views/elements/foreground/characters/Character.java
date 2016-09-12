@@ -9,6 +9,11 @@ public abstract class Character extends SceneElement {
 	protected static final int DEFAULT_HEIGHT = 50;
 	
 	private String fCharacterPictureName;
+
+	/**
+	 * Creates a character object with a picture
+	 * @param aCharacterPictureName
+	 */
 	public Character(String aCharacterPictureName)
 	{
 		super();
@@ -24,6 +29,10 @@ public abstract class Character extends SceneElement {
  
 	}
 	
+	/**
+	 * 
+	 * @return the picture name associated with the character
+	 */
 	public String getPictureName()
 	{
 		return fCharacterPictureName;

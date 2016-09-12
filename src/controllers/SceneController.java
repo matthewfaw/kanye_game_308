@@ -32,11 +32,19 @@ public class SceneController {
 	private MainCharacter fMainCharacter;
 	private int fSceneWidth;
 	private int fSceneHeight;
-	
+
+	/**
+	 * 
+	 */
 	public SceneController()
 	{
 	}
 	
+	/**
+	 * Creates the game root, to which all scene elements are added
+	 * @param aWidth
+	 * @param aHeight
+	 */
 	public void createGameRoot(int aWidth, int aHeight)
 	{
 		fGameRoot = new Group();
@@ -44,41 +52,73 @@ public class SceneController {
 		fSceneHeight = aHeight;
 	}
 	
+	/**
+	 * get the width of the scene
+	 * @return scene width
+	 */
 	public int getWidth()
 	{
 		return fSceneWidth;
 	}
 	
+	/**
+	 * get the scene height
+	 * @return scene height
+	 */
 	public int getHeight()
 	{
 		return fSceneHeight;
 	}
 	
+	/**
+	 * gets the root node
+	 * @return root node
+	 */
 	public Group getGameRoot()
 	{
 		return fGameRoot;
 	}
 	
+	/**
+	 * gets the game scene the game is currently in
+	 * @return the current game
+	 */
 	public GameScene getCurrentScene()
 	{
 		return fCurrentScene;
 	}
 	
+	/**
+	 * Gets the splash screen of the game
+	 * @return the object associated with the spash screen
+	 */
 	public StartScreen getStartScreen()
 	{
 		return fStartScreen;
 	}
 	
+	/**
+	 * Sets the health value displayed on the health bar to aValue
+	 * @param aValue
+	 */
 	public void updateHealthBar(double aValue)
 	{
 		fHealthBar.setHealthBarPercentage(aValue);
 	}
 	
+	/**
+	 * Sets the gold count displayed on the health bar to aValue
+	 * @param aValue
+	 */
 	public void updateGoldCount(int aValue)
 	{
 		fHealthBar.setGoldCount(aValue);
 	}
 	
+	/**
+	 * Manages all the root node manipulations necessary to transition to a new scene
+	 * @param aNewScene
+	 */
 	public void transportToNewScene(GameScene aNewScene)
 	{
 		clearGameRoot();
@@ -87,6 +127,10 @@ public class SceneController {
 		addToGameRoot(fMainCharacter);
 	}
 	
+	/**
+	 * Removes the gold from the scene
+	 * @param gold
+	 */
 	public void removeGold(Gold gold)
 	{
 		gold.getRoot().getChildren().clear();
@@ -99,6 +143,10 @@ public class SceneController {
 	
 	//NOTE: I'm overloading this method and repeating some code to restrict this
 	// method's usage to only certain classes
+	/**
+	 * Adds a new scene, and the associated health bar, to the screen
+	 * @param aDstScene
+	 */
 	public void addToGameRoot(GameScene aDstScene)
 	{
 		fCurrentScene = aDstScene;
@@ -108,11 +156,19 @@ public class SceneController {
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
 	}
 	
+	/**
+	 * Adds a screen to the game root without adding the health bar
+	 * @param aStartScreen
+	 */
 	public void addToGameRoot(NonGameScreen aStartScreen)
 	{
 		fGameRoot.getChildren().add(aStartScreen.getRoot());
 	}
 	
+	/**
+	 * Adds a character to the scene
+	 * @param aCharacter
+	 */
 	public void addToGameRoot(Character aCharacter)
 	{
 		if (aCharacter instanceof MainCharacter) {
@@ -121,20 +177,31 @@ public class SceneController {
 		fGameRoot.getChildren().add(aCharacter.getRoot());
 	}
 
+	/**
+	 * Adds a fireball to the display
+	 * @param aFireball
+	 */
 	public void addToGameRoot(Fireball aFireball)
 	{
 		fGameRoot.getChildren().add(aFireball.getRoot());
 	}
+	/**
+	 * Adds gold to the display
+	 * @param aGold
+	 */
 	public void addToGameRoot(Gold aGold)
 	{
 		fGameRoot.getChildren().add(aGold.getRoot());
 	}
 	
-	public EndScreen getWinningScreen()
-	{
-		fEndScreen.setTitle("You won!");
-		return fEndScreen;
-	}
+//	public EndScreen getWinningScreen()
+//	{
+//		fEndScreen.setTitle("You won!");
+//		return fEndScreen;
+//	}
+	/*
+	 * Display to the user that they have lost the game
+	 */
 	public EndScreen getLosingScreen()
 	{
 		fEndScreen.setTitle("You lost :(");
@@ -143,6 +210,14 @@ public class SceneController {
 	
 	//XXX: perhaps make this more customizable?
 	// Create all scenes of the game, and return the first one
+	/**
+	 * Creates all the game scenes
+	 * @param aWidth
+	 * @param aHeight
+	 * @param aGameName
+	 * @param aGameInfo
+	 * @return the game scenes, packaged into an array
+	 */
 	public ArrayList<GameScene> createScenes(int aWidth, int aHeight, String aGameName, String aGameInfo)
 	{
 		fHealthBar = new HealthBar(aWidth, aHeight/10);

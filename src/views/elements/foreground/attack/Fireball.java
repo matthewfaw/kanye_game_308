@@ -12,6 +12,10 @@ public class Fireball extends SceneElement {
 	
 	private Vector fDirection;
 
+	/**
+	 * Creates a fireball to be lauched by Kanye
+	 * @param aDirection
+	 */
 	public Fireball(Vector aDirection)
 	{
 		super();
@@ -27,10 +31,18 @@ public class Fireball extends SceneElement {
  
 	}
 	
+	/**
+	 * 
+	 * @return the x direction of the fireball
+	 */
 	public double getXDirection()
 	{
 		return fDirection.getX();
 	}
+	/**
+	 * 
+	 * @return the y direction of the fireball
+	 */
 	public double getYDirection()
 	{
 		return fDirection.getY();

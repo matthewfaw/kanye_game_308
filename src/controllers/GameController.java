@@ -94,11 +94,22 @@ public class GameController {
 	private Random fRandomNumberGenerator;
 	private boolean fGameHasStarted;
 	
+	/**
+	 * A method used by the Main program to get the name of the game
+	 * @return the game name
+	 */
 	public String getGameName()
 	{
 		return GAME_NAME;
 	}
 	
+	/**
+	 * A method to handle the initial game setup.  Sets up the splash screen, and prepares necessary fields
+	 * @param aWidth
+	 * @param aHeight
+	 * @param aClassLoader
+	 * @return the JavaFX Scene object to be displayed on the Stage.
+	 */
 	public Scene init(int aWidth, int aHeight, ClassLoader aClassLoader)
 	{
 		fRandomNumberGenerator = new Random();
@@ -165,10 +176,13 @@ public class GameController {
 	{
 		fSceneController.getGameRoot().getChildren().clear();
 		switch (aGameResult) {
-		case Win:
-			fSceneController.addToGameRoot(fSceneController.getWinningScreen());
+//		case Win:
+//			fSceneController.addToGameRoot(fSceneController.getWinningScreen());
+//			break;
 		case Lose:
 			fSceneController.addToGameRoot(fSceneController.getLosingScreen());
+			break;
+		default:
 		}
 	}
 	
@@ -185,6 +199,10 @@ public class GameController {
 	}
 	
 	
+	/**
+	 * A method called every time step, used to make the game progress.
+	 * @param aElapsedTime
+	 */
 	public void step(double aElapsedTime)
 	{
 		if (gameHasStarted()) {
@@ -207,7 +225,7 @@ public class GameController {
 	private void moveCharacters(double aElapsedTime)
 	{
 		fMainCharacterController.checkForFreefall();
-		fMainCharacterController.updatePosition(aElapsedTime, GRAVITY);
+		fMainCharacterController.updateJumpingTrajectory(aElapsedTime, GRAVITY);
 		for (EnemyController enemyController: fEnemyControllers) {
 			enemyController.moveCharacter();
 		}

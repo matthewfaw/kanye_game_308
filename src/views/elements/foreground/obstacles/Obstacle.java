@@ -5,6 +5,12 @@ import javafx.scene.image.ImageView;
 import views.elements.SceneElement;
 
 public abstract class Obstacle extends SceneElement {
+	/**
+	 * Creates an Obstacle
+	 * @param aWidth
+	 * @param aHeight
+	 * @param aImageFillerName
+	 */
 	public Obstacle(int aWidth, int aHeight, String aImageFillerName)
 	{
 		super();
