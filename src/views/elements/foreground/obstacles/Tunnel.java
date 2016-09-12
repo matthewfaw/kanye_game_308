@@ -15,6 +15,11 @@ public class Tunnel extends Obstacle {
 		super(aWidth, aHeight, PictureNames.Tunnel);
 	}
 	
+	public Tunnel(int aWidth, int aHeight, String aPictureName)
+	{
+		super(aWidth, aHeight, aPictureName);
+	}
+	
 	public GameScene getSrc()
 	{
 		return fSrcScene;

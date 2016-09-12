@@ -27,6 +27,7 @@ import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
 import views.scenes.ForestScene;
 import views.scenes.GameScene;
+import views.scenes.UltralightBeamScene;
 
 public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
@@ -49,6 +50,7 @@ public class GameController {
 	private static final int COLLEGE_SCENE_INDEX = 0;
 	private static final int FOREST_SCENE_INDEX = 1;
 	private static final int DOOR_SCENE_INDEX = 2;
+	private static final int ULTRALIGHT_BEAM_SCENE_INDEX = 3;
 	
 	private static final int NUM_CAMERAS = 3;
 	private static final int NUM_TAYLORS = 4;
@@ -178,6 +180,8 @@ public class GameController {
 				addEnemyToGame(aDstScene, PictureNames.Taylor);
 			}
 			fCurrentSceneIndex = DOOR_SCENE_INDEX;
+		} else if (aDstScene instanceof UltralightBeamScene) {
+			fCurrentSceneIndex = ULTRALIGHT_BEAM_SCENE_INDEX;
 		}
 
 	}

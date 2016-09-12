@@ -14,6 +14,7 @@ import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
 import views.scenes.ForestScene;
 import views.scenes.GameScene;
+import views.scenes.UltralightBeamScene;
 
 /*
  * The purpose of the scene controller is to:
@@ -111,16 +112,19 @@ public class SceneController {
 		CollegeScene collegeScene = new CollegeScene(aWidth, aHeight);
 		ForestScene forestScene = new ForestScene(aWidth, aHeight);
 		DoorExplorationScene doorExplorationScene = new DoorExplorationScene(aWidth, aHeight);
+		UltralightBeamScene ultralightBeamScene = new UltralightBeamScene(aWidth, aHeight);
 
 		collegeScene.getDstTunnel().setDst(forestScene);
 		forestScene.getSrcTunnel().setDst(collegeScene);
 		forestScene.getDstTunnel().setDst(doorExplorationScene);
 		doorExplorationScene.getSrcTunnel().setDst(forestScene);
+		doorExplorationScene.getDstTunnel().setDst(ultralightBeamScene);
 
 		ArrayList<GameScene> gameScenes = new ArrayList<GameScene>();
 		gameScenes.add(collegeScene);
 		gameScenes.add(forestScene);
 		gameScenes.add(doorExplorationScene);
+		gameScenes.add(ultralightBeamScene);
 		return gameScenes;
 //		GameScene initialScene = collegeScene;
 //		return initialScene;

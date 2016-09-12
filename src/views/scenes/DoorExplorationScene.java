@@ -33,6 +33,12 @@ public class DoorExplorationScene extends GameScene {
 		ground.setX(0);
 		ground.setY(300);
 		
+		fDstTunnel = new Tunnel(aWidth/8, aHeight/4, PictureNames.Kim);
+		fDstTunnel.setX(150);
+		fDstTunnel.setY(300);
+		fDstTunnel.setSrc(this);
+		fDstTunnel.setDst(this);
+		
 		Wall leftWall = new Wall(aWidth/8, aHeight);
 		leftWall.setX(0);
 		leftWall.setY(0);
@@ -50,6 +56,7 @@ public class DoorExplorationScene extends GameScene {
 		fObstacles.add(topWall);
 		fObstacles.add(fSrcTunnel);
 		fObstacles.add(ground);
+		fObstacles.add(fDstTunnel);
 		
 		fRoot.getChildren().add(backgroundImage.getRoot());
 		fRoot.getChildren().add(leftWall.getRoot());
@@ -57,5 +64,6 @@ public class DoorExplorationScene extends GameScene {
 		fRoot.getChildren().add(topWall.getRoot());
 		fRoot.getChildren().add(fSrcTunnel.getRoot());
 		fRoot.getChildren().add(ground.getRoot());
+		fRoot.getChildren().add(fDstTunnel.getRoot());
 	}
 }
