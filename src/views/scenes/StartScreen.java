@@ -18,7 +18,7 @@ public class StartScreen extends NonGameScreen {
 	{
 		super(aWidth, aHeight, aTitle);
 
-		Text explanationText = createText(aGameExplanation, Font.font("Verdana", 12));
+		Text explanationText = createText(aGameExplanation, Font.font("Verdana", 10));
 		explanationText.setLayoutX((aWidth - explanationText.getBoundsInParent().getWidth())/2);
 		explanationText.setLayoutY(calculateYSpacing(fTitleText));
 		
@@ -46,7 +46,7 @@ public class StartScreen extends NonGameScreen {
 	
 	private double calculateYSpacing(Node aNode)
 	{
-		return aNode.getBoundsInParent().getMaxY() + aNode.getBoundsInParent().getHeight();
+	return aNode.getBoundsInParent().getMaxY() + 20;
 	}
 	
 	public Button getEasyButton()

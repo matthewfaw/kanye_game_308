@@ -81,7 +81,6 @@ public abstract class CharacterController {
 		if (surroundingsAreClearBelow() && fOnGround && fGravityIsEnabled) {
 			fOnGround = false;
 			fIsFalling = true;
-			System.out.println("Freefall");
 			fVelocityY = FREEFALL_VELOCITY;
 		} else {
 			fIsFalling = (false || (fIsFalling && fGravityIsEnabled));

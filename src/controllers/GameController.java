@@ -38,14 +38,21 @@ import views.scenes.UltralightBeamScene;
 public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
 	private static final String GAME_INFO = "Game Info:\n"
-											+ "Use arrow keys to move Kanye\n"
+											+ "To pass the first level, Kanye must *drop* out of college.\n"
+											+ "This transports him to the Forest, where his journey begins...\n"
 											+ "Collect coins to pass through the tunnel in the forest\n"
 											+ "Jump on top of the cameras to make them disappear\n"
-											+ "Avoid Taylors at all costs! Find Kim!! Shoot fire with h,j,k,l keys\n"
-											+ "Discover the Ultralight beam!!!\n"
-											+ "HINT: To pass the first level, Kanye must *drop* out of college.\n"
-											+ "This transports him to the Forest, where his journey begins...";
-											
+											+ "Avoid Taylors at all costs! Find Kim!!\n"
+											+ "You can attack the Taylor enemy by *spitting* fire with h,j,k,l keys\n"
+											+ "When Champion plays, you win the game!\n\n"
+											+ "Controls:\n"
+											+ "h,j,k,l: Shoot fire left, down, up, and right, respecitvely\n"
+											+ "Arrow keys: Move Kanye in the pressed direction\n"
+											+ "Mouse click: used to select which game difficulty level to begin with\n\n"
+											+ "Cheat codes:\n"
+											+ "d: disables enemy movement, and their ability to harm Kanye\n"
+											+ "r: reenables enemy movement\n"
+											+ "t: transports Kanye to the next game scene after the game has started";
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	private static final int KEY_INPUT_SPEED = 5;
 	private static final double GRAVITY = -10;
