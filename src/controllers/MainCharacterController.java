@@ -10,17 +10,20 @@ import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
+import views.elements.foreground.rewards.Gold;
 
 public class MainCharacterController extends CharacterController {
 	
 	private ArrayList<Enemy> fSurroundingEnemies;
 	private ArrayList<Fireball> fFireballs;
+	private ArrayList<Gold> fSurroundingGold;
 
 	public MainCharacterController()
 	{
 		super();
 		fSurroundingEnemies = new ArrayList<Enemy>();
 		fFireballs = new ArrayList<Fireball>();
+		fSurroundingGold = new ArrayList<Gold>();
 	}
 
 	public void createMainCharacter(int aWidth, int aHeight)
@@ -56,10 +59,32 @@ public class MainCharacterController extends CharacterController {
 	{
 		fSurroundingEnemies.add(aNewEnemy);
 	}
+	
+	public void addGold(Gold aNewGoldPiece)
+	{
+		fSurroundingGold.add(aNewGoldPiece);
+	}
+	
+	public Gold isTouchingGold()
+	{
+		for (Gold gold: fSurroundingGold) {
+			if (fCharacter.intersects(gold.getRoot())) {
+				return gold;
+			}
+		}
+		return null;
+	}
+	
+	public void removeGold(Gold aGold)
+	{
+		fSurroundingGold.remove(aGold);
+	}
 
-	public void clearEnemies()
+	public void emptyBelongings()
 	{
 		fSurroundingEnemies.clear();
+		fFireballs.clear();
+		fSurroundingGold.clear();
 	}
 		
 	public Tunnel checkForSceneTransition()
@@ -76,7 +101,7 @@ public class MainCharacterController extends CharacterController {
 	
 	public Fireball spitFire(Vector aDirection)
 	{
-		Fireball fireball = new Fireball(20,20, aDirection);
+		Fireball fireball = new Fireball(aDirection);
 		fireball.setX(fCharacter.getX());
 		fireball.setY(fCharacter.getY());
 		fFireballs.add(fireball);

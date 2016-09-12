@@ -29,14 +29,14 @@ public class CollegeScene extends GameScene {
 		college.setY(200);
 		
 //		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
-		fDstTunnel = new Tunnel(aWidth/8, aHeight/4);
-		fDstTunnel.setX(350);
-		fDstTunnel.setY(200);
+		fDstTunnel = new Tunnel(aWidth/4, aHeight/8);
+		fDstTunnel.setX(300);
+		fDstTunnel.setY(400);
 		fDstTunnel.setSrc(this);
 		//tunnel.setDstRoot(aRoot);
 		//tunnel.setDstScene();
 		
-		Ground ground = new Ground(aWidth, aHeight/4);
+		Ground ground = new Ground(aWidth*3/4, aHeight/4);
 		ground.setX(0);
 		ground.setY(300);
 		

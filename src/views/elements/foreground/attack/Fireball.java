@@ -7,9 +7,12 @@ import utils.Vector;
 import views.elements.SceneElement;
 
 public class Fireball extends SceneElement {
+	private static final int FIREBALL_WIDTH = 40;
+	private static final int FIREBALL_HEIGHT = 40;
+	
 	private Vector fDirection;
 
-	public Fireball(int aWidth, int aHeight, Vector aDirection)
+	public Fireball(Vector aDirection)
 	{
 		super();
 		fDirection = aDirection;
@@ -17,8 +20,8 @@ public class Fireball extends SceneElement {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(PictureNames.Fireball));
         ImageView imageView = new ImageView();
         imageView.setImage(image);
-        imageView.setFitWidth(aWidth);
-        imageView.setFitHeight(aHeight);
+        imageView.setFitWidth(FIREBALL_WIDTH);
+        imageView.setFitHeight(FIREBALL_HEIGHT);
         
         fRoot.getChildren().add(imageView);
  

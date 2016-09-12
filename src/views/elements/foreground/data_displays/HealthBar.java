@@ -10,7 +10,8 @@ import javafx.scene.text.TextAlignment;
 public class HealthBar extends DataDisplay {
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	
-	private int fHealthPercentage;
+	private double fPercentHealth;
+	private int fGoldCount;
 	private Text fText;
 	
 	public HealthBar(int aWidth, int aHeight)
@@ -23,6 +24,9 @@ public class HealthBar extends DataDisplay {
 		background.setWidth(aWidth);
 		background.setHeight(aHeight);
 		background.setFill(BACKGROUND_COLOR);
+		
+		fPercentHealth = 0;
+		fGoldCount = 0;
 		
 		fText = new Text();
 //		setHealthBarPercentage(100.0);
@@ -37,6 +41,18 @@ public class HealthBar extends DataDisplay {
 	
 	public void setHealthBarPercentage(double aPercentHealth)
 	{
-		fText.setText("Health: " + aPercentHealth + "%");
+		fPercentHealth = aPercentHealth;
+		setText();
 	}
+	
+	public void setGoldCount(int aGoldCount)
+	{
+		fGoldCount = aGoldCount;
+		setText();
+	}
+	private void setText() 
+	{
+		fText.setText("Health: " + fPercentHealth + "%, Gold count: " + fGoldCount);
+	}
+
 }

@@ -22,6 +22,7 @@ import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Tunnel;
+import views.elements.foreground.rewards.Gold;
 import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
 import views.scenes.ForestScene;
@@ -41,6 +42,7 @@ public class GameController {
 	
 	private static final int BOTTOM_OF_SCREEN = 250;
 	private static final int MIDDLE_OF_SCREEN = 150;
+	private static final int TOP_OF_SCREEN = 50;
 	private static final int LEFT_OF_SCREEN = 50;
 	private static final int RIGHT_OF_SCREEN = 250;
 
@@ -50,6 +52,8 @@ public class GameController {
 	
 	private static final int NUM_CAMERAS = 3;
 	private static final int NUM_TAYLORS = 4;
+	private static final int NUM_GOLD_COINS = 10;
+	private static final int MINIMUM_GOLD_COUNT = NUM_GOLD_COINS*3/4;
 	
 	private SceneController fSceneController;
 	private ArrayList<GameScene> fGameScenes;
@@ -99,11 +103,15 @@ public class GameController {
 		moveCharacters(aElapsedTime);
 		moveFireballs(aElapsedTime);
 		updateHealth();
+		updateGoldCount();
 		checkForEnemyDeath();
 
 		Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
-		if (tunnelToTransitionThrough != null) {
-			handleSceneTransition(tunnelToTransitionThrough.getDst());
+		//XXX: uncomment when gold spawning is working
+		if (tunnelToTransitionThrough != null /*&& tunnelToTransitionThrough.isActive()*/) {
+			if (fPlayerStats.getGoldCount() > MINIMUM_GOLD_COUNT || !(fSceneController.getCurrentScene() instanceof ForestScene)) {
+				handleSceneTransition(tunnelToTransitionThrough.getDst());
+			}
 		}
 	}
 	
@@ -127,18 +135,30 @@ public class GameController {
 			updateHealth(fPlayerStats.getHealth() + HEALTH_DEDUCTION);
 		}
 	}
+	private void updateGoldCount()
+	{
+		Gold gold = fMainCharacterController.isTouchingGold();
+		if (gold != null) {
+			fMainCharacterController.removeGold(gold);
+			fSceneController.removeGold(gold);
+			fPlayerStats.addGoldPiece();
+			fSceneController.updateGoldCount(fPlayerStats.getGoldCount());
+		}
+	}
 	
 	private void checkForEnemyDeath()
 	{
 		Enemy killedEnemy = fMainCharacterController.killedAnActiveEnemy();
 		if (killedEnemy != null) {
-			fEnemyControllers.get(killedEnemy.getId()).disableEnemy();
+			//XXX: this is horrible...
+			fEnemyControllers.get(killedEnemy.getId()).getEnemy().getRoot().getChildren().clear();;
 		}
 	}
 	
 	private void handleSceneTransition(GameScene aDstScene)
 	{
-		fMainCharacterController.clearEnemies();
+//		fMainCharacterController.clearEnemies();
+		fMainCharacterController.emptyBelongings();
 		fMainCharacterController.setSurroundings(aDstScene);
 		fSceneController.transportToNewScene(aDstScene);
 		fEnemyControllers.clear();
@@ -148,6 +168,9 @@ public class GameController {
 		} else if (aDstScene instanceof ForestScene) {
 			for (int i=0; i<NUM_CAMERAS; ++i) {
 				addEnemyToGame(aDstScene, PictureNames.Camera);
+			}
+			for (int i=0; i<NUM_GOLD_COINS; ++i) {
+				addOneGoldToGame(aDstScene);
 			}
 			fCurrentSceneIndex = FOREST_SCENE_INDEX;
 		} else if (aDstScene instanceof DoorExplorationScene) {
@@ -183,6 +206,16 @@ public class GameController {
 		fMainCharacterController.addEnemy(enemyController.getEnemy());
 	}
 	
+	private void addOneGoldToGame(GameScene aScene)
+	{
+		Gold gold = new Gold();
+		
+		gold.setX(getRandomNumber(LEFT_OF_SCREEN, RIGHT_OF_SCREEN));
+		gold.setY(getRandomNumber(TOP_OF_SCREEN, BOTTOM_OF_SCREEN));
+		fSceneController.addToGameRoot(gold);
+		fMainCharacterController.addGold(gold);
+	}
+	
 	private void updateHealth(double aValue)
 	{
 		fPlayerStats.setHealth(aValue);
@@ -207,8 +240,10 @@ public class GameController {
 	
 	private void spawnFireball(Vector aDirection)
 	{
-		Fireball fireball = fMainCharacterController.spitFire(aDirection);
-		fSceneController.addToGameRoot(fireball);
+		if (fSceneController.getCurrentScene() instanceof DoorExplorationScene) {
+			Fireball fireball = fMainCharacterController.spitFire(aDirection);
+			fSceneController.addToGameRoot(fireball);
+		}
 	}
 	
 	private void handleKeyInput(KeyCode code)
