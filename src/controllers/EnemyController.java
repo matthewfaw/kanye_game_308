@@ -1,12 +1,13 @@
 package controllers;
 
 import views.elements.foreground.characters.Enemy;
-import utils.PictureNames;
+import utils.Direction;
 import utils.Vector;
 
 public class EnemyController extends CharacterController {
 	private static final boolean ACTIVE = true;
 	private static final boolean NOT_ACTIVE = false;
+	private static final Vector DEFAULT_ORIGIN = new Vector(50,250);
 	
 	private double fOldVelocityX;
 	private double fOldVelocityY;
@@ -16,11 +17,10 @@ public class EnemyController extends CharacterController {
 		super();
 	}
 
-	public void createEnemy(int aWidth, int aHeight, String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition, int aId)
+	public void createEnemy(String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition, int aId)
 	{
-		fCharacter = new Enemy(aWidth, aHeight, aEnemyFileName, aId);
+		fCharacter = new Enemy(aEnemyFileName, aId);
 		initializeCharacterFields(aStartingVelocity, aStartingPosition);
-//		return ((Enemy) fCharacter);
 	}
 	
 	public Enemy getEnemy()
@@ -30,7 +30,7 @@ public class EnemyController extends CharacterController {
 
 	protected void initializeCharacterFields()
 	{
-		initializeCharacterFields(new Vector(1.0, 0.0), new Vector(50, 250));
+		initializeCharacterFields(Direction.RIGHT, DEFAULT_ORIGIN);
 	}
 
 	private void initializeCharacterFields(Vector aStartingVelocity, Vector aStartingPosition)
@@ -41,13 +41,7 @@ public class EnemyController extends CharacterController {
 		
 		fVelocityX = aStartingVelocity.getX();
 		fVelocityY = aStartingVelocity.getY();
-//		if (fCharacter.getPictureName().equals(PictureNames.Taylor)) {
-//			fVelocityY = -1.0;
-//		} else {
-//			fVelocityY = 0.0;
-//		}
 		fTimeInAir = 0.0;
-//		fOnGround = true;
 	}
 	
 	public void moveCharacter()

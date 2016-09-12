@@ -1,11 +1,7 @@
 package views.scenes;
 
-import java.util.ArrayList;
-
-import javafx.scene.Group;
 import utils.PictureNames;
 import views.elements.background.BackgroundImage;
-import views.elements.foreground.obstacles.Obstacle;
 
 public class UltralightBeamScene extends GameScene {
 	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Bound;

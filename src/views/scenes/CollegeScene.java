@@ -1,40 +1,32 @@
 package views.scenes;
 
-import java.util.ArrayList;
-
-import javafx.scene.Group;
 import utils.PictureNames;
-import views.elements.foreground.characters.MainCharacter;
+import utils.Vector;
 import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
-import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 import views.elements.background.BackgroundImage;
 
 public class CollegeScene extends GameScene {
-	private static final String FILE_NAME = "college_description.txt";
 	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Sky;
+	private static final Vector DEFAULT_TUNNEL_POSITION = new Vector(300,400);
 	
 	public CollegeScene(int aWidth, int aHeight)
 	{
 		super();
-		//this.constructSceneFromFile(FILE_NAME);
-		
+
 		College college = new College(aWidth/4, aHeight/4);
-		college.setX(0);
-		college.setY(200);
+		college.setX(DEFAULT_LEFT_OBJECT_POSITION.getX());
+		college.setY(DEFAULT_LEFT_OBJECT_POSITION.getY());
 		
-//		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
 		fDstTunnel = new Tunnel(aWidth/4, aHeight/8);
-		fDstTunnel.setX(300);
-		fDstTunnel.setY(400);
+		fDstTunnel.setX(DEFAULT_TUNNEL_POSITION.getX());
+		fDstTunnel.setY(DEFAULT_TUNNEL_POSITION.getY());
 		fDstTunnel.setSrc(this);
-		//tunnel.setDstRoot(aRoot);
-		//tunnel.setDstScene();
 		
 		Ground ground = new Ground(aWidth*3/4, aHeight/4);
-		ground.setX(0);
-		ground.setY(300);
+		ground.setX(DEFAULT_GROUND_POSITION.getX());
+		ground.setY(DEFAULT_GROUND_POSITION.getY());
 		
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		

@@ -1,16 +1,13 @@
 package views.scenes;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import views.ViewElement;
 
 public class StartScreen extends NonGameScreen {
+	private static final int MAX_BUTTON_WIDTH = 100;
+	private static final int SPACING = 20;
+	
 	private Button fEasyButton;
 	private Button fHardButton;
 
@@ -18,17 +15,17 @@ public class StartScreen extends NonGameScreen {
 	{
 		super(aWidth, aHeight, aTitle);
 
-		Text explanationText = createText(aGameExplanation, Font.font("Verdana", 10));
+		Text explanationText = createText(aGameExplanation, TEXT_FONT);
 		explanationText.setLayoutX((aWidth - explanationText.getBoundsInParent().getWidth())/2);
-		explanationText.setLayoutY(calculateYSpacing(fTitleText));
+		explanationText.setLayoutY(getYPositionUnderNode(fTitleText));
 		
 		fEasyButton = createButton("Easy Game");
 		fEasyButton.setLayoutX(fTitleText.getBoundsInParent().getMinX());
-		fEasyButton.setLayoutY(calculateYSpacing(explanationText));
+		fEasyButton.setLayoutY(getYPositionUnderNode(explanationText));
 		
 		fHardButton = createButton("Hard Game");
 		fHardButton.setLayoutX(fTitleText.getBoundsInParent().getMaxX() - fHardButton.getMaxWidth());
-		fHardButton.setLayoutY(calculateYSpacing(explanationText));
+		fHardButton.setLayoutY(getYPositionUnderNode(explanationText));
 		
 		fRoot.getChildren().add(explanationText);
 		fRoot.getChildren().add(fEasyButton);
@@ -39,14 +36,14 @@ public class StartScreen extends NonGameScreen {
 	{
 		Button button = new Button();
 		button.setText(aDifficulty);
-		button.setMaxWidth(100);
+		button.setMaxWidth(MAX_BUTTON_WIDTH);
 		
 		return button;
 	}
 	
-	private double calculateYSpacing(Node aNode)
+	private double getYPositionUnderNode(Node aNode)
 	{
-	return aNode.getBoundsInParent().getMaxY() + 20;
+	return aNode.getBoundsInParent().getMaxY() + SPACING;
 	}
 	
 	public Button getEasyButton()

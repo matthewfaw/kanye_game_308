@@ -1,6 +1,5 @@
 package views.elements.foreground.obstacles;
 
-import javafx.scene.paint.Color;
 import utils.PictureNames;
 
 public class Wall extends Obstacle {

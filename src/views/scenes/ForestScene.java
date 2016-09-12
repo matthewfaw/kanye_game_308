@@ -1,13 +1,8 @@
 package views.scenes;
 
-import java.util.ArrayList;
-
-import javafx.scene.Group;
 import utils.PictureNames;
 import views.elements.background.BackgroundImage;
-import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
-import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 
 public class ForestScene extends GameScene {
@@ -16,22 +11,21 @@ public class ForestScene extends GameScene {
 	public ForestScene(int aWidth, int aHeight)
 	{
 		super();
-		//this.constructSceneFromFile(FILE_NAME);
 		
 		fSrcTunnel = new Tunnel(aWidth/8, aHeight/4);
-		fSrcTunnel.setX(0);
-		fSrcTunnel.setY(200);
+		fSrcTunnel.setX(DEFAULT_LEFT_OBJECT_POSITION.getX());
+		fSrcTunnel.setY(DEFAULT_LEFT_OBJECT_POSITION.getY());
 		fSrcTunnel.setSrc(this);
 		
 		fDstTunnel = new Tunnel(aWidth/8, aHeight/4);
-		fDstTunnel.setX(350);
-		fDstTunnel.setY(200);
+		fDstTunnel.setX(DEFAULT_RIGHT_OBJECT_POSITION.getX());
+		fDstTunnel.setY(DEFAULT_RIGHT_OBJECT_POSITION.getY());
 		fDstTunnel.setSrc(this);
 
 		
 		Ground ground = new Ground(aWidth, aHeight/4);
-		ground.setX(0);
-		ground.setY(300);
+		ground.setX(DEFAULT_GROUND_POSITION.getX());
+		ground.setY(DEFAULT_GROUND_POSITION.getY());
 		
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		

@@ -9,6 +9,8 @@ import views.ViewElement;
 
 public abstract class NonGameScreen extends ViewElement {
 	protected static final Color BACKGROUND_COLOR = Color.WHITE;
+	protected static final Font TITLE_FONT = Font.font("Verdana", 20);
+	protected static final Font TEXT_FONT = Font.font("Verdana", 10);
 	
 	protected Rectangle fBackground;
 	protected Text fTitleText;
@@ -22,9 +24,8 @@ public abstract class NonGameScreen extends ViewElement {
 		fBackground.setHeight(aHeight);
 		fBackground.setFill(BACKGROUND_COLOR);
 		
-		fTitleText = createText(aTitle, Font.font("Verdana", 20));
+		fTitleText = createText(aTitle, TITLE_FONT);
 		fTitleText.setLayoutX((aWidth - fTitleText.getBoundsInLocal().getWidth())/2);
-//		fTitleText.setLayoutX((aWidth - fTitleText.getBoundsInParent().getWidth())/2);
 		fTitleText.setLayoutY(aHeight/4);
 
 		fRoot.getChildren().add(fBackground);

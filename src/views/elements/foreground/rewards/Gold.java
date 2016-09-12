@@ -3,7 +3,6 @@ package views.elements.foreground.rewards;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utils.PictureNames;
-import utils.Vector;
 import views.elements.SceneElement;
 
 public class Gold extends SceneElement {

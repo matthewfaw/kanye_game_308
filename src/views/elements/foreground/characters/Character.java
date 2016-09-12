@@ -5,8 +5,11 @@ import javafx.scene.image.ImageView;
 import views.elements.SceneElement;
 
 public abstract class Character extends SceneElement {
+	protected static final int DEFAULT_WIDTH = 50;
+	protected static final int DEFAULT_HEIGHT = 50;
+	
 	private String fCharacterPictureName;
-	public Character(int aWidth, int aHeight, String aCharacterPictureName)
+	public Character(String aCharacterPictureName)
 	{
 		super();
 		fCharacterPictureName = aCharacterPictureName;
@@ -14,8 +17,8 @@ public abstract class Character extends SceneElement {
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(aCharacterPictureName));
         ImageView imageView = new ImageView();
         imageView.setImage(image);
-        imageView.setFitWidth(aWidth);
-        imageView.setFitHeight(aHeight);
+        imageView.setFitWidth(DEFAULT_WIDTH);
+        imageView.setFitHeight(DEFAULT_HEIGHT);
         
         fRoot.getChildren().add(imageView);
  

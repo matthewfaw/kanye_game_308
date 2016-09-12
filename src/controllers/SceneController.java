@@ -3,12 +3,10 @@ package controllers;
 import java.util.ArrayList;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
 import views.elements.foreground.attack.Fireball;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.data_displays.HealthBar;
-import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.rewards.Gold;
 import views.scenes.CollegeScene;
 import views.scenes.DoorExplorationScene;
@@ -104,6 +102,8 @@ public class SceneController {
 	public void addToGameRoot(GameScene aDstScene)
 	{
 		fCurrentScene = aDstScene;
+		// Placing the 0 in the add method forces the game scene to be added to the back
+		// This is useful, as it makes sure the health bar is always on top
 		fGameRoot.getChildren().add(0, fHealthBar.getRoot());
 		fGameRoot.getChildren().add(0, aDstScene.getRoot());
 	}
@@ -166,15 +166,5 @@ public class SceneController {
 		gameScenes.add(doorExplorationScene);
 		gameScenes.add(ultralightBeamScene);
 		return gameScenes;
-//		GameScene initialScene = collegeScene;
-//		return initialScene;
 	}
-	
-//	public void addEnemiesToScene()
-//	{
-////		CharacterController enemyController = new CharacterController(fGameRoot);
-////		Group enemyRoot = enemyController.createEnemy(50,50);
-////		fGameRoot.getChildren().add(enemyRoot);
-//		
-//	}
 }

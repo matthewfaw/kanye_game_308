@@ -1,52 +1,48 @@
 package views.scenes;
 
-import java.util.ArrayList;
-
-import javafx.scene.Group;
 import utils.PictureNames;
+import utils.Vector;
 import views.elements.background.BackgroundImage;
-import views.elements.foreground.obstacles.College;
 import views.elements.foreground.obstacles.Ground;
-import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.obstacles.Wall;
 
 public class DoorExplorationScene extends GameScene {
 	
 	private static final String BACKGROUND_IMAGE_NAME = PictureNames.Stone;
+	private static final Vector ORIGIN = new Vector(0,0);
+	private static final Vector MIDDLE_OBJECT_IN_GROUND_POSITION = new Vector(150,300);
+	private static final int DEFAULT_WALL_WIDTH = 50;
+	private static final int SMALL_WALL_WIDTH = 40;
 	
 	public DoorExplorationScene(int aHeight, int aWidth)
 	{
 		super();
-		//this.constructSceneFromFile(FILE_NAME);
-		
-//		Tunnel tunnel = new Tunnel(aWidth/8, aHeight/4);
+
 		fSrcTunnel = new Tunnel(aWidth/8, aHeight/4);
-		fSrcTunnel.setX(0);
-		fSrcTunnel.setY(200);
+		fSrcTunnel.setX(DEFAULT_LEFT_OBJECT_POSITION.getX());
+		fSrcTunnel.setY(DEFAULT_LEFT_OBJECT_POSITION.getY());
 		fSrcTunnel.setSrc(this);
-		//tunnel.setDstRoot(aRoot);
-		//tunnel.setDstScene();
 		
 		Ground ground = new Ground(aWidth, aHeight/4);
-		ground.setX(0);
-		ground.setY(300);
+		ground.setX(DEFAULT_GROUND_POSITION.getX());
+		ground.setY(DEFAULT_GROUND_POSITION.getY());
 		
 		fDstTunnel = new Tunnel(aWidth/8, aHeight/4, PictureNames.Kim);
-		fDstTunnel.setX(150);
-		fDstTunnel.setY(300);
+		fDstTunnel.setX(MIDDLE_OBJECT_IN_GROUND_POSITION.getX());
+		fDstTunnel.setY(MIDDLE_OBJECT_IN_GROUND_POSITION.getY());
 		fDstTunnel.setSrc(this);
 		fDstTunnel.setDst(this);
 		
-		Wall leftWall = new Wall(aWidth/8, aHeight);
-		leftWall.setX(0);
-		leftWall.setY(0);
-		Wall rightWall = new Wall(50, aHeight);
-		rightWall.setX(aWidth - 50);
-		rightWall.setY(0);
-		Wall topWall = new Wall(aWidth, 40);
-		topWall.setX(0);
-		topWall.setY(0);
+		Wall leftWall = new Wall(DEFAULT_WALL_WIDTH, aHeight);
+		leftWall.setX(ORIGIN.getX());
+		leftWall.setY(ORIGIN.getY());
+		Wall rightWall = new Wall(DEFAULT_WALL_WIDTH, aHeight);
+		rightWall.setX(aWidth - DEFAULT_WALL_WIDTH);
+		rightWall.setY(ORIGIN.getY());
+		Wall topWall = new Wall(aWidth, SMALL_WALL_WIDTH);
+		topWall.setX(ORIGIN.getX());
+		topWall.setY(ORIGIN.getY());
 		
 		BackgroundImage backgroundImage = new BackgroundImage(aWidth, aHeight, BACKGROUND_IMAGE_NAME);
 		

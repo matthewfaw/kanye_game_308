@@ -5,10 +5,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-//Music
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-
 //controllers
 import controllers.GameController;
 
@@ -29,7 +25,7 @@ public class Main extends Application {
 
 
     /**
-     * Set things up at the beginning.
+     * Set up everything necessary for basic JavaFX app
      */
     @Override
     public void start (Stage s) {
@@ -47,27 +43,6 @@ public class Main extends Application {
     	animation.setCycleCount(Timeline.INDEFINITE);
     	animation.getKeyFrames().add(frame);
     	animation.play();
-//        // create your own game here
-//        myGame = new ExampleGame();
-//        s.setTitle(myGame.getTitle());
-//
-//        Media media = new Media(getClass().getClassLoader().getResource("all_falls_down.mp3").toString());
-//        MediaPlayer player = new MediaPlayer(media);
-//        player.play();
-//        
-//        // attach game to the stage and display it
-//        Scene scene = myGame.init(SIZE, SIZE);
-//        s.setScene(scene);
-//        s.show();
-//
-//        // sets the game's loop
-//        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-//                                      e -> myGame.step(SECOND_DELAY));
-//        Timeline animation = new Timeline();
-//        animation.setCycleCount(Timeline.INDEFINITE);
-//        animation.getKeyFrames().add(frame);
-//        animation.play();
-        
     }
 
     /**

@@ -11,7 +11,6 @@ import java.util.Random;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -24,9 +23,7 @@ import utils.MusicNames;
 import utils.PictureNames;
 import utils.Vector;
 import views.elements.foreground.attack.Fireball;
-import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
-import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.rewards.Gold;
 import views.scenes.CollegeScene;
@@ -57,7 +54,8 @@ public class GameController {
 	private static final int KEY_INPUT_SPEED = 5;
 	private static final double GRAVITY = -10;
 	private static final double FULL_HEALTH = 100.0;
-//	private static final double HEALTH_DEDUCTION = -1.0;
+	private static final double EASY_HEALTH_DEDUCTION = -0.5;
+	private static final double HARD_HEALTH_DEDUCTION = -1.0;
 	
 	private static final double MOVING_LEFT = -1.0;
 	private static final double MOVING_RIGHT = 1.0;
@@ -74,8 +72,10 @@ public class GameController {
 	private static final int DOOR_SCENE_INDEX = 2;
 	private static final int ULTRALIGHT_BEAM_SCENE_INDEX = 3;
 	
-//	private static final int NUM_CAMERAS = 3;
-//	private static final int NUM_TAYLORS = 4;
+	private static final int EASY_NUM_CAMERAS = 3;
+	private static final int HARD_NUM_CAMERAS = 5;
+	private static final int EASY_NUM_TAYLORS = 4;
+	private static final int HARD_NUM_TAYLORS = 6;
 	private static final int NUM_GOLD_COINS = 10;
 	private static final int MINIMUM_GOLD_COUNT = NUM_GOLD_COINS*3/4;
 
@@ -139,17 +139,17 @@ public class GameController {
 		
 		switch(aGameSetting) {
 		case Easy:
-			setDifficultyFields(-0.5, 3, 4);
+			setDifficultyFields(EASY_HEALTH_DEDUCTION, EASY_NUM_CAMERAS, EASY_NUM_TAYLORS);
 			break;
 		case Hard:
-			setDifficultyFields(-1, 5, 6);
+			setDifficultyFields(HARD_HEALTH_DEDUCTION, HARD_NUM_CAMERAS, HARD_NUM_TAYLORS);
 			break;
 		}
 		
 		fMainCharacterController = new MainCharacterController();
 		fMainCharacterController.setSurroundings(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
-		fMainCharacterController.createMainCharacter(fSceneController.getWidth()/8, fSceneController.getHeight()/8);
+		fMainCharacterController.createMainCharacter();
 		fMusicController.playSong(MusicNames.COLLEGE_SCENE_MUSIC);
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
@@ -195,8 +195,8 @@ public class GameController {
 			checkForEnemyDeath();
 
 			Tunnel tunnelToTransitionThrough = fMainCharacterController.checkForSceneTransition();
-			//XXX: uncomment when gold spawning is working
-			if (tunnelToTransitionThrough != null /*&& tunnelToTransitionThrough.isActive()*/) {
+			
+			if (tunnelToTransitionThrough != null) {
 				if (fPlayerStats.getGoldCount() > MINIMUM_GOLD_COUNT || !(fSceneController.getCurrentScene() instanceof ForestScene)) {
 					handleSceneTransition(tunnelToTransitionThrough.getDst());
 				}
@@ -240,13 +240,12 @@ public class GameController {
 		Enemy killedEnemy = fMainCharacterController.killedAnActiveEnemy();
 		if (killedEnemy != null) {
 			//XXX: this is horrible...
-			fEnemyControllers.get(killedEnemy.getId()).getEnemy().getRoot().getChildren().clear();;
+			fEnemyControllers.get(killedEnemy.getId()).getEnemy().getRoot().getChildren().clear();
 		}
 	}
 	
 	private void handleSceneTransition(GameScene aDstScene)
 	{
-//		fMainCharacterController.clearEnemies();
 		fMainCharacterController.emptyBelongings();
 		fMainCharacterController.setSurroundings(aDstScene);
 		fSceneController.transportToNewScene(aDstScene);
@@ -293,7 +292,7 @@ public class GameController {
 		
 		EnemyController enemyController = new EnemyController();
 		enemyController.setSurroundings(aScene);
-		enemyController.createEnemy(50, 50, aEnemyFileName, startingVelocity, startingPosition, fEnemyControllers.size());
+		enemyController.createEnemy(aEnemyFileName, startingVelocity, startingPosition, fEnemyControllers.size());
 		fEnemyControllers.add(enemyController);
 
 		fSceneController.addToGameRoot(enemyController.getEnemy());

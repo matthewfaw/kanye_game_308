@@ -1,19 +1,18 @@
 package views.elements;
 
 import javafx.scene.Group;
-import javafx.scene.shape.Shape;
 import views.ViewElement;
 
 // Info pertaining to both foreground and background elements
 
 public abstract class SceneElement extends ViewElement {
+	private static final int DETECTION_BUFFER = 5;
+	private static final double MINIMUM_SIDE_LENGTH_MULTIPLIER = 0.2;
 	
 	public SceneElement()
 	{
 		super();
 	}
-	
-	//public abstract Shape getOuterShape();
 	
 	public boolean intersects(Group obstacle)
 	{
@@ -33,7 +32,7 @@ public abstract class SceneElement extends ViewElement {
 		double maxRightXCoord = Math.max(fRoot.getBoundsInParent().getMaxX(), obstacle.getBoundsInParent().getMaxX());
 
 		boolean rootTouchingObstacleInX = (maxRightXCoord - minLeftXCoord 
-											<= fRoot.getBoundsInParent().getWidth() + obstacle.getBoundsInParent().getWidth() - 5);
+											<= fRoot.getBoundsInParent().getWidth() + obstacle.getBoundsInParent().getWidth() - DETECTION_BUFFER);
 		
 		return rootTouchingObstacleInX && rootTouchingObstacleInY;
 	}
@@ -78,6 +77,6 @@ public abstract class SceneElement extends ViewElement {
 		
 		double delta = Math.min(aFirstObject.getBoundsInParent().getHeight(), aSecondObject.getBoundsInParent().getHeight());
 		// XXX: Remove magic number
-		return Math.abs(rootBottomY - obstacleTopY) > 0.2 * delta;
+		return Math.abs(rootBottomY - obstacleTopY) > MINIMUM_SIDE_LENGTH_MULTIPLIER  * delta;
 	}
 }

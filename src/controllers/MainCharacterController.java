@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import utils.PictureNames;
 import utils.Vector;
 import views.elements.foreground.attack.Fireball;
-import views.elements.foreground.characters.Character;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Obstacle;
@@ -13,6 +12,7 @@ import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.rewards.Gold;
 
 public class MainCharacterController extends CharacterController {
+	private static final Vector DEFAULT_POSITION = new Vector(200, 50);
 	
 	private ArrayList<Enemy> fSurroundingEnemies;
 	private ArrayList<Fireball> fFireballs;
@@ -26,9 +26,9 @@ public class MainCharacterController extends CharacterController {
 		fSurroundingGold = new ArrayList<Gold>();
 	}
 
-	public void createMainCharacter(int aWidth, int aHeight)
+	public void createMainCharacter()
 	{
-		fCharacter = new MainCharacter(aWidth, aHeight);
+		fCharacter = new MainCharacter();
 		initializeCharacterFields();
 		
 //		return ((MainCharacter) fCharacter);
@@ -41,19 +41,14 @@ public class MainCharacterController extends CharacterController {
 	
 	protected void initializeCharacterFields()
 	{
-		fCharacter.setX(200);
-		fCharacter.setY(50);
+		fCharacter.setX(DEFAULT_POSITION.getX());
+		fCharacter.setY(DEFAULT_POSITION.getY());
 		
 //		fVelocityX = 0.0;
 		fVelocityY = 0.0;
 		fTimeInAir = 0.0;
 		fOnGround = true;
 	}
-	
-//	public void setCurrentEnemies(ArrayList<Enemy> aEnemies)
-//	{
-//		fSurroundingEnemies = aEnemies;
-//	}
 	
 	public void addEnemy(Enemy aNewEnemy)
 	{
@@ -139,10 +134,7 @@ public class MainCharacterController extends CharacterController {
 	{
 		for (Enemy enemy: fSurroundingEnemies) {
 			if (fCharacter.intersects(enemy.getRoot()) && enemy.isActive()) {
-//				if ((fCharacter.intersectsFromLeft(enemy.getRoot()) || fCharacter.intersectsFromRight(enemy.getRoot())) 
-//						&& enemy.isActive()) {
-					return true;
-//				}
+				return true;
 			}
 		}
 		return false;

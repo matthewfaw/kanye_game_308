@@ -1,14 +1,15 @@
 package views.elements.foreground.data_displays;
 
-import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import views.elements.SceneElement;
 
-public class HealthBar extends DataDisplay {
+public class HealthBar extends SceneElement {
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
+	private static final int DEFAULT_OFFSET = 20;
 	
 	private double fPercentHealth;
 	private int fGoldCount;
@@ -29,11 +30,10 @@ public class HealthBar extends DataDisplay {
 		fGoldCount = 0;
 		
 		fText = new Text();
-//		setHealthBarPercentage(100.0);
 		fText.setTextAlignment(TextAlignment.CENTER);
 		fText.setFill(Color.BLACK);
-		fText.setLayoutX(background.getX() + 10);
-		fText.setLayoutY(background.getY() + 20);
+		fText.setLayoutX(background.getX() + DEFAULT_OFFSET);
+		fText.setLayoutY(background.getY() + DEFAULT_OFFSET);
 		
 		fRoot.getChildren().add(background);
 		fRoot.getChildren().add(fText);

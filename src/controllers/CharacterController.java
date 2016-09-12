@@ -2,11 +2,8 @@ package controllers;
 
 import java.util.ArrayList;
 
-import javafx.scene.Group;
-import views.elements.foreground.characters.*;
 import views.elements.foreground.characters.Character;
 import views.elements.foreground.obstacles.Obstacle;
-import views.elements.foreground.obstacles.Tunnel;
 import views.scenes.DoorExplorationScene;
 import views.scenes.GameScene;
 
@@ -21,12 +18,12 @@ public abstract class CharacterController {
 	protected static final double DEL_Y = 1.0;
 	private static final double JUMP_VELOCITY = 7.0;
 	private static final double FREEFALL_VELOCITY = 0.0;
+	private static final double SMALL_TIME_INTERVAL = 0.5;
 	
 	private GameScene fCurrentScene;
 	
 	protected Character fCharacter;
 	protected ArrayList<Obstacle> fSurroundingObstacles;
-//	private ArrayList<Enemy> fSurroundingEnemies;
 	protected double fVelocityX;
 	protected double fVelocityY;
 	protected double fTimeInAir;
@@ -37,7 +34,6 @@ public abstract class CharacterController {
 	public CharacterController()
 	{
 		fSurroundingObstacles = new ArrayList<Obstacle>();
-//		fSurroundingEnemies = new ArrayList<Enemy>();
 	}
 		
 	public void setSurroundings(GameScene aScene)
@@ -64,7 +60,6 @@ public abstract class CharacterController {
 	
 	public void moveCharacter(double aXUnit, double aYUnit)
 	{
-		// XXX: fix movement
 		if ( (aXUnit > 0 && surroundingsAreClearOnRight()) ||
 				(aXUnit < 0 && surroundingsAreClearOnLeft()) ) {
 			fCharacter.setX(fCharacter.getX() + aXUnit * DEL_X);
@@ -100,14 +95,18 @@ public abstract class CharacterController {
 			fTimeInAir += aElapsedTime;
 			//fVelocityY = aGravity*fTimeInAir + JUMP_VELOCITY;
 			
-			double displacementY = 0.5*aGravity*fTimeInAir*fTimeInAir + fVelocityY*fTimeInAir;
-
+			double displacementY = calculateVerticalDisplacement(aGravity);
 			this.moveCharacter(0, -displacementY);
 			//XXX: get rid of or name magic constant
-			if(!surroundingsAreClearBelow() && fTimeInAir > 0.5){
+			if(!surroundingsAreClearBelow() && fTimeInAir > SMALL_TIME_INTERVAL){
 				endJump();
 			}
 		} 
+	}
+	
+	private double calculateVerticalDisplacement(double aGravity)
+	{
+		return 0.5*aGravity*fTimeInAir*fTimeInAir + fVelocityY*fTimeInAir;
 	}
 	
 	protected boolean surroundingsAreClearOnLeft()
@@ -119,33 +118,17 @@ public abstract class CharacterController {
 				}
 			}
 		}
-//		for (Enemy enemy: fSurroundingEnemies) {
-//			if (fCharacter.intersects(enemy.getRoot())) {
-//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
-//					return false;
-//				}
-//			}
-//		}
 		return true;
 	}
 	protected boolean surroundingsAreClearOnRight()
 	{
 		for (Obstacle obstacle: fSurroundingObstacles) {
-			//Shape intersection = Shape.intersect(fCharacter.getRoot(), obstacle.getRoot());
-
 			if (fCharacter.intersects(obstacle.getRoot())) {
 				if (fCharacter.intersectsFromRight(obstacle.getRoot())) {
 					return false;
 				}
 			}
 		}
-//		for (Enemy enemy: fSurroundingEnemies) {
-//			if (fCharacter.intersects(enemy.getRoot())) {
-//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
-//					return false;
-//				}
-//			}
-//		}
 		return true;
 	}
 	protected boolean surroundingsAreClearAbove()
@@ -157,13 +140,6 @@ public abstract class CharacterController {
 				}
 			}
 		}
-//		for (Enemy enemy: fSurroundingEnemies) {
-//			if (fCharacter.intersects(enemy.getRoot())) {
-//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
-//					return false;
-//				}
-//			}
-//		}
 		return true;
 	}
 	protected boolean surroundingsAreClearBelow()
@@ -175,13 +151,6 @@ public abstract class CharacterController {
 				}
 			}
 		}
-//		for (Enemy enemy: fSurroundingEnemies) {
-//			if (fCharacter.intersects(enemy.getRoot())) {
-//				if (fCharacter.intersectsFromLeft(enemy.getRoot())) {
-//					return false;
-//				}
-//			}
-//		}
 		return true;
 	}
 	

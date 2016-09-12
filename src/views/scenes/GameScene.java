@@ -1,17 +1,18 @@
 package views.scenes;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import javafx.scene.Group;
-import views.elements.SceneElement;
+import utils.Vector;
 import views.elements.foreground.characters.Enemy;
 import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 
 public abstract class GameScene {
+	protected static final Vector DEFAULT_LEFT_OBJECT_POSITION = new Vector(0,200);
+	protected static final Vector DEFAULT_RIGHT_OBJECT_POSITION = new Vector(350,200);
+	protected static final Vector DEFAULT_GROUND_POSITION = new Vector(0,300);
+
 	protected Group fRoot;
 	protected ArrayList<Obstacle> fObstacles;
 	protected ArrayList<Enemy> fEnemies;
@@ -25,20 +26,6 @@ public abstract class GameScene {
 		fEnemies = new ArrayList<Enemy>();
 	}
 	
-//	public void constructSceneFromFile(String aFileName)
-//	{
-//		File file = new File(aFileName);
-//		try {
-//			Scanner fileScanner = new Scanner(file);
-//			
-//			// Parse the file
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			System.out.println("File not found!!");
-//			e.printStackTrace();
-//		} 
-//	}
-//	
 	public Group getRoot()
 	{
 		return fRoot;
