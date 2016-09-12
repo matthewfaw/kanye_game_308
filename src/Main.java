@@ -37,7 +37,7 @@ public class Main extends Application {
     	fGameController = new GameController();
     	s.setTitle(fGameController.getGameName());
     	
-    	Scene scene = fGameController.init(SIZE, SIZE);
+    	Scene scene = fGameController.init(SIZE, SIZE, getClass().getClassLoader());
     	s.setScene(scene);
     	s.show();
     	

@@ -20,6 +20,7 @@ import models.PlayerStats;
 import utils.Direction;
 import utils.GameResults;
 import utils.GameSettings;
+import utils.MusicNames;
 import utils.PictureNames;
 import utils.Vector;
 import views.elements.foreground.attack.Fireball;
@@ -40,8 +41,11 @@ public class GameController {
 											+ "Use arrow keys to move Kanye\n"
 											+ "Collect coins to pass through the tunnel in the forest\n"
 											+ "Jump on top of the cameras to make them disappear\n"
-											+ "Avoid Taylors at all costs!\n"
-											+ "";
+											+ "Avoid Taylors at all costs! Find Kim!! Shoot fire with h,j,k,l keys\n"
+											+ "Discover the Ultralight beam!!!\n"
+											+ "HINT: To pass the first level, Kanye must *drop* out of college.\n"
+											+ "This transports him to the Forest, where his journey begins...";
+											
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	private static final int KEY_INPUT_SPEED = 5;
 	private static final double GRAVITY = -10;
@@ -73,6 +77,7 @@ public class GameController {
 	private int fNumTaylors;
 
 	private SceneController fSceneController;
+	private MusicController fMusicController;
 	private ArrayList<GameScene> fGameScenes;
 	private MainCharacterController fMainCharacterController;
 	private ArrayList<EnemyController> fEnemyControllers;
@@ -87,11 +92,12 @@ public class GameController {
 		return GAME_NAME;
 	}
 	
-	public Scene init(int aWidth, int aHeight)
+	public Scene init(int aWidth, int aHeight, ClassLoader aClassLoader)
 	{
 		fRandomNumberGenerator = new Random();
 		fGameHasStarted = false;
 		
+		fMusicController = new MusicController(aClassLoader);
 		fSceneController = new SceneController();
 		fSceneController.createGameRoot(aWidth, aHeight);
 		
@@ -137,6 +143,7 @@ public class GameController {
 		fMainCharacterController.setSurroundings(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
 		fMainCharacterController.createMainCharacter(fSceneController.getWidth()/8, fSceneController.getHeight()/8);
+		fMusicController.playSong(MusicNames.COLLEGE_SCENE_MUSIC);
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
 
@@ -239,8 +246,10 @@ public class GameController {
 		fEnemyControllers.clear();
 
 		if (aDstScene instanceof CollegeScene) {
+			fMusicController.playSong(MusicNames.COLLEGE_SCENE_MUSIC);
 			fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
 		} else if (aDstScene instanceof ForestScene) {
+			fMusicController.playSong(MusicNames.FOREST_SCENE_MUSIC);
 			for (int i=0; i<fNumCameras; ++i) {
 				addEnemyToGame(aDstScene, PictureNames.Camera);
 			}
@@ -249,11 +258,13 @@ public class GameController {
 			}
 			fCurrentSceneIndex = FOREST_SCENE_INDEX;
 		} else if (aDstScene instanceof DoorExplorationScene) {
+			fMusicController.playSong(MusicNames.TAYLOR_SCENE_MUSIC);
 			for (int i=0; i<fNumTaylors; ++i) {
 				addEnemyToGame(aDstScene, PictureNames.Taylor);
 			}
 			fCurrentSceneIndex = DOOR_SCENE_INDEX;
 		} else if (aDstScene instanceof UltralightBeamScene) {
+			fMusicController.playSong(MusicNames.ULTRALIGHT_BEAM_SCENE_MUSIC);
 			fCurrentSceneIndex = ULTRALIGHT_BEAM_SCENE_INDEX;
 		}
 

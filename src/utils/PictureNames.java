@@ -1,6 +1,7 @@
 package utils;
 
 public final class PictureNames {
+	//NOTE: This is the best way I could find to deal with constant strings in an easy way
 	public static final String Bound = "bound.jpg";
 	public static final String Camera = "camera.jpg";
 	public static final String College = "duke.jpg";
