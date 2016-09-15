@@ -9,8 +9,18 @@ import javafx.util.Duration;
 import controllers.GameController;
 
 /**
- * This is the main program, it is basically boilerplate to create
- * an animated scene.
+ * This is the main program.  The purpose of this class is simply to set up
+ * the boilerplate, essential components of a JavaFX app.
+ * 
+ * The static fields are assumed to be positive values.
+ * 
+ * This class depends on the GameController class's getName method to set the
+ * Game's name, the init method to initialize the game, 
+ * and the step method to move the game forward in time. The only
+ * other dependencies are boilerplate animation and screen display.
+ * 
+ * This is the entry point of the game. Anyone adding code to the game should
+ * not have to alter this class.
  * 
  * @author Matthew C. Faw
  */

@@ -1,23 +1,50 @@
 package controllers;
 
 import views.elements.foreground.characters.Enemy;
-import utils.Direction;
+import views.scenes.GameScene;
+
 import utils.Vector;
+
+/**
+ * The purpose of this class is to capture the functionality of enemies that is not shared with other characters
+ * 
+ * It is assumed that, after intantiating an EnemyController, one calls setSurroundings(gameScene), and createCharacter(...).
+ * At each time step, the moveCharacter() method is called to move the enemy in the proper direction.
+ * 
+ * The code depends on the Enemy class, and the Direction and Vector utils classes.  The enemyController is to be
+ * owned by the gameController.
+ * 
+ * To create an enemyController:
+ * EnemyController enemyController = new EnemeyController(aId);
+ * enemyController.setSurroundings(gameScene);
+ * enemyController.createCharacter(PictureNames.Taylor, initialVelocity, initialPosition);
+ * To move the enemy in the scene:
+ * enemyController.moveCharacter();
+ * To disable the enemy from moving and harming the main character:
+ * enemyController.disableEnemy();
+ * To reeneable:
+ * enemyController.reenableEnemy();
+ * 
+ * @author matthewfaw
+ *
+ */
 
 public class EnemyController extends CharacterController {
 	private static final boolean ACTIVE = true;
 	private static final boolean NOT_ACTIVE = false;
-	private static final Vector DEFAULT_ORIGIN = new Vector(50,250);
 	
 	private double fOldVelocityX;
 	private double fOldVelocityY;
+	private int fId;
 	
 	/**
 	 * Simply calls the parent constructor to initialize necessary fields
+	 * @param aId: the identifier needed to find and enemy in an array
 	 */
-	public EnemyController()
+	public EnemyController(int aId)
 	{
 		super();
+		fId = aId;
 	}
 
 	/**
@@ -25,12 +52,22 @@ public class EnemyController extends CharacterController {
 	 * @param aEnemyFileName
 	 * @param aStartingVelocity
 	 * @param aStartingPosition
-	 * @param aId
 	 */
-	public void createEnemy(String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition, int aId)
+	public void createCharacter(String aEnemyFileName, Vector aStartingVelocity, Vector aStartingPosition)
 	{
-		fCharacter = new Enemy(aEnemyFileName, aId);
+		fCharacter = new Enemy(aEnemyFileName, fId);
 		initializeCharacterFields(aStartingVelocity, aStartingPosition);
+	}
+	
+	/**
+	 * Initializes the obstacles that are surrounding the current character fCharacter
+	 * @param aGameScene: the current game scene from which to get the obstacles
+	 */
+	public void setSurroundings(GameScene aGameScene)
+	{
+		if (aGameScene.getObstacles() != null) {
+			fSurroundingObstacles = aGameScene.getObstacles();
+		}
 	}
 	
 	/**
@@ -42,12 +79,7 @@ public class EnemyController extends CharacterController {
 		return (Enemy)fCharacter;
 	}
 
-	protected void initializeCharacterFields()
-	{
-		initializeCharacterFields(Direction.RIGHT, DEFAULT_ORIGIN);
-	}
-
-	private void initializeCharacterFields(Vector aStartingVelocity, Vector aStartingPosition)
+	protected void initializeCharacterFields(Vector aStartingVelocity, Vector aStartingPosition)
 	{
 		fCharacter.setX(aStartingPosition.getX());
 		fCharacter.setY(aStartingPosition.getY());
@@ -56,10 +88,11 @@ public class EnemyController extends CharacterController {
 		fVelocityX = aStartingVelocity.getX();
 		fVelocityY = aStartingVelocity.getY();
 		fTimeInAir = 0.0;
+		fOnGround = true;
 	}
 	
 	/**
-	 * A method used to simplify character movement.  Will cause the character to reflect when it hits an obstacle
+	 * A method used to simplify automating character movement.  Will cause the character to reflect when it hits an obstacle
 	 */
 	public void moveCharacter()
 	{

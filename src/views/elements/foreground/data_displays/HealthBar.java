@@ -7,6 +7,26 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import views.elements.SceneElement;
 
+/**
+ * This class manages all of the content that is to be displayed on the health bar.
+ * 
+ * The class assumes that the only relevent information to be displayed in the gold cound and 
+ * percent health. It does not permit adding other information.
+ * It also assumes a default spacing of the text. If the bar height is sufficiently small, then
+ * the information will not display properly.  Since the information needs to be readable, however, 
+ * it seems reasonble to impose a minimum height on the HealthBar.
+ * 
+ * The only non-JavaFX dependency in this class is on SceneElement, the superclass;
+ * 
+ * The health bar can be created:
+ * HealthBar bar = new HealthBar(width, height);
+ * Set the gold count:
+ * bar.setGoldCount(5000);
+ * bar.setHealthBarPercentage(94);
+ * 
+ * @author matthewfaw
+ *
+ */
 public class HealthBar extends SceneElement {
 	private static final Color BACKGROUND_COLOR = Color.WHITE;
 	private static final int DEFAULT_OFFSET = 20;

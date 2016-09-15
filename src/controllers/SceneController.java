@@ -23,6 +23,31 @@ import views.scenes.UltralightBeamScene;
  * 2. Handle scene transitions
  */
 
+/**
+ * The purpose of the scene controller is:
+ * 1) to handle setting up a given scene properly
+ * 2) To handle the break down and build up of scenes upon scene transition.
+ * 
+ * The main assumptions of the class are that a user has passed in a new scene or scene element 
+ * (i.e. that this element is not void). 
+ * Additionally, the class assumes that, after constructing the scene controller, a user calls
+ * the createGameRoot method, specifying the width and height of the scene. This width and height
+ * are assumed to be valid
+ * 
+ * Additionally, it is assumed that a user calls createScenes when the game starts to set up all of the 
+ * Scene objects.  The user then can select which scene he wants to be displayed first, and add that scene
+ * to the game root, as follows:
+ * SceneController sceneController = new SceneController();
+ * sceneController.createGameRoot(width, height);
+ * ArrayList<GameScene> scenes = sceneController.createScenes(width, height, gameName, gameInfo);
+ * If a user wants to display the start screen:
+ * sceneController.addToGameRoot(sceneController.getStartScreen());
+ * If a user wants to display a game scene
+ * sceneController.addToGameRoot(scenes.get(INDEX_OF_SCENE))
+ * 
+ * @author matthewfaw
+ *
+ */
 public class SceneController {
 	private Group fGameRoot;
 	private HealthBar fHealthBar;

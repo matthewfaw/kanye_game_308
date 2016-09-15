@@ -5,6 +5,21 @@ import javafx.scene.image.ImageView;
 import utils.PictureNames;
 import views.elements.SceneElement;
 
+/**
+ * The purpose of this class, too, is primarily readiblity, since gold will likely always need to be the same size and image.
+ * 
+ * The assumptions are that the size and image selections are not problematic.
+ * 
+ * The dependencies are on SceneElement, PictureNames, and JavaFX Image and ImageView
+ * 
+ * Create a new piece of gold:
+ * Gold g = new Gold();
+ * Group root = g.getRoot();
+ * 
+ * @author matthewfaw
+ *
+ */
+
 public class Gold extends SceneElement {
 	private static final int GOLD_WIDTH = 40;
 	private static final int GOLD_HEIGHT = 40;

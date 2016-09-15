@@ -1,10 +1,4 @@
 package controllers;
-/*
- * The purpose of the game controller is to:
- * 1. Initialize the game
- * 2. Step to the next instant in time of the game
- * 3. Reset the game
- */
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,6 +18,7 @@ import utils.PictureNames;
 import utils.Vector;
 import views.elements.foreground.attack.Fireball;
 import views.elements.foreground.characters.Enemy;
+import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.rewards.Gold;
 import views.scenes.CollegeScene;
@@ -32,6 +27,30 @@ import views.scenes.ForestScene;
 import views.scenes.GameScene;
 import views.scenes.UltralightBeamScene;
 
+/**
+ * This is the class that is responsible for controlling the game's core logic.
+ * One may think of this
+ * class as the "manager" of every other controller.  It is responsible for creating all
+ * of the character controllers, as well as the music controller and scene controller. It
+ * is also responsible for managing when and how these controllers interact.
+ * 
+ * The only real assumtions this class makes is that
+ * 1) The main program will call the init method before anything else
+ * 2) A user will be able to use a mouse to click on the game's splash screen
+ * 3) A user will be able to use the keyboard.
+ * 
+ * This class depends on each of the Controller classes, the PlayerStats class, each of the Scene classes, 
+ * each of classes in the utils package, the Fireball class, the Enemy class, the Tunnel class, and the Gold class.
+ * 
+ * The class is instantiated by:
+ * Scene scene = fGameController.init(SIZE, SIZE, getClass().getClassLoader());
+ * 
+ * One may progress the game to the next instant in time by:
+ * fGameController.step(SECOND_DELAY)
+ * 
+ * @author matthewfaw
+ *
+ */
 public class GameController {
 	private static final String GAME_NAME = "Kanye's Quest for the Ultralight Beam";
 	private static final String GAME_INFO = "Game Info:\n"
@@ -95,7 +114,7 @@ public class GameController {
 	private boolean fGameHasStarted;
 	
 	/**
-	 * A method used by the Main program to get the name of the game
+	 * A method used by the Main program to get the name of the game. 
 	 * @return the game name
 	 */
 	public String getGameName()
@@ -160,7 +179,7 @@ public class GameController {
 		fMainCharacterController = new MainCharacterController();
 		fMainCharacterController.setSurroundings(fGameScenes.get(COLLEGE_SCENE_INDEX));
 		fCurrentSceneIndex = COLLEGE_SCENE_INDEX;
-		fMainCharacterController.createMainCharacter();
+		fMainCharacterController.createCharacter(PictureNames.MainCharacter, new Vector(0,0), MainCharacter.DEFAULT_POSITION);
 		fMusicController.playSong(MusicNames.COLLEGE_SCENE_MUSIC);
 		
 		fEnemyControllers = new ArrayList<EnemyController>();
@@ -308,9 +327,9 @@ public class GameController {
 		Vector startingPosition = new Vector(getRandomNumber(LEFT_OF_SCREEN,RIGHT_OF_SCREEN), startingYPosition);
 		Vector startingVelocity = new Vector(getRandomDirection(), startingYVelocity);
 		
-		EnemyController enemyController = new EnemyController();
+		EnemyController enemyController = new EnemyController(fEnemyControllers.size());
 		enemyController.setSurroundings(aScene);
-		enemyController.createEnemy(aEnemyFileName, startingVelocity, startingPosition, fEnemyControllers.size());
+		enemyController.createCharacter(aEnemyFileName, startingVelocity, startingPosition); 
 		fEnemyControllers.add(enemyController);
 
 		fSceneController.addToGameRoot(enemyController.getEnemy());

@@ -10,10 +10,33 @@ import views.elements.foreground.characters.MainCharacter;
 import views.elements.foreground.obstacles.Obstacle;
 import views.elements.foreground.obstacles.Tunnel;
 import views.elements.foreground.rewards.Gold;
+import views.scenes.DoorExplorationScene;
+import views.scenes.GameScene;
+
+/**
+ * The purpose of this class is to capture the functionality essential to the main character
+ * but not needed by any other character (i.e. the enemies)
+ * 
+ * The main assumptions of this class are that:
+ * 1) The owner of the MainCharacterController will pass any enemy that has been created in the scene and
+ * any gold that has been created in the scene
+ * 2) At each time step, the owner will use the controller's methods to check if the character has interacted
+ * with any other element in the scene.
+ * 
+ * The class depends on the Fireball, Enemy, MainCharacter, Obstacle, Tunnel, and Gold classes.  The class 
+ * is to be owned by the game controller.
+ * 
+ * At each time step, the owner may check:
+ * 1) if the character is touching gold charaacterController.isTouchingGold()
+ * 2) If the character should take a scene transition (i.e. he found a tunnel) characterController.checkForSceneTransition()
+ * 3) If the character killed an active enemy characterController.killedAnActiveEnemy()
+ * 4) If the character is being hurt by an enemy. characterController.isBeingHurtByAnActiveEnemy()
+ * 
+ * @author matthewfaw
+ *
+ */
 
 public class MainCharacterController extends CharacterController {
-	private static final Vector DEFAULT_POSITION = new Vector(200, 50);
-	
 	private ArrayList<Enemy> fSurroundingEnemies;
 	private ArrayList<Fireball> fFireballs;
 	private ArrayList<Gold> fSurroundingGold;
@@ -30,15 +53,44 @@ public class MainCharacterController extends CharacterController {
 	}
 
 	/**
+	 * a method used to fill out all of the character's fields related to the surrounding scene
+	 * @param aScene
+	 */
+	public void setSurroundings(GameScene aScene)
+	{
+		if (aScene.getObstacles() != null) {
+			fSurroundingObstacles = aScene.getObstacles();
+		}
+		fGravityIsEnabled = !(aScene instanceof DoorExplorationScene);
+		
+		if (fCharacter != null) {
+			initializeCharacterFields(new Vector(0,0), MainCharacter.DEFAULT_POSITION);
+		}
+	}
+
+	/**
 	 * creates the character associated with the controller
 	 */
-	public void createMainCharacter()
+	public void createCharacter(String aCharacterName, Vector aStartingVelocity, Vector aStartingPosition)
 	{
-		fCharacter = new MainCharacter();
-		initializeCharacterFields();
-		
-//		return ((MainCharacter) fCharacter);
+		fCharacter = new MainCharacter(PictureNames.MainCharacter);
+		initializeCharacterFields(aStartingVelocity, aStartingPosition);
 	}
+
+	/**
+	 * sets up the character's associated info
+	 */
+	protected void initializeCharacterFields(Vector aStartingVelocity, Vector aStartingPosition)
+	{
+		fCharacter.setX(aStartingPosition.getX());
+		fCharacter.setY(aStartingPosition.getY());
+		
+		fVelocityX = 0.0;
+		fVelocityY = aStartingVelocity.getY();
+		fTimeInAir = 0.0;
+		fOnGround = true;
+	}
+
 	
 	/**
 	 * retrieves the associated character
@@ -47,20 +99,6 @@ public class MainCharacterController extends CharacterController {
 	public MainCharacter getMainCharacter()
 	{
 		return (MainCharacter)fCharacter;
-	}
-	
-	/**
-	 * sets up the character's associated info
-	 */
-	protected void initializeCharacterFields()
-	{
-		fCharacter.setX(DEFAULT_POSITION.getX());
-		fCharacter.setY(DEFAULT_POSITION.getY());
-		
-//		fVelocityX = 0.0;
-		fVelocityY = 0.0;
-		fTimeInAir = 0.0;
-		fOnGround = true;
 	}
 	
 	/**
@@ -146,7 +184,7 @@ public class MainCharacterController extends CharacterController {
 	}
 
 	/**
-	 * Move the fireballs in the scene
+	 * Move the fireballs in the scene owned by this character
 	 */
 	public void moveFireballs()
 	{

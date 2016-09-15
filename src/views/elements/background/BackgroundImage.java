@@ -14,7 +14,7 @@ public class BackgroundImage extends SceneElement {
 	 */
 	public BackgroundImage(int aWidth, int aHeight, String aImageName)
 	{
-		fRoot = new Group();
+		super();
 		
         Image image = new Image(getClass().getClassLoader().getResourceAsStream(aImageName));
         ImageView imageView = new ImageView();

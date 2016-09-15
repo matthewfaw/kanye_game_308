@@ -3,7 +3,31 @@ package views.elements;
 import javafx.scene.Group;
 import views.ViewElement;
 
-// Info pertaining to both foreground and background elements
+/**
+ * This class serves as the primary building block for all scene elements.  It's primary
+ * purpose is to provide methods which any scene element may use to tell if it intersects
+ * with any other scene element. It also provides methods to determine on which side a particular element
+ * intersects a scene element, a useful calculation when dealing with object interactions.
+ * 
+ * This class makes the assumption that if the length of overlap of two objects is sufficiently small, then
+ * the intersection is a "false positive", and thus can be ignored.  This assumption was necessary to allow 
+ * my characters to move around the scene without sticking.  When a character jumps, due to the discrete nature
+ * of the game, the character may not always land precisely above ground.  Thus, the character may detect a small
+ * region of overlap with the ground on it's sides, and thus may falsely think it's intersecting something from the side
+ * and thus not allow left or right movement.  By creating a detection buffer, this issue is resolved.
+ * 
+ * The dependencies of the code are only on JavaFX Group and the ViewElements superclass.
+ * By using the buffer, we imposing some restrictions on the rate of the clock tick of game play.  If I were to improve
+ * the design of this class, I would make the buffer region a function of the sampling rate, to make things more precise.
+ * 
+ * This class allows any scene element object to ask:
+ * boolean b = sceneElement.intersects(someGroup);
+ * Or, more specifically, 
+ * boolean b = sceneElement.intersectsFromRight(someGroup);
+ * 
+ * @author matthewfaw
+ *
+ */
 
 public abstract class SceneElement extends ViewElement {
 	private static final int DETECTION_BUFFER = 5;
