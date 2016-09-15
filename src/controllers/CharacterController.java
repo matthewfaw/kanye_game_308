@@ -25,6 +25,10 @@ import views.scenes.GameScene;
  * allowing checking the surroundings and handling jumps will allow us to create more general purpose 
  * character controllers, and enemies who can actually jump
  * 
+ * I think this class is well designed because it gives every character controller an incredible amount of flexibility in functionality.
+ * Additionally, any common feature to all character controllers can be added here to give everyone access to it
+ * 
+ * 
  * This class depends on the Character Class, the obstacle class, the Door exploration scene class,
  * and the game scene class. This class will be called by the GameController.
  * 
